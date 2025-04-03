@@ -1,0 +1,12 @@
+<div class="flex flex-column base">
+    <ng-container *ngIf="activeOption">
+        <button *ngFor="let option of options" type="button" class="item"
+            [ngClass]="option.label === activeOption.label ? 'active':'normal'" (click)="setActiveOption(option)">
+            <div class="flex flex-column">
+                <i [class]="option.icon" class="icon-style p-2 text-0"></i>
+                <label class="text-0 font-def" style="cursor: pointer;">{{ option.label | defaultText: '' | translate
+                    }}</label>
+            </div>
+        </button>
+    </ng-container>
+</div>

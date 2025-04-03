@@ -1,0 +1,9 @@
+{
+    "hostUrl": "/disporto",
+    "hostUrlLocal":"http://localhost.indra.es:8085/disporto",
+    "hostUrlHnanexo": "/disporto/api/anexo",
+    "urlEncrytion": false,
+    "noEncodeKeys": ["page"],
+    "encrytionKey": "ANEX067891234567",
+    "messageLife": 3000
+}

@@ -1,1 +1,166 @@
+@font-face {
+  font-family: "OpenSans";
+  src: url("fonts/OpenSans/OpenSans-Regular.ttf");
+  font-size: 13px;
+}
+
+@font-face {
+  font-family: "OpenSans Extra Bold";
+  src: url("fonts/OpenSans/OpenSans-ExtraBold.ttf");
+  font-size: 13px;
+}
+
+@font-face {
+  font-family: "OpenSans Medium";
+  src: url("fonts/OpenSans/OpenSans-Medium.ttf");
+  font-size: 13px;
+}
+
+@font-face {
+  font-family: "OpenSans Light";
+  src: url("fonts/OpenSans/OpenSans-Light.ttf");
+  font-size: 13px;
+}
+
 /* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+  margin: 0px;
+  font-family: 'OpenSans', sans-serif;
+  font-size: 13px;
+}
+
+header {
+  /* height: 5vh;*/
+  width: 100vw;
+  height: 50px;
+  font-family: 'OpenSans', sans-serif;
+  font-size: 13px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.content {
+  width: 100vw;
+  height: calc(100% - 50px);
+  overflow: hidden;
+}
+
+.left-bar {
+  width: 125px;
+  min-width: 125px;
+}
+
+.left-menu {
+  background-color: #343648;
+}
+
+.global-gray {
+  color: #343648 !important;
+}
+
+/* Dark gray, lateral menu background */
+.color-while {
+  color: #FFFFFF !important;
+}
+
+/*  */
+.color-light-blue {
+  color: #519CE5 !important;
+}
+
+/* Light blue, header background */
+.background-light-blue {
+  background-color: #519CE5 !important;
+}
+
+/* Light blue, header background */
+.color-blue {
+  color: #1455C7 !important;
+}
+
+/* dispense button */
+.color-duno1 {
+  color: #E2E2E2 !important;
+}
+
+/*  */
+.color-dark-gray {
+  color: #23272B !important;
+}
+
+.color-duno2 {
+  color: #CCCCCC !important;
+}
+
+.color-light-gray {
+  color: #95989A !important;
+}
+
+/* header tabla products */
+.background-color-light-gray {
+  background-color: #CCCCCC !important;
+}
+
+/* header tabla products */
+.color-dark {
+  color: #121416 !important;
+}
+
+.color-dark-blue {
+  color: #0000FF !important;
+}
+
+.color-ultra-light-blue {
+  color: #B4D0EC !important;
+}
+
+.background-ultra-light-blue {
+  background-color: #B4D0EC !important;
+}
+
+
+.header-background {
+  background-color: #519CE5 !important;
+}
+
+.color-approval {
+  color: rgb(112, 168, 59) !important;
+}
+
+.color-denied {
+  color: rgb(200, 49, 42) !important;
+}
+
+.color-rejected {
+  color: grey !important;
+}
+
+.color-pending {
+  color: rgb(254, 170, 41) !important;
+}
+
+.color-draft {
+  color: rgb(150, 98, 173) !important;
+}
+
+.color-background-approval {
+  background-color: rgb(112, 168, 59) !important;
+}
+
+.color-background-denied {
+  background-color: rgb(200, 49, 42) !important;
+}
+
+.color-background-rejected {
+  background-color: grey !important;
+}
+
+.color-background-pending {
+  background-color: rgb(254, 170, 41) !important;
+}
+
+.color-background-draft {
+  background-color: rgb(150, 98, 173) !important;
+}/* You can add global styles to this file, and also import other style files */

@@ -21,15 +21,27 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/favicon.ico",
+              "src/assets",
+              "src/res/i18n/en.json",
+              "src/res/i18n/es.json",
+              "src/keycloak.json",
+			        "src/WEB-INF"
             ],
             "styles": [
-              "src/styles.css"
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeflex/primeflex.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "src/styles.css",
+              "./node_modules/wacom-util/lib/esm/sigPadStyle.css"
             ],
-            "scripts": []
+            "scripts": [
+			        "src/assets/js/ohsso-lib.js",
+              "src/assets/c/c.js",
+              "src/assets/wacom/demoButtons_encryption.js",
+              "node_modules/@fortawesome/fontawesome-free/js/all.min.js",
+              "src/assets/fhir/fhir-js-client/fhir-client.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -65,7 +77,10 @@
               "buildTarget": "DISPORTO:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options":{
+              "port": 4300
+            }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"

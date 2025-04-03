@@ -18,8 +18,18 @@
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@ngx-translate/core": "^14.0.0",
+    "@ngx-translate/http-loader": "^7.0.0",
+    "@primeng/themes": "^19.0.10",
+    "@types/fhir":"0.0.35",
+    "primeflex": "^4.0.0",
+    "primeicons": "^7.0.0",
+    "primeng": "^18.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "wacom-util": "^0.1.5",
+    "wacomgss-npm": "^0.5.2",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {

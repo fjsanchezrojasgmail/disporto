@@ -1,0 +1,35 @@
+<div *ngIf="profesional$ | async as profesional"
+    class="flex flex-grown justify-content-between h-full w-full p-2 text-white">
+    <div class="flex align-items-center">
+        <div class="left-bar p-2">
+            <p-image src="assets/images/logo_sacyl.png" alt="Image" width="75"></p-image>
+        </div>
+        <label class="px-3 uppercase">{{ 'title.pare_cyl' | translate }}</label>
+    </div>
+    <div class="flex align-items-center">
+        <div class="divider"></div>
+        <i class="pi pi-question-circle font-bold text-lg px-3" (click)="showDocumentation()"
+            style="cursor: pointer;"></i>
+        <div class="divider"></div>
+        <div class="flex flex-column px-3">
+            <span>
+                {{ profesional.name }} {{ profesional.surname1 }} {{ profesional.surname2 || '' }}
+            </span>
+            <ng-container *ngIf="profesional.typeProfesional === establishmentType; else elseBlock">
+                <span *ngIf="center$ | async as center" class="text-sm">
+                    {{center.centerName}} - {{center.code}}
+                </span>
+            </ng-container>
+            <ng-template #elseBlock>
+                <div class="flex">
+                    <span>{{ profesionalTypeDescription }}</span>
+                    <span *ngIf="profesional.provinces.length === 1">{{ ' ' }} - {{ firstProfesionalProvince }}</span>
+                </div>
+            </ng-template>
+        </div>
+        <i class="pi pi-power-off font-bold text-lg px-3" (click)="showLogOff()" style="cursor: pointer;"></i>
+    </div>
+</div>
+<sacyl-confirm-modal [title]="'profesional.modal.logout.title'" [context]="'profesional.modal.logout.context'"
+    (confirm)="logOff()">
+</sacyl-confirm-modal>

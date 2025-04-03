@@ -1,0 +1,14 @@
+<p-dialog 
+    [header]="title | translate" 
+    [(visible)]="display" 
+    [modal]="true"
+    [draggable]="false" 
+    [resizable]="false">
+    <span class="py-2">{{ context | translate }}</span>
+    <ng-template pTemplate="footer">
+        <div class="flex justify-content-end">
+            <p-button (click)="display = false">{{ 'button.cancel' | translate }}</p-button>
+            <p-button (click)="confirmation()">{{ 'button.accept' | translate }}</p-button>
+        </div>
+    </ng-template>
+</p-dialog>

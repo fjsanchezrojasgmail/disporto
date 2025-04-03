@@ -1,0 +1,18 @@
+<header class="header-background">
+    <sacyl-profesional-header></sacyl-profesional-header>
+</header>
+<!-- <ng-container *ngIf="counter$ | async as counter">
+    <div id="loader" class="overlay" *ngIf="counter > 0 && false">
+        <p-progressSpinner class="align-self-center"></p-progressSpinner>
+    </div>
+</ng-container> -->
+
+<div class="content">
+    <div class="flex h-full w-full">
+        <sacyl-vertical-menu class="left-bar left-menu overflow-y-auto" (selectedOption)="changeComponent($event)">
+        </sacyl-vertical-menu>
+        <div class="h-full w-full">
+            <ng-container #container></ng-container>
+        </div>
+    </div>
+</div>
