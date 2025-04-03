@@ -1,0 +1,85 @@
+/*:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 0.5rem;
+}*/
+/* Cambios en el tamaño de los botones, para reducir el padding*/
+:host ::ng-deep .p-button {
+    padding: 0.25rem 1.25rem;
+}
+
+:host ::ng-deep .p-button.p-button-icon-only {
+    width: 1rem;
+    padding: 0 0;
+}
+
+:host ::ng-deep .p-button.p-button-icon-only.p-button-rounded {
+    border-radius: 50%;
+    height: 1rem;
+}
+
+/* Quitamos el border de la ultima fila de la tabla interior */
+:host ::ng-deep .table-products .p-datatable-tbody>tr:last-child>td {
+    border-bottom: none;
+}
+
+/*
+.p-datatable .p-datatable-tbody > tr > td {
+    text-align: left;
+    border: 1px solid #dee2e6;
+    border-width: 0 0 1px 0;
+    padding: 1rem 1rem;
+}*/
+
+.col-expand {
+    width: 45px;
+}
+
+.col-description {}
+
+.col-laterality {
+    width: 60px;
+}
+
+.col-units {
+    width: 90px;
+}
+
+.col-imf {
+    width: 100px;
+}
+
+.col-pvp {
+    align-items: center;
+    width: 110px;
+}
+
+.col-aportation {
+    width: 100px;
+}
+
+.col-tag {
+    width: 150px;
+}
+
+.col-revision {
+    width: 40px;
+}
+
+.col-approval {
+    width: 40px;
+}
+
+.col-block {
+    width: 40px;
+}
+
+.col-yes-no {
+    width: 110px;
+}
+
+.col-options {
+    width: 45px;
+}
+
+.col-motive {
+    width: 450px;
+}

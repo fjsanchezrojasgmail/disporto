@@ -1,3 +1,43 @@
-<p>
-  dispensations works!
-</p>
+<div class="flex flex-column h-full w-full">
+    <ng-template #elseBlock>
+        <sacyl-patient-identification></sacyl-patient-identification>
+    </ng-template>
+    <ng-container *ngIf="patient$ | async as patient; else elseBlock">
+        <sacyl-patient-header 
+            [patient]="patient"
+            (onClose)="quitPatient()"
+            class="mb-2">
+        </sacyl-patient-header>
+        <p-tabMenu 
+            *ngIf="tabItemActive"
+            [hidden]="prescription"
+            class="p-2"
+            [model]="tabItems" 
+            [activeItem]="tabItemActive">
+        </p-tabMenu>
+        <div *ngIf="patient" class="overflow-hidden p-3" [hidden]="prescription">
+            <sacyl-products 
+                *ngIf="tabItemActive?.id === 'p1'" 
+                [patient]="patient"
+                (prescriptionDetails)="prescription = $event">
+            </sacyl-products>
+            <sacyl-historical 
+                *ngIf="tabItemActive?.id === 'p2'" 
+                [patient]="patient"
+                (prescriptionDetails)="prescription = $event">
+            </sacyl-historical>
+            <sacyl-modifications 
+                *ngIf="tabItemActive?.id === 'p3'" 
+                [patient]="patient"
+                (prescriptionDetails)="prescription = $event">
+            </sacyl-modifications>
+        </div>
+        <div *ngIf="prescription" class="overflow-hidden p-3">
+            <sacyl-prescription-detail 
+                [prescription]="prescription" 
+                [patient]="patient"
+                (close)="prescription = undefined">
+            </sacyl-prescription-detail>
+        </div>
+    </ng-container>
+</div>

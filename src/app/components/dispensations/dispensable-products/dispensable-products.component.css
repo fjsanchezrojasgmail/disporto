@@ -1,0 +1,68 @@
+/* Quitamos el border de la ultima fila de la tabla interior */
+:host ::ng-deep .table-products .p-datatable-tbody>tr:last-child>td {
+    border-bottom: none;
+}
+
+.col-expand {
+    width: 45px;
+}
+
+.col-laterality {
+    width: 60px;
+}
+
+.col-units {
+    width: 90px;
+}
+
+.col-imf {
+    width: 100px;
+}
+
+.col-pvp {
+    align-items: center;
+    width: 125px;
+}
+
+.col-aportation {
+    width: 100px;
+}
+
+.col-tag {
+    width: 150px;
+}
+
+.col-revision {
+    width: 40px;
+}
+
+.col-approval {
+    width: 40px;
+}
+
+.col-block {
+    width: 40px;
+}
+
+.col-brand {
+    width: 65px;
+}
+
+.col-yes-no {
+    width: 110px;
+}
+
+.col-options {
+    width: 45px;
+}
+
+:host ::ng-deep .p-sidebar-right {
+    top: 0;
+    right: 0;
+    width: 50vw;
+    height: 100%;
+}
+
+.disabled-color {
+    background: #eeeeee !important;
+}

@@ -1,0 +1,20 @@
+<div class="flex justify-content-between p-2 bottom-shadow">
+    <div class="flex align-items-center">
+        <p-avatar [image]="icon" styleClass="mr-2" size="xlarge" shape="circle">
+        </p-avatar>
+        <label class="uppercase">
+            {{ patient.fullname }}
+        </label>
+    </div>
+    <div class="flex align-items-center">
+        <div class="flex flex-column px-2">
+            <div class="flex">
+                <label class="font-light mr-2">CIPA</label>
+                <label>{{ patient.cipa }}</label>
+            </div>
+            <label *ngIf="patient.pharmacyIndicator?.code === pharmacyIndicator" class="text-sm uppercase">{{
+                'patient.label.exempt' | translate }}</label>
+        </div>
+        <i class="pi pi-times align-self-start m-2" (click)="close()"></i>
+    </div>
+</div>

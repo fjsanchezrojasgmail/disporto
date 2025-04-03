@@ -1,0 +1,11 @@
+.center {
+    position: relative;
+    top: 40%;
+    /* left: 40%; */
+    /*margin: -25px 0 0 -25px; /* Apply negative top and left margins to truly center the element */
+  }
+
+.invisible {
+  visibility: hidden;
+  display: block;
+}

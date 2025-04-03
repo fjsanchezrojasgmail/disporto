@@ -1,0 +1,350 @@
+<div *ngIf="prescriptions$ | async as prescriptions" class="flex flex-column h-full">
+    <div class="overflow-auto">
+        <p-table *ngIf="dispensables.length > 0" [value]="dispensables" dataKey="id"
+            (onRowExpand)="showProducts($event)" (onRowCollapse)="showProducts($event)"
+            [expandedRowKeys]="expandedRowKeys">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="col-expand"></th>
+                    <th class="flex-grow-1 col-description">{{ 'table.dispensations' | translate }}</th>
+                    <th class="col-laterality"></th>
+                    <th class="col-units">{{ 'table.units' | translate }}</th>
+                    <th class="col-pvp flex flex-column">
+                        <span>{{ 'table.pvp' | translate }}</span>
+                        <span>{{ 'table.by_unit' | translate }}</span>
+                    </th>
+                    <th class="col-aportation">{{ 'table.aportation' | translate }}</th>
+                    <th class="col-revision"></th>
+                    <th class="col-approval"></th>
+                    <th class="col-block"></th>
+                    <th class="col-yes-no"></th>
+                    <th class="col-options"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-prescription>
+                <tr [ngClass]="{'row-expanded': prescription.expanded}">
+                    <td class="col-expand">
+                        <sacyl-prescription-observation-icons [prescription]="prescription">
+                        </sacyl-prescription-observation-icons>
+                    </td>
+                    <td class="flex-grow-1 col-description">
+                        <sacyl-prescription-description [prescription]="prescription"></sacyl-prescription-description>
+                    </td>
+                    <td class="col-laterality">
+                        <sacyl-laterality *ngIf="prescription.products.length === 1"
+                            [laterality]="prescription.products[0].laterality"></sacyl-laterality>
+                    </td>
+                    <td class="col-units">
+                        <sacyl-units-input *ngIf="prescription.products.length === 1"
+                            [units]="prescription.products[0].units" [state]="prescription.status.code"
+                            [disable]="true">
+                        </sacyl-units-input>
+                    </td>
+                    <td class="col-pvp">
+                        <sacyl-pvp-input *ngIf="prescription.products.length === 1" [product]="prescription.products[0]"
+                            [disability]="patient.disability" [disable]="true" [state]="prescription.status.code">
+                        </sacyl-pvp-input>
+                        <span *ngIf="prescription.products.length !== 1">{{ prescription.totalPVP | defaultText: ''
+                            }}</span>
+                    </td>
+                    <td class="col-aportation">
+                        <span *ngIf="prescription.products.length > 1">{{ prescription.totalAportation | defaultText: ''
+                            }} €</span>
+                        <sacyl-product-aportation *ngIf="prescription.products.length === 1"
+                            [pharmacyIndicator]="patient.pharmacyIndicator?.code" [disability]="patient.disability"
+                            [prescriptionType]="prescription.type" [product]="prescription.products[0]">
+                        </sacyl-product-aportation>
+                    </td>
+                    <td class="col-revision">
+                        <sacyl-revision-icon [revision]="prescription.revision"></sacyl-revision-icon>
+                    </td>
+                    <td class="col-approval">
+                        <sacyl-approval-icon [approval]="prescription.approval" [actions]="prescription.actions">
+                        </sacyl-approval-icon>
+                    </td>
+                    <td class="col-block">
+                        <sacyl-block-icon [actions]="prescription.actions"></sacyl-block-icon>
+                    </td>
+                    <td class="col-yes-no">
+                        <sacyl-application-row-selector [consider]="prescription.consider"
+                            (valueChange)="prescription.consider=$event;">
+                        </sacyl-application-row-selector>
+                    </td>
+                    <td class="col-options">
+                        <sacyl-actions-menu-button [state]="prescription.status.code"
+                            [center]="prescription.dispensingCenter" [products]="prescription.products"
+                            (menuAction)="menuAction($event, prescription)">
+                        </sacyl-actions-menu-button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-prescription>
+                <tr>
+                    <td colspan="12" style="padding: 0rem;">
+                        <p-table class="table-products" [value]="prescription.products" dataKey="code"
+                            styleClass="p-0 mb-1">
+                            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td class="col-expand">
+                        <sacyl-product-observation-icon [product]="product"></sacyl-product-observation-icon>
+                    </td>
+                    <td class="flex-grow-1 col-description ">
+                        <sacyl-product-description [product]="product"></sacyl-product-description>
+                    </td>
+                    <td class="col-laterality">
+                        <sacyl-laterality [laterality]="product.laterality"></sacyl-laterality>
+                    </td>
+                    <td class="col-units">
+                        <sacyl-units-input [units]="product.units" [state]="prescription.status.code" [disable]="true">
+                        </sacyl-units-input>
+                    </td>
+                    <td class="col-pvp">
+                        <sacyl-pvp-input [product]="product" [disability]="patient.disability"
+                            [state]="prescription.status.code" [disable]="true">
+                        </sacyl-pvp-input>
+                    </td>
+                    <td class="col-aportation">
+                        <sacyl-product-aportation [pharmacyIndicator]="patient.pharmacyIndicator?.code"
+                            [disability]="patient.disability" [prescriptionType]="prescription.type"
+                            [product]="product">
+                        </sacyl-product-aportation>
+                    </td>
+                    <td class="col-revision">
+                        <span class="w-full"></span>
+                    </td>
+                    <td class="col-approval">
+                        <span class="w-full"></span>
+                    </td>
+                    <td class="col-block">
+                        <span class="w-full"></span>
+                    </td>
+                    <td class="col-yes-no">
+                        <span class="w-full"></span>
+                    </td>
+                    <td class="col-options">
+                        <span class="w-full"></span>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        </td>
+        </tr>
+        </ng-template>
+        </p-table>
+        <p-table *ngIf="reserves.length > 0" [value]="reserves" dataKey="id" (onRowExpand)="showProducts($event)"
+            (onRowCollapse)="showProducts($event)" [expandedRowKeys]="expandedRowKeys">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="col-expand"></th>
+                    <th class="flex-grow-1 col-description">{{ 'table.reserves' | translate }}</th>
+                    <th class="col-laterality"></th>
+                    <th class="col-units">{{ 'table.units' | translate }}</th>
+                    <th class="col-revision"></th>
+                    <th class="col-approval"></th>
+                    <th class="col-block"></th>
+                    <th class="col-yes-no"></th>
+                    <th class="col-options"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-prescription>
+                <tr [ngClass]="{'row-expanded': prescription.expanded}">
+                    <td class="col-expand">
+                        <sacyl-prescription-observation-icons [prescription]="prescription">
+                        </sacyl-prescription-observation-icons>
+                    </td>
+                    <td class="flex-grow-1 col-description">
+                        <sacyl-prescription-description [prescription]="prescription"></sacyl-prescription-description>
+                    </td>
+                    <td class="col-laterality">
+                        <sacyl-laterality *ngIf="prescription.products.length === 1"
+                            [laterality]="prescription.products[0].laterality"></sacyl-laterality>
+                    </td>
+                    <td class="col-units">
+                        <sacyl-units-input *ngIf="prescription.products.length === 1"
+                            [units]="prescription.products[0].units" [state]="prescription.status.code"
+                            [disable]="true">
+                        </sacyl-units-input>
+                    </td>
+                    <td class="col-revision">
+                        <sacyl-revision-icon [revision]="prescription.revision"></sacyl-revision-icon>
+                    </td>
+                    <td class="col-approval">
+                        <sacyl-approval-icon [approval]="prescription.approval" [actions]="prescription.actions">
+                        </sacyl-approval-icon>
+                    </td>
+                    <td class="col-block">
+                        <sacyl-block-icon [actions]="prescription.actions"></sacyl-block-icon>
+                    </td>
+                    <td class="col-yes-no">
+                        <sacyl-application-row-selector [consider]="prescription.consider"
+                            (valueChange)="prescription.consider=$event;">
+                        </sacyl-application-row-selector>
+                    </td>
+                    <td class="col-options">
+                        <sacyl-actions-menu-button [state]="prescription.status.code"
+                            [center]="prescription.dispensingCenter" [products]="prescription.products"
+                            (menuAction)="menuAction($event, prescription)">
+                        </sacyl-actions-menu-button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-prescription>
+                <tr>
+                    <td colspan="12" style="padding: 0rem;">
+                        <p-table class="table-products" [value]="prescription.products" dataKey="code"
+                            styleClass="p-0 mb-1">
+                            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td class="col-expand">
+                        <sacyl-product-observation-icon [product]="product"></sacyl-product-observation-icon>
+                    </td>
+                    <td class="flex-grow-1 col-description ">
+                        <sacyl-product-description [product]="product"></sacyl-product-description>
+                    </td>
+                    <td class="col-laterality">
+                        <sacyl-laterality [laterality]="product.laterality"></sacyl-laterality>
+                    </td>
+                    <td class="col-units">
+                        <sacyl-units-input [units]="product.units" [state]="prescription.status.code" [disable]="true">
+                        </sacyl-units-input>
+                    </td>
+                    <td class="col-revision">
+                        <span class="w-full"></span>
+                    </td>
+                    <td class="col-approval">
+                        <span class="w-full"></span>
+                    </td>
+                    <td class="col-block">
+                        <span class="w-full"></span>
+                    </td>
+                    <td class="col-yes-no">
+                        <span class="w-full"></span>
+                    </td>
+                    <td class="col-options">
+                        <span class="w-full"></span>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        </td>
+        </tr>
+        </ng-template>
+        </p-table>
+        <p-table *ngIf="blocks.length > 0" [value]="blocks" dataKey="id" (onRowExpand)="showProducts($event)"
+            (onRowCollapse)="showProducts($event)" [expandedRowKeys]="expandedRowKeys">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="col-expand"></th>
+                    <th class="flex-grow-1 col-description">{{ 'table.precautionary_blockade' | translate }}</th>
+                    <th class="col-laterality"></th>
+                    <th class="col-units">{{ 'table.units' | translate }}</th>
+                    <th class="col-revision"></th>
+                    <th class="col-approval"></th>
+                    <th class="col-block"></th>
+                    <th class="col-yes-no"></th>
+                    <th class="col-options"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-prescription>
+                <tr [ngClass]="{'row-expanded': prescription.expanded}">
+                    <td class="col-expand">
+                        <sacyl-prescription-observation-icons [prescription]="prescription">
+                        </sacyl-prescription-observation-icons>
+                    </td>
+                    <td class="flex-grow-1 col-description">
+                        <sacyl-prescription-description [prescription]="prescription"></sacyl-prescription-description>
+                    </td>
+                    <td class="col-laterality">
+                        <sacyl-laterality *ngIf="prescription.products.length === 1"
+                            [laterality]="prescription.products[0].laterality"></sacyl-laterality>
+                    </td>
+                    <td class="col-units">
+                        <sacyl-units-input *ngIf="prescription.products.length === 1"
+                            [units]="prescription.products[0].units" [state]="prescription.status.code"
+                            [disable]="true">
+                        </sacyl-units-input>
+                    </td>
+                    <td class="col-revision">
+                        <sacyl-revision-icon [revision]="prescription.revision"></sacyl-revision-icon>
+                    </td>
+                    <td class="col-approval">
+                        <sacyl-approval-icon [approval]="prescription.approval" [actions]="prescription.actions">
+                        </sacyl-approval-icon>
+                    </td>
+                    <td class="col-block">
+                        <sacyl-block-icon [actions]="prescription.actions"></sacyl-block-icon>
+                    </td>
+                    <td class="col-yes-no">
+                        <sacyl-application-row-selector [consider]="prescription.consider"
+                            (valueChange)="prescription.consider=$event;">
+                        </sacyl-application-row-selector>
+                    </td>
+                    <td class="col-options">
+                        <sacyl-actions-menu-button [state]="prescription.status.code"
+                            [center]="prescription.dispensingCenter" [products]="prescription.products"
+                            (menuAction)="menuAction($event, prescription)">
+                        </sacyl-actions-menu-button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-prescription>
+                <tr>
+                    <td colspan="12" style="padding: 0rem;">
+                        <p-table class="table-products" [value]="prescription.products" dataKey="code"
+                            styleClass="p-0 mb-1">
+                            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td class="col-expand">
+                        <sacyl-product-observation-icon [product]="product"></sacyl-product-observation-icon>
+                    </td>
+                    <td class="flex-grow-1 col-description ">
+                        <sacyl-product-description [product]="product"></sacyl-product-description>
+                    </td>
+                    <td class="col-laterality">
+                        <sacyl-laterality [laterality]="product.laterality"></sacyl-laterality>
+                    </td>
+                    <td class="col-units">
+                        <sacyl-units-input [units]="product.units" [state]="prescription.status.code" [disable]="true">
+                        </sacyl-units-input>
+                    </td>
+                    <td class="col-pvp">
+                        <sacyl-pvp-input [product]="product" [disability]="patient.disability"
+                            [state]="prescription.status.code" [disable]="true">
+                        </sacyl-pvp-input>
+                    </td>
+                    <td class="col-aportation">
+                        <sacyl-product-aportation [product]="product"></sacyl-product-aportation>
+                    </td>
+                    <td class="col-revision">
+                        <span class="w-full"></span>
+                    </td>
+                    <td class="col-approval">
+                        <span class="w-full"></span>
+                    </td>
+                    <td class="col-block">
+                        <span class="w-full"></span>
+                    </td>
+                    <td class="col-yes-no">
+                        <span class="w-full"></span>
+                    </td>
+                    <td class="col-options">
+                        <span class="w-full"></span>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        </td>
+        </tr>
+        </ng-template>
+        </p-table>
+    </div>
+    <sacyl-confirm-modal #modifyModal title="modal.confirm.modification.title"
+        context="modal.confirm.modification.context" (confirm)="revert()">
+    </sacyl-confirm-modal>
+    <div *ngIf="prescriptions.length > 0" class="flex p-4 justify-content-end align-items-center">
+        <button pButton type="button" (click)="modifyModal.show()">
+            {{ 'button.modify' | translate }}
+        </button>
+    </div>
+    <sacyl-no-results *ngIf="prescriptions.length <= 0"></sacyl-no-results>
+</div>

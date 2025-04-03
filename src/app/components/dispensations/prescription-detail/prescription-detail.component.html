@@ -1,0 +1,23 @@
+<div class="flex flex-column h-full">
+    <p-sidebar 
+        [visible]="version" 
+        (onHide)="closeVersion()" 
+        position="right">
+        <sacyl-prescription-lateral-details 
+            *ngIf="prescriptionVersion"
+            [prescription]="prescriptionVersion"
+            [history]="prescriptionVersions"
+            (versionChange)="fetchVersion($event)">
+        </sacyl-prescription-lateral-details>
+    </p-sidebar>
+    <sacyl-prescription-info 
+        class="overflow-auto" 
+        [prescription]="lastVersion || prescription"
+        [history]="prescriptionVersions"
+        (versionChange)="fetchVersion($event)">
+    </sacyl-prescription-info>
+    <button pButton type="button" class="w-max m-3" (click)="close.emit()">
+        {{ 'details.button.go_back' | translate }}
+    </button>
+</div>
+

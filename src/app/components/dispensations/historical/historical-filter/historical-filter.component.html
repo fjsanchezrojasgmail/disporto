@@ -1,0 +1,32 @@
+<div class="flex">
+    <div class="flex flex-column p-2">
+        <label for="startYear">{{ 'filter.historic.startYear' | translate }}</label>
+        <p-inputNumber inputId="startYear" [useGrouping]="false" (onBlur)="onChangeStartYear()"
+            [(ngModel)]="filter.startYear">
+        </p-inputNumber>
+    </div>
+    <div class="flex flex-column p-2">
+        <label for="endYear">{{ 'filter.historic.endYear' | translate }}</label>
+        <p-inputNumber inputId="endYear" [useGrouping]="false" (onBlur)="onChangeEndYear()"
+            [(ngModel)]="filter.endYear">
+        </p-inputNumber>
+    </div>
+    <div class="flex flex-column p-2">
+        <label>{{ 'filter.historic.status' | translate }}</label>
+        <p-dropdown [options]="options" [(ngModel)]="filter.state" [showClear]="true" placeholder="---" dataKey="code"
+            optionLabel="display">
+        </p-dropdown>
+    </div>
+    <div class="flex flex-column p-2">
+        <label>{{ 'filter.historic.prescription_date' | translate }}</label>
+        <p-calendar [(ngModel)]="filter.prescriptionDate" dateFormat="dd/mm/yy">
+        </p-calendar>
+    </div>
+    <div class="flex flex-column p-2">
+        <label>{{ 'filter.historic.dispense_date' | translate }}</label>
+        <p-calendar [(ngModel)]="filter.dispensationDate" dateFormat="dd/mm/yy">
+        </p-calendar>
+    </div>
+    <button pButton pRipple type="button" icon="pi pi-search" (click)="updateFilter()"
+        class="p-button-rounded p-button-secondary p-button-outlined align-self-end mb-2 color-blue"></button>
+</div>
