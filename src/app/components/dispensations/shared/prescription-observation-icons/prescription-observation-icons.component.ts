@@ -5,12 +5,15 @@ import { CommonModule } from '@angular/common';
 import { DefaultTextPipe } from '../../../../pipes/default-text.pipe';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
+import { ProductObservationIconComponent } from '../product-observation-icon/product-observation-icon.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Tooltip } from 'primeng/tooltip';
 
 
 @Component({
   selector: 'sacyl-prescription-observation-icons',
   standalone: true,
-    imports: [CommonModule,ButtonModule,TableModule],
+    imports: [CommonModule,ButtonModule,TableModule,ProductObservationIconComponent,FontAwesomeModule,Tooltip],
   templateUrl: './prescription-observation-icons.component.html',
   styleUrls: ['./prescription-observation-icons.component.css']
 })

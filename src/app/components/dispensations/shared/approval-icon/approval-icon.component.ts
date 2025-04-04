@@ -1,18 +1,19 @@
 import { Component, Input } from '@angular/core';
-import { faFileCircleCheck } from '@fortawesome/fontawesome-free/faFileCircleCheck';
-import { faFileCircleMinus } from '@fortawesome/fontawesome-free/faFileCircleMinus';
-import { faFileCircleQuestion } from '@fortawesome/fontawesome-free/faFileCircleQuestion';
+import { faFileCircleCheck } from '@fortawesome/free-solid-svg-icons/faFileCircleCheck';
+import { faFileCircleMinus } from '@fortawesome/free-solid-svg-icons/faFileCircleMinus';
+import { faFileCircleQuestion } from '@fortawesome/free-solid-svg-icons/faFileCircleQuestion';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ApprovalCodes } from '../../../../bean/constants';
 import { ApprovalRequired, PrescriptionAction } from '../../../../bean/models/prescription';
 import { CommonModule } from '@angular/common';
 import { Tooltip } from 'primeng/tooltip';
-import { IconField } from 'primeng/iconfield';
+import { IconFieldModule } from 'primeng/iconfield';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'sacyl-approval-icon',
   standalone: true,
-  imports: [CommonModule,TranslateModule,Tooltip],
+  imports: [CommonModule,TranslateModule,Tooltip,IconFieldModule,FontAwesomeModule],
   templateUrl: './approval-icon.component.html',
   styleUrls: ['./approval-icon.component.css']
 })

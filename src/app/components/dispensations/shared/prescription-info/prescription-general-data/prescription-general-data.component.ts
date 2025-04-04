@@ -1,6 +1,6 @@
 
 import { Component, Input, OnInit } from '@angular/core';
-import { faFileLines } from '@fortawesome/fontawesome-free/faFileLines';
+import { faFileLines } from '@fortawesome/free-solid-svg-icons/faFileLines';
 import { Prescription } from '../../../../../bean/models/prescription';
 import { CustodiaService } from '../../../../../services/helpers/custodia/custodia.service';
 import { CardModule } from 'primeng/card';

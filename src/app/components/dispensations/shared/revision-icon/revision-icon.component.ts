@@ -1,19 +1,20 @@
 
 
 import { Component, Input } from '@angular/core';
-import { faUserCheck } from '@fortawesome/fontawesome-free/faUserCheck';
-import { faUserClock } from '@fortawesome/fontawesome-free/faUserClock';
-import { faUserXmark } from '@fortawesome/fontawesome-free/faUserXmark';
+import { faUserCheck } from '@fortawesome/free-solid-svg-icons/faUserCheck';
+import { faUserClock } from '@fortawesome/free-solid-svg-icons/faUserClock';
+import { faUserXmark } from '@fortawesome/free-solid-svg-icons/faUserXmark';
 import { TranslateService } from '@ngx-translate/core';
 import { RevisionCodes } from '../../../../bean/constants';
 import { RevisionRequired } from '../../../../bean/models/prescription';
 import { CommonModule } from '@angular/common';
 import { Tooltip } from 'primeng/tooltip';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'sacyl-revision-icon',
   standalone: true,
-  imports: [CommonModule,Tooltip],
+  imports: [CommonModule,Tooltip,FontAwesomeModule],
   templateUrl: './revision-icon.component.html',
   styleUrls: ['./revision-icon.component.css']
 })

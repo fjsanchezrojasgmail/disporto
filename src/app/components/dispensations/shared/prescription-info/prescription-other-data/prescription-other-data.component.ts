@@ -1,6 +1,6 @@
 
-import { faHospital } from '@fortawesome/fontawesome-free/faHospital';
-import { faCalendarCheck } from '@fortawesome/fontawesome-free/faCalendarCheck';
+import { faHospital } from '@fortawesome/free-solid-svg-icons/faHospital';
+import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons/faCalendarCheck';
 import { Card } from 'primeng/card';
 import { Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';

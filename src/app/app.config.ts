@@ -21,6 +21,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { providePrimeNG } from 'primeng/config';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import Lara from '@primeng/themes/lara';
 
 
@@ -37,6 +38,7 @@ export function initializeKeycloak(keycloakService: KeycloakService) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    importProvidersFrom(FontAwesomeModule),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     importProvidersFrom(

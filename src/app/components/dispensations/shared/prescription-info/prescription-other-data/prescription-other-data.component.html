@@ -10,7 +10,7 @@
                 [pTooltip]="tooltip">R</span>
         </div>
         <sacyl-prescription-labeled-element
-            [awsomeIcon]="calendarIcon"
+            [awesomeIcon]="calendarIcon"
             label="details.other.date">
             {{ prescription.prescriptionDate | date: 'dd/MM/yyyy hh:mm' }}
         </sacyl-prescription-labeled-element>
@@ -30,7 +30,7 @@
             [text]="prescription.service?.display">
         </sacyl-prescription-labeled-element>
         <sacyl-prescription-labeled-element
-            [awsomeIcon]="hospitalIcon"
+            [awesomeIcon]="hospitalIcon"
             label="details.other.center"
             [text]="prescription.prescribingCenter?.display">
         </sacyl-prescription-labeled-element>

@@ -10,12 +10,13 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { DefaultTextPipe } from '../../../../pipes/default-text.pipe';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'sacyl-block-modal',
   standalone: true,
-  imports: [ButtonModule,DialogModule,DropdownModule,FormsModule,TranslateModule,DefaultTextPipe],
+  imports: [CommonModule,ButtonModule,DialogModule,DropdownModule,FormsModule,TranslateModule,DefaultTextPipe],
   templateUrl: './block-modal.component.html',
   styleUrls: ['./block-modal.component.css']
 })

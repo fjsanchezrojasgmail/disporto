@@ -1,6 +1,9 @@
 <div class="flex align-items-center">
     <i *ngIf="primeIcon" [class]="'pi '+primeIcon"></i>
-    <fa-icon *ngIf="awsomeIcon" [icon]="awsomeIcon"></fa-icon>
+    <fa-icon 
+      *ngIf="awesomeIcon" 
+      [icon]="awesomeIcon"
+    ></fa-icon>
     <span class="color-light-blue p-1">{{ label | translate }}:</span>
     <span *ngIf="text" class="p-1">{{ text }}</span>
     <div *ngIf="!text" class="p-1">

@@ -20,7 +20,7 @@ type VersioRow = {
 })
 export class PrescriptionVersionListComponent {
 
-  @Input() prescription!: PrescriptionVersioned;
+  @Input() prescription?: PrescriptionVersioned;
 
   @Input() history!: PrescriptionVersioned[];
 

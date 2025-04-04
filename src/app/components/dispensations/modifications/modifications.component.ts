@@ -5,11 +5,49 @@ import { SimplePatient } from '../../../bean/models/patient';
 import { Prescription, PrescriptionRow } from '../../../bean/models/prescription';
 import { ModificationsService } from '../../../services/dedicated/prescription/modifications.service';
 import { ConfirmModalComponent } from '../shared/confirm-modal/confirm-modal.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { TableModule, TableRowExpandEvent } from 'primeng/table';
+import { CommonModule } from '@angular/common';
+import { PrescriptionObservationIconsComponent } from '../shared/prescription-observation-icons/prescription-observation-icons.component';
+import { PrescriptionDescriptionComponent } from '../shared/prescription-description/prescription-description.component';
+import { LateralityComponent } from '../shared/laterality/laterality.component';
+import { UnitsInputComponent } from '../shared/units-input/units-input.component';
+import { PvpInputComponent } from '../shared/pvp-input/pvp-input.component';
+import { ProductAportationComponent } from '../shared/product-aportation/product-aportation.component';
+import { RevisionIconComponent } from '../shared/revision-icon/revision-icon.component';
+import { ApprovalIconComponent } from '../shared/approval-icon/approval-icon.component';
+import { BlockIconComponent } from '../shared/block-icon/block-icon.component';
+import { ActionsMenuButtonComponent } from '../shared/actions-menu-button/actions-menu-button.component';
+import { ProductObservationIconComponent } from '../shared/product-observation-icon/product-observation-icon.component';
+import { ProductDescriptionComponent } from '../shared/product-description/product-description.component';
+import { NoResultsComponent } from '../../shared/no-results/no-results.component';
+import { ApplicationRowSelectorComponent } from '../shared/application-row-selector/application-row-selector.component';
+import { DefaultTextPipe } from '../../../pipes/default-text.pipe';
 
 @Component({
   selector: 'sacyl-modifications',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    TableModule,
+    PrescriptionObservationIconsComponent,
+    PrescriptionDescriptionComponent,
+    LateralityComponent,
+    UnitsInputComponent,
+    PvpInputComponent,
+    ProductAportationComponent,
+    RevisionIconComponent,
+    ApprovalIconComponent,
+    BlockIconComponent,
+    ActionsMenuButtonComponent,
+    ProductObservationIconComponent,
+    ProductDescriptionComponent,
+    ConfirmModalComponent,
+    NoResultsComponent,
+    ApplicationRowSelectorComponent,
+    DefaultTextPipe
+  ],
   templateUrl: './modifications.component.html',
   styleUrls: ['../modifications/modifications.component.css', '../dispensable-products/dispensable-products.component.css']
 })
@@ -59,7 +97,7 @@ export class ModificationsComponent {
     });
   }
 
-  showProducts($event: Event & { data: PrescriptionRow }) {
+  showProducts($event: TableRowExpandEvent & { data: PrescriptionRow }) {
     this.modificationService.expandProducts($event.data.id);
   }
 
