@@ -1,0 +1,5 @@
+/* Sobrescritos estilos del dialog para que el dropdown sea visible por encima la caja */
+:host ::ng-deep .p-dialog-content {
+    overflow-y: visible;
+    flex-grow: 1;
+}

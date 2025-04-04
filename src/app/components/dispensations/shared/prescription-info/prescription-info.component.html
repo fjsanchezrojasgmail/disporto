@@ -1,0 +1,24 @@
+<p-accordion [multiple]="true">
+    <p-accordionTab [header]="generalHeader" [selected]="true" [transitionOptions]="transitionOptions">
+        <sacyl-prescription-general-data [prescription]="prescription"></sacyl-prescription-general-data>
+    </p-accordionTab>
+    <p-accordionTab [header]="otherHeader" [selected]="false" [transitionOptions]="transitionOptions">
+        <sacyl-prescription-other-data [prescription]="prescription"></sacyl-prescription-other-data>
+    </p-accordionTab>
+    <p-accordionTab [header]="productsHeader" [selected]="false" [transitionOptions]="transitionOptions">
+        <sacyl-prescription-product-list [prescription]="prescription"></sacyl-prescription-product-list>
+    </p-accordionTab>
+    <p-accordionTab [header]="observationsHeader" [selected]="false" [transitionOptions]="transitionOptions">
+        <span>{{ prescription.observation | defaultText: 'No hay (t es.json)'}}</span>
+    </p-accordionTab>
+    <p-accordionTab [header]="usesHeader" [selected]="false" [transitionOptions]="transitionOptions">
+        <ng-container></ng-container>
+    </p-accordionTab>
+    <p-accordionTab [header]="versionsHeader" [selected]="false" [transitionOptions]="transitionOptions">
+        <sacyl-prescription-version-list 
+            [prescription]="prescription"
+            [history]="history"
+            (versionChange)="versionChange.emit($event)">
+        </sacyl-prescription-version-list>
+    </p-accordionTab>
+</p-accordion>

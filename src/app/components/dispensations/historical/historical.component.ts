@@ -1,23 +1,44 @@
+
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MaxPageSize, PrescriptionActions } from '../../../bean/constants';
 import { SimplePatient } from '../../../bean/models/patient';
 import { Prescription, PrescriptionRow } from '../../../bean/models/prescription';
 import { HistoricFilter } from '../../../bean/simple.types';
+import { HistoricalFilterComponent } from '../historical/historical-filter/historical-filter.component'
 import { HistoricalService } from '../../../services/dedicated/prescription/historical.service';
 import { ComunicationModalComponent } from '../shared/comunication-modal/comunication-modal.component';
-import { FindComunicationCriteria } from 'src/app/bean/models/findComunication-criteria';
-import { ComunicationsRS } from 'src/app/bean/models/comunications.bean';
-import { ComunicationMessageRS } from 'src/app/bean/models/comunication-message.bean';
-import { ComunicationDAOService } from 'src/app/services/dao/comunication-dao.service';
+import { FindComunicationCriteria } from '../../../bean/models/findComunication-criteria';
+import { ComunicationsRS } from '../../../bean/models/comunications.bean';
+import { ComunicationMessageRS } from '../../../bean/models/comunication-message.bean';
+import { ComunicationDAOService } from '../../../services/dao/comunication-dao.service';
 import { tap, filter } from 'rxjs/operators';
 import { ProfesionalAdm } from '../../../bean/models/profesional';
 import { ProfesionalService } from '../../../services/helpers/profesional/profesional.service';
+import { TableModule } from 'primeng/table';
+import { PaginatorModule } from 'primeng/paginator';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { NoResultsComponent } from '../../shared/no-results/no-results.component';
+import { ProductAportationComponent } from '../shared/product-aportation/product-aportation.component'
+import { PvpInputComponent } from '../shared/pvp-input/pvp-input.component';
+import { UnitsInputComponent } from '../shared/units-input/units-input.component';
 
 @Component({
   selector: 'sacyl-historical',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    TableModule,
+    PaginatorModule,
+    TranslateModule,
+    NoResultsComponent,
+    ComunicationModalComponent,
+    HistoricalFilterComponent,
+    ProductAportationComponent,
+    PvpInputComponent,
+    UnitsInputComponent,
+  ],
   templateUrl: './historical.component.html',
   styleUrls: ['./historical.component.css', '../dispensable-products/dispensable-products.component.css'],
   providers: [HistoricalService]

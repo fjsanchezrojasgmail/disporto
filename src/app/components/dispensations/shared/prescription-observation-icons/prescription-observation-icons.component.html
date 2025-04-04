@@ -1,0 +1,22 @@
+<div class="flex flex-column">
+    <fa-icon *ngIf="prescription.observation"
+        [icon]="['far', 'file']"
+        [pTooltip]="tooltip"
+        [escape]="false"
+        tooltipStyleClass="max-w-25rem"
+        tooltipPosition="bottom"
+        class="mb-2 color-pending">
+    </fa-icon>
+    <sacyl-product-observation-icon 
+        *ngIf="prescription.products.length === 1" 
+        [product]="prescription.products[0]">
+    </sacyl-product-observation-icon>
+    <button 
+        *ngIf="prescription.products.length > 1"
+        class="p-button-text p-button-rounded reduced-button"
+        pButton pRipple
+        [pRowToggler]="prescription"
+        [icon]="(prescription.expanded)? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+        type="button">
+    </button>
+</div>

@@ -1,0 +1,156 @@
+<p-dialog 
+    [header]="title | translate" 
+    [(visible)]="display" 
+    [modal]="true"
+    [draggable]="false" 
+    [resizable]="true">
+
+
+    <!--Pantalla de comunicaciones-->
+   <div id="mensajes_cargados" style="margin-bottom: 20px ;
+   background-color:#e9e9e9; border-color: black; border-width: medium;
+   padding: 20px;">
+
+
+ <!--Listado de comunicaciones si el localLstResultComunication tiene mensajes-->
+ <div *ngIf="this.localLstResultComunicationView != undefined">
+
+    <!--recorre el array de comunicaciones-->
+  <div *ngFor="let comunication of this.localLstResultComunicationView">
+
+<!--si la comunicacion pertenece es relativa al cipa y al producto-->
+   <div *ngIf="comunication.cipa === this.actual_patient.cipa && comunication.requestgroupID === this.actual_requestGroup">
+
+
+<!--si la comunicacion es relativa al cipa y ha sido escrita por dispensacion-->
+<div class="div_comunicacion_mensaje" *ngIf="comunication.userID == actual_profesional_user_id"> 
+    
+
+    <textarea 
+    style = "width: 450px; background-color: #33A8ff; font-family: system-ui; color: white;
+    border-radius: 10px; padding: 10px;"
+    id="mensaje1" name="mensaje1" rows="4" cols="40" disabled>
+    {{comunication.date | date:'dd/MM/yyyy HH:mm:ss'}} - {{comunication.centerDesc}} - {{comunication.userDesc}}: 
+    {{comunication.textMessage}}
+    </textarea>
+
+    <img src="assets/images/avatars/girl.svg"/>
+
+       <!--metodo que carga el estado del check-->
+
+       <div *ngIf="comunication.read === 'S'"><input type="checkbox" id="messageRead" name="messageRead" [checked]="" checked disabled>
+
+          <img height="15px" width="15px" src="assets/images/avatars/info.png" (mouseover) = "openDialogReadMessage(comunication)" (mouseout)="closeDialogReadMessage()">
+        
+        </div>
+   
+        <div *ngIf="comunication.read === 'N'"><input type="checkbox" id="messageRead" name="messageRead" [checked]="" disabled></div>
+
+
+</div>
+
+<!--si la comunicacion es relativa al cipa y ha sido escrita por dispensacion-->
+<div class="div_comunicacion_mensaje" *ngIf="comunication.userID != actual_profesional_user_id && comunication.userID != actual_prescriptor_dni"> 
+    
+
+  <textarea 
+  style = "width: 450px; background-color: #33A8ff; font-family: system-ui; color: white;
+  border-radius: 10px; padding: 10px;"
+  id="mensaje1" name="mensaje1" rows="4" cols="40" disabled>
+  {{comunication.date | date:'dd/MM/yyyy HH:mm:ss'}} - {{comunication.centerDesc}} - {{comunication.userDesc}}: 
+  {{comunication.textMessage}}
+  </textarea>
+
+  <img src="assets/images/avatars/undefined.svg"/>
+
+     <!--metodo que carga el estado del check-->
+
+     <div *ngIf="comunication.read === 'S'"><input type="checkbox" id="messageRead" name="messageRead" [checked]="" checked disabled>
+
+        <img height="15px" width="15px" src="assets/images/avatars/info.png" (mouseover) = "openDialogReadMessage(comunication)" (mouseout)="closeDialogReadMessage()">
+      
+      </div>
+ 
+      <div *ngIf="comunication.read === 'N'"><input type="checkbox" id="messageRead" name="messageRead" [checked]="" disabled></div>
+
+
+</div>
+
+
+
+
+<!--si la comunicacion es relativa al cipa y ha sido escrita por prescripcion-->
+<div class="div_comunicacion_mensaje" 
+*ngIf="comunication.userID == actual_prescriptor_dni">
+
+    <img src="assets/images/avatars/medico-especialista.svg"/>
+
+    <textarea 
+    style ="width: 450px; background-color: #33Aa; font-family: system-ui; color: white;
+    border-radius: 10px; padding: 10px;" id="userMessage" name="userMessage" rows="4" cols="40" disabled>
+     {{comunication.date | date:'dd/MM/yyyy HH:mm:ss'}} - {{comunication.centerDesc}} - {{comunication.userDesc}}: 
+     {{comunication.textMessage}}
+    </textarea>
+
+
+</div><!--fin de si la comunicacion pertenece es relativa al cipa y ha sido escrita por prescripcion-->
+</div><!--fin de si la comunicacion pertenece es relativa al cipa y al producto-->
+</div><!--fin de recorre el array de comunicaciones-->
+</div><!--fin de Listado de comunicaciones si el localLstResultComunication tiene mensajes-->
+
+
+
+
+
+<!--si el localLstResultComunication no tiene mensajes y no hay nada para mostrar-->
+<div class="div_comunicacion_mensaje" 
+    *ngIf="this.localLstResultComunicationView == undefined ||  
+    this.localLstResultComunicationView.length == 0 || this.existComunicationInBBDD == false">
+
+    <textarea
+    style = "width: 450px; background-color: #ffffff;font-family: system-ui; color: rgb(0, 0, 0);
+    border-radius: 10px;"
+    id="mensaje1" name="mensaje1" rows="2" cols="40">
+    No hay datos, ¿Desea iniciar comunicacion?.
+    </textarea>
+  
+  </div><!--fin de si el localLstResultComunication no tiene mensajes-->
+
+
+
+
+</div><!--fin de Pantalla de comunicaciones-->
+
+
+<div style="display:flex; flex-flow: column;">
+   
+    <label for="useridLogged" style="margin-bottom: 5px;">Nuevo Mensaje de {{actual_profesional_user_name}} :</label>
+
+    
+      <input type="text" #useridLogged pInputText [(ngModel)]="texto_nuevoMensaje" class="p-inputtext-lg" [disabled]="this.desactiveCommunicationMessages"/>
+  
+	  
+	  
+   </div>
+
+
+    <ng-template pTemplate="footer">
+
+      <div style="margin-top: 10px;">
+        <div class="flex justify-content-end">
+
+            <p-button (click)="confirm()">{{ 'button.send' | translate }}</p-button>
+            <p-button (click)="display = false">{{ 'button.cancel' | translate }}</p-button>
+           
+        </div>
+      </div>
+    </ng-template>
+
+      <!-- dialogo de visualizacion de quien ha leido los mensajes  -->
+  <p-dialog #dialogIfReadComunicationPrescriptionInList header ="Leído por: " [(visible)]="read_visible"
+    [style]="{width: '50vw'}">
+    <div><p>{{mensaje_leido}}</p></div>
+  </p-dialog>
+
+
+</p-dialog>

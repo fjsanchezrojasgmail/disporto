@@ -1,0 +1,38 @@
+/*************************************************************************************/
+/*************      clases relacionadas con el modulo comunicacion       *************/
+/*************************************************************************************/
+
+.div_comunicacion_mensaje{
+
+    display: flex; 
+    flex-flow:row; 
+    margin-bottom: 5px;
+    font-size: medium;
+
+}
+
+.div_comunicacion_mensaje img {
+
+    max-width: 60px; 
+    max-height: 60px; 
+    margin: auto;
+}
+
+
+p-dialog .div_comunicacion_mensaje .textarea_comunicacion_mensaje1{
+
+    
+    background-color: #33A8ff;
+    color: white;
+    border-radius: 10px;
+
+}
+
+p-dialog .div_comunicacion_mensaje .textarea_comunicacion_mensaje2{
+
+    
+    background-color: #33Aa;
+    color: white;
+    border-radius: 10px;
+
+}

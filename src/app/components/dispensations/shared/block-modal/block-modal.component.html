@@ -1,0 +1,21 @@
+<p-dialog 
+    [header]="'modal.block.header' | translate" 
+    [(visible)]="display" 
+    [modal]="true"
+    [draggable]="false" 
+    [resizable]="false">
+    
+    <div class="flex flex-column p-2">
+        <span class="py-2">{{ prescription?.description | defaultText: '' }}</span>
+        <p-dropdown [options]="motives" [(ngModel)]="motive" [placeholder]="placeholder" optionLabel="description" [showClear]="true"></p-dropdown>
+        <div class="py-2">
+            <label>{{ 'modal.block.label.observation' | translate }}</label>
+            <label *ngIf="motive?.remarks === fhirValues.YES" class="py-2"> ({{ 'modal.block.error.observation' | translate }})</label>
+        </div>
+        <textarea [(ngModel)]="observation" rows="5" cols="60" pInputTextarea autoResize="autoResize"></textarea>
+    </div>
+    
+    <ng-template pTemplate="footer">
+        <p-button (click)="block()">{{ 'button.accept' | translate }}</p-button>
+    </ng-template>
+</p-dialog>

@@ -1,0 +1,11 @@
+:host ::ng-deep .p-menu-overlay {
+    position: fixed;
+    display: block !important;
+}
+
+
+:host ::ng-deep .p-badge {
+    min-width: 0.5rem;
+    height: 0.5rem;
+    line-height: 1rem;
+}

@@ -1,0 +1,13 @@
+<div class="flex flex-column">
+    <span  
+        [pTooltip]="tooltip"
+        [escape]="false"
+        tooltipStyleClass="max-w-25rem"
+        tooltipPosition="bottom">
+        {{ prescription.description }}
+    </span>
+    <sacyl-product-description 
+        *ngIf="prescription.products.length === 1" 
+        [product]="prescription.products[0]">
+    </sacyl-product-description>
+</div>

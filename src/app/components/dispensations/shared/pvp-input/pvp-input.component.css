@@ -1,0 +1,9 @@
+.error {
+    border: 2px solid #f23 !important;
+    border-radius: 8px !important;
+}
+
+:host ::ng-deep .p-inputnumber-input {
+    width: 100%;
+    flex: 1 1 auto;
+}

@@ -1,0 +1,9 @@
+<div class="flex align-items-center">
+    <p-inputNumber class="w-full" [pTooltip]="'tooltip.pvp.error' | translate" [tooltipDisabled]="!error"
+        [ngClass]="{'error' : error}" [disabled]="disabledInput || disable" (ngModelChange)="change($event)"
+        [ngModel]="product.pvp.value" mode="decimal" [useGrouping]="false" [min]="0" [minFractionDigits]="2"
+        [maxFractionDigits]="5">
+    </p-inputNumber>
+    <i class="pi pi-info-circle ml-2" [pTooltip]="tooltipInfoPvp">
+    </i>
+</div>

@@ -1,0 +1,4 @@
+/* Elimina el padding que tiene por defecto el content de la tarjeta de primeng */
+:host ::ng-deep .p-card .p-card-content {
+    padding: 0;
+}

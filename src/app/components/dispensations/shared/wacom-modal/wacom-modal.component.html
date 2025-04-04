@@ -1,0 +1,49 @@
+<p-dialog *ngIf="display"
+    [header]="title | translate" 
+    [(visible)]="display" 
+    [modal]="true"
+    [draggable]="true" 
+    [resizable]="true"
+    [closable]="true"
+    (onHide)="onHide()">
+
+    
+
+    <span class="py-2">{{ context | translate }}</span>
+
+
+    <div [ngSwitch]="signatureState">
+        <p *ngSwitchCase= "'CAPTURADA'" style="margin-left: 100px; color: green; font-weight: bold;">{{signatureState}}</p>
+        <p *ngSwitchCase= "'ESPERANDO FIRMA'" style="margin-left: 100px; color: red; font-weight: bold;">{{signatureState}}</p>
+    </div>
+
+    <div style="height: 300px; width: 400px;">
+
+        <div style="margin: 40px" id="signatureDiv">
+            <img #signatureImage id="signatureImage" (load)="updateState($event)" src='{{imgUrl}}' />
+        </div>
+
+    </div>
+
+
+
+
+    <ng-template pTemplate="footer">
+        <div class="flex justify-content-end">
+          
+            <p-button styleClass="p-button-secondary" [disabled]= "disableCancel" (onClick)="closeModal()">{{ 'button.cancel' | translate }}</p-button>
+            <!--p-button [disabled]= "disableConfirm" [hidden] = "invisibleConfirm" (onClick)="confirmSignature()">
+               {{ 'button.accept' | translate }}
+            </p-button-->
+            <p-button [disabled]= "disableCapture" (onClick)="captureSignature()">{{ 'button.captureSignature' | translate }}</p-button>
+            <p-button [disabled]= "disableCreate" (onClick)="createPdf(signatureImage?.src)">{{ 'button.create_pdf' | translate }}</p-button>
+       
+        </div>
+    </ng-template>
+
+
+
+
+
+
+</p-dialog>

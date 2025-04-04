@@ -1,0 +1,38 @@
+<p-table [value]="prescription.products">
+    <ng-template pTemplate="header">
+        <tr>
+            <th class="uppercase">{{ 'details.products.table.upgrade' | translate }}</th>
+            <!-- <th class="uppercase">{{ 'details.products.table.code' | translate }}</th> -->
+            <th class="uppercase">{{ 'details.products.table.description' | translate }}</th>
+            <!-- <th class="uppercase">{{ 'details.products.table.observation' | translate }}</th> -->
+            <th class="uppercase">{{ 'details.products.table.imf' | translate }}</th>
+            <th class="uppercase">{{ 'details.products.table.laterality' | translate }}</th>
+            <th class="uppercase">{{ 'details.products.table.unidades' | translate }}</th>
+            <th class="uppercase">{{ 'details.products.table.justification' | translate }}</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr>
+            <!-- <td>{{product.reimbursement}}</td> -->
+            <td>
+                <p-checkbox 
+                    [(ngModel)]="product.improvable.condition" 
+                    [binary]="true"
+                    [pTooltip]="product.improvable.text"
+                    [disabled]="true">
+                </p-checkbox>
+            </td>
+            <!-- <td>{{product.code}}</td> -->
+            <td>
+                <sacyl-product-description [product]="product"></sacyl-product-description>
+            </td>
+            <!-- <td>{{product.observation}}</td> -->
+            <td>{{product.imf.imfWithTax}}</td>
+            <td>
+                <sacyl-laterality [laterality]="product.laterality"></sacyl-laterality>
+            </td>
+            <td>{{product.units.value}}</td>
+            <td>{{product.justification}}</td>
+        </tr>
+    </ng-template>
+</p-table>

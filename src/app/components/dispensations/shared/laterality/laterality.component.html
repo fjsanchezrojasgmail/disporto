@@ -1,0 +1,4 @@
+<div *ngIf="showLaterality" class="flex w-min" [pTooltip]="lateralityTooltip | translate | defaultText: ''">
+    <i [class]="(laterality?.bodysite === lateralityTypes.LEFT || laterality?.bodysite === lateralityTypes.BOTH) ? 'pi pi-circle-fill' : 'pi pi-circle'" class="mr-1"></i>
+    <i [class]="(laterality?.bodysite === lateralityTypes.RIGHT || laterality?.bodysite === lateralityTypes.BOTH) ? 'pi pi-circle-fill' : 'pi pi-circle'"></i>
+</div>

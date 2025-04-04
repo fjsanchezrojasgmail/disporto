@@ -1,0 +1,12 @@
+<button 
+    *ngIf="noBrand"
+    pButton 
+    pRipple 
+    type="button" 
+    [pTooltip]="tooltip | translate"
+    tooltipPosition="left"
+    tooltipStyleClass="max-w-25rem"
+    (click)="pushed.emit()"
+    class="p-button-rounded p-button-text">
+    <fa-icon *ngIf="icon" [icon]="icon"></fa-icon>
+</button>

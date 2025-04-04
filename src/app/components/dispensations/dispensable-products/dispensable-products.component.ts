@@ -10,25 +10,26 @@ import { ConfirmModalComponent } from '../shared/confirm-modal/confirm-modal.com
 import { WacomModalComponent } from '../shared/wacom-modal/wacom-modal.component';
 import { Product } from '../../../bean/models/product';
 import { ComunicationModalComponent } from '../shared/comunication-modal/comunication-modal.component';
-import { FindComunicationCriteria } from 'src/app/bean/models/findComunication-criteria';
-import { ComunicationsRS } from 'src/app/bean/models/comunications.bean';
-import { ComunicationMessageRS } from 'src/app/bean/models/comunication-message.bean';
-import { Constants } from 'src/app/bean/models/constant';
-import { ComunicationDAOService } from 'src/app/services/dao/comunication-dao.service';
-import { NotificationDAOService } from 'src/app/services/helpers/notification/notification-dao.service';
+import { FindComunicationCriteria } from '../../../bean/models/findComunication-criteria';
+import { ComunicationsRS } from '../../../bean/models//comunications.bean';
+import { ComunicationMessageRS } from '../../../bean/models//comunication-message.bean';
+import { Constants } from '../../../bean/models//constant';
+import { ComunicationDAOService } from '../../../services/dao/comunication-dao.service';
+import { NotificationDAOService } from '../../../services/helpers/notification/notification-dao.service';
 import { tap } from 'rxjs/operators';
 import { ProfesionalAdm } from '../../../bean/models/profesional';
 import { ProfesionalService } from '../../../services/helpers/profesional/profesional.service';
-import { NotificationMessageRS } from 'src/app/bean/models/notification-message.bean';
-import { WacomState } from '../../../bean/constants';
-import { NoWacomService } from '../../../services/helpers/wacom-service/nowacom.service';
+import { NotificationMessageRS } from '../../../bean/models//notification-message.bean';
+//import { WacomState } from '../../../bean/constants';
+//import { NoWacomService } from '../../../services/helpers/wacom-service/nowacom.service';
 import { AtnaRegistrationService } from '../../../services/helpers/auditoria/atna-registration.service';
-import { WacomService } from 'src/app/services/helpers/wacom-service/wacom.service';
-import { ConstantsService } from 'src/app/services/helpers/constants/constants.service';
-import { Patient } from 'src/app/bean/fhir-r3/domain/interfaces/patient.interface';
-import { PatientModel } from 'src/app/bean/fhir-r3/domain/patient';
-import { ConfigService } from 'src/app/services/config.service';
-import { initialConfigProperties } from 'src/app/bean/config';
+
+import { ConstantsService } from '../../../services/helpers/constants/constants.service';
+import { Patient } from '../../../bean/fhir-r3/domain/interfaces/patient.interface';
+import { PatientModel } from '../../../bean//fhir-r3/domain/patient';
+import { ConfigService } from '../../../services/config.service';
+import { initialConfigProperties } from '../../../bean/config';
+import { WacomService } from '../../../services/helpers/wacom-service/wacom.service';
 
 
 
@@ -38,7 +39,7 @@ import { initialConfigProperties } from 'src/app/bean/config';
   imports:[],
   templateUrl: './dispensable-products.component.html',
   styleUrls: ['./dispensable-products.component.css'],
-  providers: [DispensableProductsService]
+  providers: []
 })
 export class DispensableProductsComponent implements OnInit {
 

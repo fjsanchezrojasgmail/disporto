@@ -1,0 +1,14 @@
+<!-- <input 
+    class="w-full"
+    [disabled]="disabledInput || disable"
+    type="number"
+    pInputText
+    (change)="change()"
+    [(ngModel)]="units.value"> -->
+<p-inputNumber 
+    styleClass="max-w-4rem"
+    [disabled]="disabledInput || disable"
+    (ngModelChange)="change($event)"
+    [ngModel]="units.value"
+    [useGrouping]="false">
+</p-inputNumber>

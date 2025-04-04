@@ -1,0 +1,18 @@
+<div class="flex flex-column">
+    <span 
+        *ngIf="product.brand"
+        class="font-semibold">
+        {{ product.brand.code }} - {{ product.brand.description }}
+    </span>
+    <div>
+        <span 
+            [pTooltip]="tooltip"
+            [escape]="false"
+            tooltipStyleClass="max-w-25rem"
+            tooltipPosition="bottom"
+            class="font-bold">
+            {{ product.code }}
+        </span>
+        <span> - {{product.description}}</span>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<p-table [value]="history">
+    <ng-template pTemplate="header">
+        <tr>
+            <th class="uppercase">{{ 'details.version.table.version' | translate }}</th>
+            <th class="uppercase">{{ 'details.version.table.date' | translate }}</th>
+            <th class="uppercase">{{ 'details.version.table.state' | translate }}</th>
+            <th class="uppercase">{{ 'details.version.table.consult' | translate }}</th>
+       </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-version>
+        <tr>
+            <td>{{version.bundleVersion }}</td>
+            <td>{{version.updateDate | date: 'dd/MM/yyyy hh:mm'}}</td>
+            <td>
+                <sacyl-prescription-status [status]="version.status"></sacyl-prescription-status>
+            </td>
+            <td>
+                <button 
+                    *ngIf="version.bundleVersion !== prescription.bundleVersion"
+                    pButton 
+                    pRipple 
+                    type="button" 
+                    icon="pi pi-eye" 
+                    class="p-button-rounded p-button-secondary p-button-text"
+                    (click)="this.versionChange.emit(version.bundleVersion)">
+                </button>
+                <span *ngIf="version.bundleVersion === prescription.bundleVersion">{{ 'details.version.table.same_version' | translate }}</span>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

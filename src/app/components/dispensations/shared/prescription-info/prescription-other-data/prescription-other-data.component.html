@@ -1,0 +1,38 @@
+<p-card>
+    <div class="flex flex-column">
+        <div class="flex">
+            <sacyl-revision-icon *ngIf="prescription.revision?.required" class="pr-2" [revision]="prescription.revision"></sacyl-revision-icon>
+            <sacyl-approval-icon *ngIf="prescription.approval?.required" class="pr-2" [approval]="prescription.approval"></sacyl-approval-icon>
+            <sacyl-block-icon *ngIf="prescription.actions && prescription.actions.length > 0" class="pr-2" [actions]="prescription.actions"></sacyl-block-icon>
+            <span 
+                *ngIf="prescription.products[0].reimbursement" 
+                class="align-self-start text-red-500 text-xl pr-2 font-bold" 
+                [pTooltip]="tooltip">R</span>
+        </div>
+        <sacyl-prescription-labeled-element
+            [awsomeIcon]="calendarIcon"
+            label="details.other.date">
+            {{ prescription.prescriptionDate | date: 'dd/MM/yyyy hh:mm' }}
+        </sacyl-prescription-labeled-element>
+        <sacyl-prescription-labeled-element
+            primeIcon="pi-user"
+            label="details.other.prescribed_by">
+            ({{prescription.profesional?.collegiateNumber}}) {{prescription.profesional?.name}}
+        </sacyl-prescription-labeled-element>
+        <sacyl-prescription-labeled-element
+            primeIcon="pi-question"
+            label="details.other.state"
+            [text]="prescription.status.display">
+        </sacyl-prescription-labeled-element>
+        <sacyl-prescription-labeled-element
+            primeIcon="pi-clone"
+            label="details.other.service"
+            [text]="prescription.service?.display">
+        </sacyl-prescription-labeled-element>
+        <sacyl-prescription-labeled-element
+            [awsomeIcon]="hospitalIcon"
+            label="details.other.center"
+            [text]="prescription.prescribingCenter?.display">
+        </sacyl-prescription-labeled-element>
+    </div>
+</p-card>

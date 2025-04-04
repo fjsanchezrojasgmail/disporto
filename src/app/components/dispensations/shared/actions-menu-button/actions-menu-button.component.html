@@ -1,0 +1,10 @@
+<button *ngIf="items.length > 0" pButton pRipple type="button" class="p-button-rounded p-button-text p-2"
+    (click)="menu.toggle($event)">
+    <i *ngIf="menuExistComunication && menuActionIfExistComunicationInBBDD; else elseBlock" pBadge severity="danger"
+        class="pi pi-ellipsis-v" [pTooltip]="'tooltip.comunication.none' | translate"></i>
+    <ng-template #elseBlock>
+        <i class="pi pi-ellipsis-v"></i>
+    </ng-template>
+</button>
+<p-menu #menu [baseZIndex]="1001" [model]="items" [popup]="true">
+</p-menu>

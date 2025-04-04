@@ -2,11 +2,15 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SimplePatient } from '../../../bean/models/patient';
 import { Prescription, PrescriptionVersioned } from '../../../bean/models/prescription';
 import { PrescriptionDetailsService } from '../../../services/dedicated/prescription/prescription-details.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrescriptionInfoComponent } from '../shared/prescription-info/prescription-info.component';
+import { PrescriptionLateralDetailsComponent } from './prescription-lateral-details/prescription-lateral-details.component';
+import { SidebarModule } from 'primeng/sidebar';
 
 @Component({
   selector: 'sacyl-prescription-detail',
   standalone: true,
-  imports: [],
+  imports: [TranslateModule,PrescriptionInfoComponent,PrescriptionLateralDetailsComponent,SidebarModule],
   templateUrl: './prescription-detail.component.html',
   styleUrls: ['./prescription-detail.component.css']
 })

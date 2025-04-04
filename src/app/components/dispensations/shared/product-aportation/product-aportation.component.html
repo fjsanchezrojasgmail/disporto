@@ -1,0 +1,2 @@
+<span class="w-full">{{ product.userConsideration.realAportation | defaultText: '' }} €</span>
+<span *ngIf="hasReimbursement" class="align-self-start red-color text-xl" [pTooltip]="title"> *</span>

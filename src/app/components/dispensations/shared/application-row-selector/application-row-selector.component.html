@@ -1,0 +1,8 @@
+<p-selectButton 
+    [disabled]="disabled"
+    [options]="selectButon" 
+    [(ngModel)]="consider"
+    (ngModelChange)="valueChange.emit(consider)"
+    optionLabel="label" 
+    optionValue="value">
+</p-selectButton>
