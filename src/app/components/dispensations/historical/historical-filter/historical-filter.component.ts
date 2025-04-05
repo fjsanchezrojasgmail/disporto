@@ -1,14 +1,19 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, importProvidersFrom } from '@angular/core';
 import { prescriptionDisplay, PrescriptionState } from '../../../../bean/constants';
 import { DisplayItem, HistoricFilter } from '../../../../bean/simple.types';
 import { ConstantsService } from '../../../../services/constants.service';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'sacyl-historical-filter',
   standalone: true,
-  imports: [],
+  imports: [TranslateModule,FormsModule,InputNumberModule,DropdownModule,CalendarModule],
   templateUrl: './historical-filter.component.html',
-  styleUrls: ['./historical-filter.component.css']
+  styleUrls: ['./historical-filter.component.css'],
 })
 export class HistoricalFilterComponent implements OnInit {
 

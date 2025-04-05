@@ -26,13 +26,16 @@ export class PrescriptionGeneralDataComponent implements OnInit{
 
   ngOnInit(): void {
       this.loader = true;
+ 
       console.log("Prescription status: ", this.prescription.status, this.prescription.idDocument);
       this.prescriptionStatus = this.prescription.status.code;
+      
       //this.prescriptionStatus = this.prescription.status;
   }
 
 
   get type() {
+    
     return (this.prescription.type.code || '') + ' ' + (this.prescription.type.display || '');
   }
 

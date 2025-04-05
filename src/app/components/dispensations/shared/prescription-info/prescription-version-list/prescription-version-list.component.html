@@ -16,7 +16,7 @@
             </td>
             <td>
                 <button 
-                    *ngIf="version.bundleVersion !== prescription.bundleVersion"
+                    *ngIf="version.bundleVersion !== prescription!.bundleVersion!"
                     pButton 
                     pRipple 
                     type="button" 
@@ -24,7 +24,7 @@
                     class="p-button-rounded p-button-secondary p-button-text"
                     (click)="this.versionChange.emit(version.bundleVersion)">
                 </button>
-                <span *ngIf="version.bundleVersion === prescription.bundleVersion">{{ 'details.version.table.same_version' | translate }}</span>
+                <span *ngIf="version.bundleVersion === prescription!.bundleVersion">{{ 'details.version.table.same_version' | translate }}</span>
             </td>
         </tr>
     </ng-template>

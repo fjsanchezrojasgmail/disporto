@@ -24,7 +24,7 @@ import { DefaultTextPipe } from '../../../../pipes/default-text.pipe';
 })
 export class PrescriptionInfoComponent implements AfterViewChecked {
 
-  @Input() prescription?: PrescriptionVersioned;
+  @Input() prescription!: PrescriptionVersioned;
 
   @Input() history!: PrescriptionVersioned[];
 

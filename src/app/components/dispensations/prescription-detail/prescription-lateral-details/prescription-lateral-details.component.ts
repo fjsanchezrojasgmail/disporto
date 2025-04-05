@@ -11,7 +11,7 @@ import { PrescriptionInfoComponent } from '../../shared/prescription-info/prescr
 })
 export class PrescriptionLateralDetailsComponent {
 
-  @Input() prescription?: Prescription;
+  @Input() prescription!: Prescription;
 
   @Input() history!: PrescriptionVersioned[];
 

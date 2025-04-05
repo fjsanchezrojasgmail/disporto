@@ -73,20 +73,145 @@ export class ProfesionalService {
 
   //Siempre se setea al iniciar la aplicacion para dispensacion
   get secureEstablishment() {
-    return this.establishmentSubject.value!;
+    //return this.establishmentSubject.value!;
+    return { 
+      "code" : this.mockEstablishment[0].code,
+      "centerName" : this.mockEstablishment[0].centerName,
+      "typeProduct" : this.mockEstablishment[0].typeProduct
+    };
   }
 
   //Para facturacion, donde es opcional
   get establishment() {
-    return this.establishmentSubject.value;
+    //return this.establishmentSubject.value;
+    return { 
+      "code" : this.mockEstablishment[0].code,
+      "centerName" : this.mockEstablishment[0].centerName,
+      "typeProduct" : this.mockEstablishment[0].typeProduct
+    };
   }
 
   get profesional() {
-    return this.profesionalSubject.value!;
+    //return this.profesionalSubject.value!;
+    return this.mockProfesional[0];
   }
 
   get profesionalFullName() {
     return `${this.profesional?.name} ${this.profesional?.surname1} ${this.profesional?.surname2 || ''}`;
   }
+
+  private mockProfesional: ProfesionalAdm[] = [
+    {
+      "code": "PROF001",
+      "name": "Laura",
+      "surname1": "González",
+      "surname2": "Martínez",
+      "dni": "12345678A",
+      "phone": "600123456",
+      "state": true,
+      "dateTo": "2026-01-01",
+      "typeProfesional": "Administrador",
+      "titular": "S",
+      "permissionFac": "Alta",
+      "listEstablecimientos": [
+        {
+          "code": "EST001",
+          "cif": "B12345678",
+          "typeStablishment": "Farmacia",
+          "typeProduct": "Medicamento",
+          "centerName": "Farmacia Central",
+          "codeRegion": "REG01",
+          "descriptionRegion": "Castilla y León",
+          "phone": "987654321",
+          "address": "Calle Mayor, 123 - Valladolid",
+          "codeFact": "FACT001",
+          "dateTo": "2025-12-31"
+        }
+      ],
+      "provinces": [
+        {
+          "code": "P001",
+          "description": "Valladolid"
+        },
+        {
+          "code": "P002",
+          "description": "Salamanca"
+        }
+      ]
+    },
+    {
+      "name": "Carlos",
+      "surname1": "Pérez",
+      "surname2": "López",
+      "dni": "87654321B",
+      "phone": "611223344",
+      "typeProfesional": "Técnico",
+      "titular": "N",
+      "permissionFac": "Consulta",
+      "listEstablecimientos": [
+        {
+          "code": "EST002",
+          "cif": "A87654321",
+          "typeStablishment": "Centro Médico",
+          "typeProduct": "Ortopedia",
+          "centerName": "Centro Salud Norte",
+          "codeRegion": "REG02",
+          "descriptionRegion": "Madrid",
+          "phone": "912345678",
+          "address": "Avenida Salud, 45 - Madrid",
+          "codeFact": "FACT002"
+        }
+      ],
+      "provinces": [
+        {
+          "code": "P003",
+          "description": "Madrid"
+        }
+      ]
+    }
+  ];
+
+  private mockEstablishment: Establishment[] = [
+    
+      {
+        "code": "EST001",
+        "cif": "B12345678",
+        "typeStablishment": "Farmacia",
+        "typeProduct": "Medicamento",
+        "centerName": "Farmacia Central",
+        "codeRegion": "REG01",
+        "descriptionRegion": "Castilla y León",
+        "phone": "987654321",
+        "address": "Calle Mayor, 123 - Valladolid",
+        "codeFact": "FACT001",
+        "dateTo": "2025-12-31"
+      },
+      {
+        "code": "EST002",
+        "cif": "A87654321",
+        "typeStablishment": "Centro Médico",
+        "typeProduct": "Ortopedia",
+        "centerName": "Centro Salud Norte",
+        "codeRegion": "REG02",
+        "descriptionRegion": "Madrid",
+        "phone": "912345678",
+        "address": "Avenida Salud, 45 - Madrid",
+        "codeFact": "FACT002"
+      },
+      {
+        "code": "EST003",
+        "cif": "C11223344",
+        "typeStablishment": "Hospital",
+        "typeProduct": "Material Médico",
+        "centerName": "Hospital General",
+        "codeRegion": "REG03",
+        "descriptionRegion": "Cataluña",
+        "phone": "933456789",
+        "address": "Carrer Salut, 22 - Barcelona",
+        "codeFact": "FACT003",
+        "dateTo": "2026-06-15"
+      }
+    
+  ]
 
 }

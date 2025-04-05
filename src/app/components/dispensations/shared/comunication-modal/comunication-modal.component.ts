@@ -24,7 +24,8 @@ import { NotificationMessageRS } from '../../../../bean/models/notification-mess
   standalone: true,
   imports: [CommonModule,DialogModule,TranslateModule,ButtonModule,FormsModule],
   templateUrl: './comunication-modal.component.html',
-  styleUrls: ['./comunication-modal.component.css']
+  styleUrls: ['./comunication-modal.component.css'],
+  providers: [ComunicationDAOService]
 })
 export class ComunicationModalComponent implements OnInit {
 
@@ -86,8 +87,10 @@ export class ComunicationModalComponent implements OnInit {
 
   constructor(
     private profesionalService: ProfesionalService,
-    @Inject('IComunicationDAOService') private comunicationDAOService: ComunicationDAOService,
-    @Inject('INotificationDAOService') private notificationDAOService: NotificationDAOService
+    private comunicationDAOService: ComunicationDAOService,
+    private notificationDAOService: NotificationDAOService,
+    //@Inject('IComunicationDAOService') private comunicationDAOService: ComunicationDAOService,
+    //@Inject('INotificationDAOService') private notificationDAOService: NotificationDAOService
   ) { }
 
 

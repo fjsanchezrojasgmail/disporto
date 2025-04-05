@@ -1,11 +1,17 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { faCopyright } from '@fortawesome/free-regular-svg-icons';
 import { faCopyright as fasCopyright } from '@fortawesome/free-solid-svg-icons';
 import { Product } from '../../../../bean/models/product';
 import { ConstantsService } from '../../../../services/constants.service';
+import { ButtonModule } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'sacyl-brand-icon',
+  standalone: true,
+  imports: [CommonModule,ButtonModule,Tooltip,TranslateModule,FontAwesomeModule],
   templateUrl: './brand-icon.component.html',
   styleUrls: ['./brand-icon.component.css']
 })
@@ -34,7 +40,7 @@ export class BrandIconComponent {
   }
 
   get icon() {
-    if (this.products.some(p => p.replaceable)) return faCopyright;
+    if (this.products.some(p => p.replaceable)) return fasCopyright;
     else return fasCopyright;
   }
 }

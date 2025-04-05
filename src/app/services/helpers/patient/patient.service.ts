@@ -39,9 +39,11 @@ export class PatientService {
   }
 
   getPatient(filter: SearchPatientFilter) {
+    console.log("Get Patient");
     return this.patientDao.getPatient(filter).pipe(
       map((data) => {
         if (data) {
+          
           const patient = data.mapToModel();
           if (this.isNoSacylPatient(patient)) {
             this.globalFeedback.showCustomMessage({

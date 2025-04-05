@@ -15,14 +15,25 @@ import { ComunicationDAOService } from '../../../services/dao/comunication-dao.s
 import { tap, filter } from 'rxjs/operators';
 import { ProfesionalAdm } from '../../../bean/models/profesional';
 import { ProfesionalService } from '../../../services/helpers/profesional/profesional.service';
-import { TableModule } from 'primeng/table';
-import { PaginatorModule } from 'primeng/paginator';
+import { TableModule, TableRowExpandEvent } from 'primeng/table';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoResultsComponent } from '../../shared/no-results/no-results.component';
 import { ProductAportationComponent } from '../shared/product-aportation/product-aportation.component'
 import { PvpInputComponent } from '../shared/pvp-input/pvp-input.component';
 import { UnitsInputComponent } from '../shared/units-input/units-input.component';
+import { ProductObservationIconComponent } from '../shared/product-observation-icon/product-observation-icon.component';
+import { ActionsMenuButtonComponent } from '../shared/actions-menu-button/actions-menu-button.component';
+import { PrescriptionStatusComponent } from '../shared/prescription-status/prescription-status.component';
+import { RevisionIconComponent } from '../shared/revision-icon/revision-icon.component';
+import { DefaultTextPipe } from '../../../pipes/default-text.pipe';
+import { LateralityComponent } from '../shared/laterality/laterality.component';
+import { ProductDescriptionComponent } from '../shared/product-description/product-description.component';
+import { ApprovalIconComponent } from '../shared/approval-icon/approval-icon.component';
+import { BlockIconComponent } from '../shared/block-icon/block-icon.component';
+import { PrescriptionObservationIconsComponent } from '../shared/prescription-observation-icons/prescription-observation-icons.component';
+import { PrescriptionDescriptionComponent } from '../shared/prescription-description/prescription-description.component';
 
 @Component({
   selector: 'sacyl-historical',
@@ -35,9 +46,21 @@ import { UnitsInputComponent } from '../shared/units-input/units-input.component
     NoResultsComponent,
     ComunicationModalComponent,
     HistoricalFilterComponent,
+    ProductObservationIconComponent,
     ProductAportationComponent,
+    ProductDescriptionComponent,
     PvpInputComponent,
     UnitsInputComponent,
+    ActionsMenuButtonComponent,
+    PrescriptionStatusComponent,
+    PrescriptionObservationIconsComponent,
+    PrescriptionDescriptionComponent,
+    RevisionIconComponent,
+    DefaultTextPipe,
+    LateralityComponent,
+    ApprovalIconComponent,
+    BlockIconComponent,
+
   ],
   templateUrl: './historical.component.html',
   styleUrls: ['./historical.component.css', '../dispensable-products/dispensable-products.component.css'],
@@ -154,8 +177,8 @@ export class HistoricalComponent implements OnInit {
   }
 
 
-  paginate($event: Event & { page: number }) {
-    this.currentPage = $event.page;
+  paginate($event: PaginatorState | Event & { page: number }) {
+    this.currentPage = $event.page!;
   }
 
   paginationPrescriptions(prescripcions: PrescriptionRow[]) {
@@ -166,7 +189,7 @@ export class HistoricalComponent implements OnInit {
     this.historicalService.searchProducts(this.patient, filter);
   }
 
-  showProducts($event: Event & { data: PrescriptionRow }) {
+  showProducts($event: TableRowExpandEvent & { data: PrescriptionRow }) {
     this.historicalService.expandProducts($event.data.id);
   }
 

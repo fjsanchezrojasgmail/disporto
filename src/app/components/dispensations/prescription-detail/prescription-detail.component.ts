@@ -25,7 +25,8 @@ export class PrescriptionDetailComponent implements OnInit {
 
   lastVersion?: PrescriptionVersioned;
 
-  prescriptionVersion?: PrescriptionVersioned;
+  prescriptionVersion!: PrescriptionVersioned;
+
 
   constructor(private detailsService: PrescriptionDetailsService) {}
 
@@ -39,11 +40,13 @@ export class PrescriptionDetailComponent implements OnInit {
   }
 
   closeVersion() {
-    this.prescriptionVersion = undefined;
+    this.prescriptionVersion = {
+      ...this.prescriptionVersion, "id" : '', "version": 0
+    };
   }
 
   fetchVersion(version: string) {
-    this.prescriptionVersion = this.prescriptionVersions.find( (p) => p.bundleVersion === version);
+    this.prescriptionVersion = this.prescriptionVersions.find( (p) => p.bundleVersion === version)!;
   }
 
   get version() {

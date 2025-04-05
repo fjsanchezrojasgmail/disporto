@@ -3,8 +3,8 @@ import { ChangeDetectorRef, Component, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
 import { TabMenu } from 'primeng/tabmenu';
-import { Observable, tap } from 'rxjs';
-import { SimplePatient } from '../../bean/models/patient';
+import { Observable, of, tap } from 'rxjs';
+import { dummyPatient, SimplePatient } from '../../bean/models/patient';
 import { Prescription } from '../../bean/models/prescription';
 
 
@@ -19,6 +19,8 @@ import { DispensableProductsComponent } from './dispensable-products/dispensable
 import { HistoricalComponent } from './historical/historical.component';
 import { ModificationsComponent } from './modifications/modifications.component';
 import { PrescriptionDetailComponent } from './prescription-detail/prescription-detail.component';
+import { Gender } from '../../bean/fhir-r3/fhir-constants';
+import { PatientModel } from '../../bean/fhir-r3/domain/patient';
 
 
 @Component({
@@ -63,6 +65,10 @@ export class DispensationsComponent {
     private comunicationDAOService: ComunicationDAOService
   ) {
     this.patient$ = this.patientService.patient$;
+
+    this.patient$ = of(dummyPatient);
+    
+    
     this.translateService
       .get('tabmenu.disp.dispensing.products')
       .subscribe((data) => (this.dispenableLabel = data));
@@ -99,6 +105,7 @@ export class DispensationsComponent {
     //le pasamos el cipa y si hay comunicaciones pone a true existComunication
     //this.readNumberOfComunicationMessages(this.patient$);
     this.patient$.pipe(tap((data) => this.getPatientCipa(data || undefined))).subscribe();
+    
   }
 
   //obtenemos el cipa del paciente y leemos el numero de mensajes que hay disponibles para el
@@ -139,5 +146,65 @@ Metodo que comprueba si existen comunicaciones
     this.tabItemActive = this.tabItems[0];
     this.patientService.clearPatient();
   }
+
+  private patient: PatientModel = {
+      resourceType: "Patient",
+      id: "example-patient-001",
+      mapToFhir: () => {
+        return {
+          resourceType: "Patient",
+          id: "mapped-from-model",
+          "name": [
+        {
+          "resourceType": "HumanName",
+          "use": "official",
+          "family": "Donald",
+          "given": [
+            "Duck"
+          ]
+        } 
+      ],
+        };
+      },
+      mapToModel: () => {
+        return {
+          "id": "pat1",
+          "disability":0,
+          "birthDate" : "1990-01-01",
+          "name": "Pedro Perez"
+        };
+      },
+      identifier: [
+        {
+          use: "usual",
+          type: {
+            coding: [
+              {
+                system: "http://hl7.org/fhir/v2/0203",
+                code: "MR"
+              }
+            ]
+          },
+          system: "http://hospital.example.org/patients",
+          value: "12345678"
+        }
+      ],
+      name: [
+        {
+          resourceType: "HumanName",
+          use: "official",
+          family: "García",
+          given: ["Pedro"]
+        }
+      ],
+      gender: Gender.MALE,
+      birthDate: "1990-01-01",
+      address: [],
+      link: [],
+      text: {
+        status: "generated",
+        div: "<div>Pedro García</div>"
+      }
+    };
 }
 

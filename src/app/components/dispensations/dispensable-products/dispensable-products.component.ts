@@ -30,13 +30,65 @@ import { PatientModel } from '../../../bean//fhir-r3/domain/patient';
 import { ConfigService } from '../../../services/config.service';
 import { initialConfigProperties } from '../../../bean/config';
 import { WacomService } from '../../../services/helpers/wacom-service/wacom.service';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { TableModule, TableRowExpandEvent } from 'primeng/table';
+import { PrescriptionObservationIconsComponent } from '../shared/prescription-observation-icons/prescription-observation-icons.component';
+import { PaginatorModule } from 'primeng/paginator';
+import { NoResultsComponent } from '../../shared/no-results/no-results.component';
+import { HistoricalFilterComponent } from '../historical/historical-filter/historical-filter.component';
+import { ProductObservationIconComponent } from '../shared/product-observation-icon/product-observation-icon.component';
+import { ProductAportationComponent } from '../shared/product-aportation/product-aportation.component';
+import { BlockIconComponent } from '../shared/block-icon/block-icon.component';
+import { LateralityComponent } from '../shared/laterality/laterality.component';
+import { DefaultTextPipe } from '../../../pipes/default-text.pipe';
+import { ApprovalIconComponent } from '../shared/approval-icon/approval-icon.component';
+import { ActionsMenuButtonComponent } from '../shared/actions-menu-button/actions-menu-button.component';
+import { UnitsInputComponent } from '../shared/units-input/units-input.component';
+import { ProductDescriptionComponent } from '../shared/product-description/product-description.component';
+import { PrescriptionStatusComponent } from '../shared/prescription-status/prescription-status.component';
+import { RevisionIconComponent } from '../shared/revision-icon/revision-icon.component';
+import { PvpInputComponent } from '../shared/pvp-input/pvp-input.component';
+import { SidebarModule } from 'primeng/sidebar';
+import { ApplicationRowSelectorComponent } from '../shared/application-row-selector/application-row-selector.component';
+import { BrandIconComponent } from '../shared/brand-icon/brand-icon.component';
+import { PrescriptionDescriptionComponent } from '../shared/prescription-description/prescription-description.component';
+import { BrandSelectorComponent } from '../shared/brand-selector/brand-selector.component';
 
 
 
 @Component({
   selector: 'sacyl-products',
   standalone: true,
-  imports:[],
+  imports: [
+      CommonModule,
+      TableModule,
+      PaginatorModule,
+      TranslateModule,
+      NoResultsComponent,
+      ComunicationModalComponent,
+      ProductObservationIconComponent,
+      ProductAportationComponent,
+      ProductDescriptionComponent,
+      PvpInputComponent,
+      UnitsInputComponent,
+      ActionsMenuButtonComponent,
+      PrescriptionStatusComponent,
+      PrescriptionObservationIconsComponent,
+      PrescriptionDescriptionComponent,
+      RevisionIconComponent,
+      DefaultTextPipe,
+      LateralityComponent,
+      ApprovalIconComponent,
+      BlockIconComponent,
+      BlockModalComponent,
+      ConfirmModalComponent,
+      WacomModalComponent,
+      SidebarModule,
+      ApplicationRowSelectorComponent,
+      BrandIconComponent,
+      BrandSelectorComponent,
+    ],
   templateUrl: './dispensable-products.component.html',
   styleUrls: ['./dispensable-products.component.css'],
   providers: []
@@ -198,7 +250,7 @@ export class DispensableProductsComponent implements OnInit {
     this.checkWacom();
   }
 
-  showProducts($event: Event & { data: PrescriptionRow }) {
+  showProducts($event: TableRowExpandEvent & { data: PrescriptionRow }) {
     this.dispensableProductService.expandProducts($event.data.id);
   }
 

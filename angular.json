@@ -38,7 +38,6 @@
 			        "src/assets/js/ohsso-lib.js",
               "src/assets/c/c.js",
               "src/assets/wacom/demoButtons_encryption.js",
-              "node_modules/@fortawesome/fontawesome-free/js/all.min.js",
               "src/assets/fhir/fhir-js-client/fhir-client.js"
             ]
           },

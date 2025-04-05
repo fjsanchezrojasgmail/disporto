@@ -7,7 +7,7 @@
     </div>
     <div class="flex flex-column p-2">
         <label for="endYear">{{ 'filter.historic.endYear' | translate }}</label>
-        <p-inputNumber inputId="endYear" [useGrouping]="false" (onBlur)="onChangeEndYear()"
+        <p-inputNumber inputId="endYear" [useGrouping] ="false" (onBlur)="onChangeEndYear()"
             [(ngModel)]="filter.endYear">
         </p-inputNumber>
     </div>

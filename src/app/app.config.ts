@@ -23,6 +23,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { providePrimeNG } from 'primeng/config';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import Lara from '@primeng/themes/lara';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CalendarModule } from 'primeng/calendar';
 
 
 
@@ -38,6 +40,11 @@ export function initializeKeycloak(keycloakService: KeycloakService) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    importProvidersFrom(
+      CalendarModule,
+      InputNumberModule,
+      DropdownModule
+    ),
     importProvidersFrom(FontAwesomeModule),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),

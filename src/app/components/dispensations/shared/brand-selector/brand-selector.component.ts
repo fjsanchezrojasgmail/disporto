@@ -3,9 +3,15 @@ import { Brand, Product } from '../../../../bean/models/product';
 import { ConstantsService } from '../../../../services/constants.service';
 import { CommercialBrandDaoService } from '../../../../services/dao/commercial-brand-dao.service';
 import { to2DecimalsNumber } from '../../../../utils/utils';
+import { TableModule } from 'primeng/table';
+import { TranslateModule } from '@ngx-translate/core';
+import { ButtonModule } from 'primeng/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'sacyl-brand-selector',
+  standalone: true,
+  imports:[CommonModule,TableModule,ButtonModule,TranslateModule],
   templateUrl: './brand-selector.component.html',
   styleUrls: ['./brand-selector.component.css']
 })
