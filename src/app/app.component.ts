@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
     this.keycloakService.getToken().then((token) => {
       const result = this.configService.setTokenInfo();
       if (!result) this.error = 'error.credentials.no_role';
-      console.log("loadKeycloak: ", token  + " - " + result);
+      //console.log("loadKeycloak: ", token  + " - " + result);
       this.loading = false;
     });
   }

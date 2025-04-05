@@ -71,13 +71,25 @@ export class DispensationsComponent {
     
     this.translateService
       .get('tabmenu.disp.dispensing.products')
-      .subscribe((data) => (this.dispenableLabel = data));
+      .subscribe((data) => {
+        (this.dispenableLabel = data);
+        console.log("Products label: ", data);
+      });
     this.translateService
       .get('tabmenu.disp.dispensing.history')
-      .subscribe((data) => (this.historyLabel = data));
+      .subscribe((data) => {
+        (this.historyLabel = data);
+        console.log("History label: ", data);
+        
+      });
     this.translateService
       .get('tabmenu.disp.dispensing.modifications')
-      .subscribe((data) => (this.modificationsLabel = data));
+      .subscribe((data) => {
+        (this.modificationsLabel = data);
+        console.log("modifications: ", data);
+        
+    });
+    
   }
 
   ngOnInit() {
@@ -101,6 +113,7 @@ export class DispensationsComponent {
           (this.tabItemActive = event.item)
       }
     ];
+    console.log("TabItems: ", this.tabItems);
     this.tabItemActive = this.tabItems[0];
     //le pasamos el cipa y si hay comunicaciones pone a true existComunication
     //this.readNumberOfComunicationMessages(this.patient$);

@@ -7,10 +7,11 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { DefaultTextPipe } from '../../pipes/default-text.pipe';
 import { ProfesionalAdm } from '../../bean/models/profesional';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 @Component({
   selector: 'sacyl-vertical-menu',
   standalone: true,
-  imports: [CommonModule, TranslateModule,DefaultTextPipe],
+  imports: [CommonModule, TranslateModule,DefaultTextPipe, FontAwesomeModule],
   templateUrl: './vertical-menu.component.html',
   styleUrls: ['./vertical-menu.component.css']
 })
@@ -104,23 +105,23 @@ export class VerticalMenuComponent implements OnInit, AfterViewChecked {
 
       if ((prof.typeProfesional === ProfesionalTypes.DISPENSER_ESTABLISHMENT && prof.permissionFac === 'S') ||
         prof.typeProfesional !== ProfesionalTypes.DISPENSER_ESTABLISHMENT) {
-        this.options.push({ id: CodeMenusComponents.BILLING, label: 'tabmenu.disp.billing', icon: 'fa-solid fa-coins' });
+        this.options.push({ id: CodeMenusComponents.BILLING, label: 'tabmenu.disp.billing', icon: PrimeIcons.MONEY_BILL });
       }
     }
     if (this.permissionsService.can(PermissionValues.HISTORICAL_INVOICING)) {
-      this.options.push({ id: CodeMenusComponents.BILLING_HISTORY, label: 'tabmenu.fact.historical_turnover', icon: 'fa-regular fa-clock' });
+      this.options.push({ id: CodeMenusComponents.BILLING_HISTORY, label: 'tabmenu.fact.historical_turnover', icon: PrimeIcons.CLOCK });
     }
     if (this.permissionsService.can(PermissionValues.ACCESS_REGULARIZATION_MANAGEMENT)) {
-      this.options.push({ id: CodeMenusComponents.ADJUSTMENT_ADMINISTRATION, label: 'tabmenu.admin.adjustment', icon: 'fa-solid fa-list-check' });
+      this.options.push({ id: CodeMenusComponents.ADJUSTMENT_ADMINISTRATION, label: 'tabmenu.admin.adjustment', icon: PrimeIcons.CHECK_CIRCLE });
     }
     if (this.permissionsService.can(PermissionValues.ACCESS_CENTER_MANAGEMENT)) {
-      this.options.push({ id: CodeMenusComponents.ESTABLISHMENT_ADMINISTRATION, label: 'tabmenu.admin.establishment', icon: 'fa-solid fa-crutch' });
+      this.options.push({ id: CodeMenusComponents.ESTABLISHMENT_ADMINISTRATION, label: 'tabmenu.admin.establishment', icon: PrimeIcons.BUILDING });
     }
     if (this.permissionsService.can(PermissionValues.ACCESS_PROFESSIONAL_MANAGEMENT)) {
-      this.options.push({ id: CodeMenusComponents.PROFESIONAL_ADMINISTRATION, label: 'tabmenu.admin.profesional', icon: 'fa-solid fa-user-doctor' });
+      this.options.push({ id: CodeMenusComponents.PROFESIONAL_ADMINISTRATION, label: 'tabmenu.admin.profesional', icon: PrimeIcons.USER });
     }
     if (this.permissionsService.can(PermissionValues.ACCESS_LISTINGS)) {
-      this.options.push({ id: CodeMenusComponents.LISTED, label: 'tabmenu.admin.listed', icon: 'fa-regular fa-file-lines' });
+      this.options.push({ id: CodeMenusComponents.LISTED, label: 'tabmenu.admin.listed', icon: PrimeIcons.LIST });
     }
     this.activeOption = this.options.at(0);
   }
