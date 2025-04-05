@@ -34,10 +34,12 @@ export class ComunicationDAOService
   }
 
   findIfExistsComunication(data: ComunicationMessageRS, url: string): Observable<any> {
-    return this.http.post<ComunicationMessageRS, ComunicationMessageRS>(this.pathIfExists, data).pipe(map(value => {
+    /*return this.http.post<ComunicationMessageRS, ComunicationMessageRS>(this.pathIfExists, data).pipe(map(value => {
       if (value) return value;
       return [];
-    }));
+    }));*/
+
+    return of(this.mockComunicationMessageRS);
 
 
   }
@@ -84,7 +86,7 @@ export class ComunicationDAOService
     return of(1);
   }
 
-  private mockComunicationMessageRS: ComunicationMessageRS = {
+  private mockComunicationMessageRS: ComunicationMessageRS[] = [{
     code: 'MSG001',
     originType: 'HOSPITAL',
     date: new Date('2024-12-01T10:30:00'),
@@ -106,7 +108,7 @@ export class ComunicationDAOService
     cipa: '1234567890ABC',
     patientName: 'María López Ruiz',
     textMessage: 'Paciente requiere valoración adicional tras resonancia magnética.'
-  };
+  }];
 
 
 }
