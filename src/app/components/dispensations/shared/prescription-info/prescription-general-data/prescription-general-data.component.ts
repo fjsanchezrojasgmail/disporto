@@ -5,11 +5,12 @@ import { Prescription } from '../../../../../bean/models/prescription';
 import { CustodiaService } from '../../../../../services/helpers/custodia/custodia.service';
 import { CardModule } from 'primeng/card';
 import { PrescriptionLabeledElementComponent } from '../prescription-labeled-element/prescription-labeled-element.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'sacyl-prescription-general-data',
   standalone: true,
-  imports: [ CardModule, PrescriptionLabeledElementComponent ],
+  imports: [ CommonModule,CardModule, PrescriptionLabeledElementComponent ],
   templateUrl: './prescription-general-data.component.html',
   styleUrls: ['./prescription-general-data.component.css']
 })

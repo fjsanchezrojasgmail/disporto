@@ -4,11 +4,12 @@ import { LateralityDefinition } from '../../../../bean/models/product';
 import { Tooltip } from 'primeng/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { DefaultTextPipe } from '../../../../pipes/default-text.pipe';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'sacyl-laterality',
   standalone: true,
-  imports: [Tooltip,TranslateModule,DefaultTextPipe],
+  imports: [CommonModule,Tooltip,TranslateModule,DefaultTextPipe],
   templateUrl: './laterality.component.html',
   styleUrls: ['./laterality.component.css']
 })

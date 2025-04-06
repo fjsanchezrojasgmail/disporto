@@ -25,6 +25,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import Lara from '@primeng/themes/lara';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarModule } from 'primeng/calendar';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 
 
@@ -46,6 +47,7 @@ export const appConfig: ApplicationConfig = {
       DropdownModule
     ),
     importProvidersFrom(FontAwesomeModule),
+    provideAnimations(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     importProvidersFrom(

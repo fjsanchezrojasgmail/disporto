@@ -1,9 +1,10 @@
 
+
 import { ChangeDetectorRef, Component, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
 import { TabMenu } from 'primeng/tabmenu';
-import { Observable, of, tap } from 'rxjs';
+import { forkJoin, Observable, of, tap } from 'rxjs';
 import { dummyPatient, SimplePatient } from '../../bean/models/patient';
 import { Prescription } from '../../bean/models/prescription';
 
@@ -21,6 +22,8 @@ import { ModificationsComponent } from './modifications/modifications.component'
 import { PrescriptionDetailComponent } from './prescription-detail/prescription-detail.component';
 import { Gender } from '../../bean/fhir-r3/fhir-constants';
 import { PatientModel } from '../../bean/fhir-r3/domain/patient';
+import { RequestGroupDaoService } from '../../services/dao/request-group-dao.service';
+import { HttpParams } from '@angular/common/http';
 
 
 @Component({
@@ -44,14 +47,15 @@ export class DispensationsComponent {
   tabItems: MenuItem[] = [];
   tabItemActive?: MenuItem;
 
-  dispenableLabel = '';
-  historyLabel = '';
-  modificationsLabel = '';
+  dispensableLabel!: string;
+  historyLabel!: string;
+  modificationsLabel!: string;
   patient$: Observable<SimplePatient | null>;
 
   prescription?: Prescription;
   simplePatient?: SimplePatient;
   patientId = '';
+  criteria!: HttpParams;
 
   /** comprobacion de si existen o no comunicaciones */
   @Output() existComunication!: boolean;
@@ -62,62 +66,50 @@ export class DispensationsComponent {
     private patientService: PatientService,
     private ref: ChangeDetectorRef,
     private translateService: TranslateService,
-    private comunicationDAOService: ComunicationDAOService
+    private comunicationDAOService: ComunicationDAOService,
+    private requestGroupDAOService: RequestGroupDaoService,
   ) {
     this.patient$ = this.patientService.patient$;
 
     this.patient$ = of(dummyPatient);
     
     
-    this.translateService
-      .get('tabmenu.disp.dispensing.products')
-      .subscribe((data) => {
-        (this.dispenableLabel = data);
-        console.log("Products label: ", data);
-      });
-    this.translateService
-      .get('tabmenu.disp.dispensing.history')
-      .subscribe((data) => {
-        (this.historyLabel = data);
-        console.log("History label: ", data);
-        
-      });
-    this.translateService
-      .get('tabmenu.disp.dispensing.modifications')
-      .subscribe((data) => {
-        (this.modificationsLabel = data);
-        console.log("modifications: ", data);
-        
-    });
-    
   }
 
   ngOnInit() {
-    this.tabItems = [
-      {
-        label: this.dispenableLabel,
-        id: 'p1',
-        command: (event: Event & { item: MenuItem }) =>
-          (this.tabItemActive = event.item)
-      },
-      {
-        label: this.historyLabel,
-        id: 'p2',
-        command: (event: Event & { item: MenuItem }) =>
-          (this.tabItemActive = event.item)
-      },
-      {
-        label: this.modificationsLabel,
-        id: 'p3',
-        command: (event: Event & { item: MenuItem }) =>
-          (this.tabItemActive = event.item)
-      }
-    ];
-    console.log("TabItems: ", this.tabItems);
-    this.tabItemActive = this.tabItems[0];
-    //le pasamos el cipa y si hay comunicaciones pone a true existComunication
-    //this.readNumberOfComunicationMessages(this.patient$);
-    this.patient$.pipe(tap((data) => this.getPatientCipa(data || undefined))).subscribe();
+    forkJoin({
+      products: this.translateService.get('tabmenu.disp.dispensing.products'),
+      history: this.translateService.get('tabmenu.disp.dispensing.history'),
+      modifications: this.translateService.get('tabmenu.disp.dispensing.modifications')
+    }).subscribe(translations => {
+      this.tabItems = [
+        {
+          label: translations.products,
+          id: 'p1',
+          command: (event: Event & { item: MenuItem }) =>
+            (this.tabItemActive = event.item)
+        },
+        {
+          label: translations.history,
+          id: 'p2',
+          command: (event: Event & { item: MenuItem }) =>
+            (this.tabItemActive = event.item)
+        },
+        {
+          label: translations.modifications,
+          id: 'p3',
+          command: (event: Event & { item: MenuItem }) =>
+            (this.tabItemActive = event.item)
+        }
+      ];
+      this.tabItemActive = this.tabItems[0]; // si deseas que esté activo el primero
+      this.ref.detectChanges(); // solo si estás teniendo problemas de renderizado
+    });
+
+    this.requestGroupDAOService.getPrescription().subscribe((data)=>{
+      if(data)
+      this.prescription = data;
+    });
     
   }
 

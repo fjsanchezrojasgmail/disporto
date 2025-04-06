@@ -6,11 +6,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PrescriptionInfoComponent } from '../shared/prescription-info/prescription-info.component';
 import { PrescriptionLateralDetailsComponent } from './prescription-lateral-details/prescription-lateral-details.component';
 import { SidebarModule } from 'primeng/sidebar';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'sacyl-prescription-detail',
   standalone: true,
-  imports: [TranslateModule,PrescriptionInfoComponent,PrescriptionLateralDetailsComponent,SidebarModule],
+  imports: [CommonModule,TranslateModule,PrescriptionInfoComponent,PrescriptionLateralDetailsComponent,SidebarModule],
   templateUrl: './prescription-detail.component.html',
   styleUrls: ['./prescription-detail.component.css']
 })
