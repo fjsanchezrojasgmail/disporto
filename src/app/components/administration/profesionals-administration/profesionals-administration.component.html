@@ -1,3 +1,124 @@
-<p>
-  profesionals-administration works!
-</p>
+<div class="flex flex-column h-full w-full">
+    <p-button class="m-3" [label]="'administration.button.label.create_profesional' | translate" icon="pi pi-plus"
+        (onClick)="create()">
+    </p-button>
+    <p-table #dt class="overflow-hidden" [value]="list" dataKey="id" [rows]="30" [scrollable]="true" [paginator]="true"
+        [loading]="loading" scrollHeight="flex">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="code">{{'administration.table.label.code' | translate}}
+                    <p-sortIcon field="code"></p-sortIcon>
+                </th>
+                <th pSortableColumn="name">{{'administration.table.label.name' | translate}}
+                    <p-sortIcon field="name"></p-sortIcon>
+                </th>
+                <th pSortableColumn="surname1">{{'administration.table.label.surname1' | translate}}
+                    <p-sortIcon field="surname1"></p-sortIcon>
+                </th>
+                <th pSortableColumn="surname2">{{'administration.table.label.surname2' | translate}}
+                    <p-sortIcon field="surname2"></p-sortIcon>
+                </th>
+                <th pSortableColumn="dni">{{'administration.table.label.dni' | translate}}
+                    <p-sortIcon field="dni"></p-sortIcon>
+                </th>
+                <th pSortableColumn="state">{{'administration.table.label.state' | translate}}
+                    <p-sortIcon field="state"></p-sortIcon>
+                </th>
+                <th pSortableColumn="typeDescription">{{'administration.table.label.type' | translate}}
+                    <p-sortIcon field="typeDescription"></p-sortIcon>
+                </th>
+                <th>
+                </th>
+                <th>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input pInputText type="text" (input)="applyInputFilter($event.target, 'code', 'contains')"
+                        [placeholder]="'administration.table.label.code' | translate" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="applyInputFilter($event.target, 'name', 'contains')"
+                        [placeholder]="'administration.table.label.name' | translate" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="applyInputFilter($event.target, 'surname1', 'contains')"
+                        [placeholder]="'administration.table.label.surname1' | translate" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="applyInputFilter($event.target, 'surname2', 'contains')"
+                        [placeholder]="'administration.table.label.surname2' | translate" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="applyInputFilter($event.target, 'dni', 'contains')"
+                        [placeholder]="'administration.table.label.dni' | translate" class="w-full">
+                </th>
+                <th>
+                    <p-dropdown [options]="statusOptions" (onChange)="applyComboFilter($event, 'status', 'contains');"
+                        placeholder="Estado" class="w-full" [showClear]="true">
+                        <ng-template let-option pTemplate="selectedItem">
+                            <span>{{ option | translate}}</span>
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <span>{{ option | translate}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </th>
+                <th>
+                    <input pInputText type="text"
+                        (input)="applyInputFilter($event.target, 'typeDescription','contains')"
+                        [placeholder]="'administration.table.label.type' | translate" class="w-full">
+                </th>
+                <th>
+                </th>
+                <th style="width: 105px;">
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-profesional>
+            <tr>
+                <td>
+                    <span>{{ profesional.code }}</span>
+                </td>
+                <td>
+                    <span>{{ profesional.name }}</span>
+                </td>
+                <td>
+                    <span>{{ profesional.surname1 }}</span>
+                </td>
+                <td>
+                    <span>{{ profesional.surname2 }}</span>
+                </td>
+                <td>
+                    <span>{{ profesional.dni }}</span>
+                </td>
+                <td>
+                    <span *ngIf="profesional.state == true">Pasivo</span>
+                    <span *ngIf="profesional.state == false">Activo</span>
+                </td>
+                <td>
+                    <span>{{ profesional.typeDescription }}</span>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <sacyl-admin-actions-button (menuAction)="menuAction(profesional, $event)">
+                    </sacyl-admin-actions-button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">
+                    <sacyl-no-results></sacyl-no-results>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-sidebar class="max-w-max" [visible]="currentMode !== undefined" (onHide)="currentMode = undefined"
+        position="right">
+        <sacyl-profesional-edit-or-create *ngIf="currentMode !== undefined" [profesional]="profesional"
+            [mode]="currentMode" (hide)="onHide()">
+        </sacyl-profesional-edit-or-create>
+    </p-sidebar>
+</div>

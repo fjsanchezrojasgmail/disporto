@@ -1,3 +1,153 @@
-<p>
-  regularisations-administration works!
-</p>
+<div class="flex flex-column h-full w-full">
+    <p-button class="m-3" [label]="'administration.button.label.create_regulation' | translate" icon="pi pi-plus"
+        (onClick)="create()">
+    </p-button>
+    <p-table #dt class="overflow-hidden" [value]="list" dataKey="id" [rows]="30" [scrollable]="true" scrollHeight="flex"
+        [paginator]="true" [loading]="loading" [multiSortMeta]="sortArray">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="code">{{'administration.table.label.code' | translate}}
+                    <p-sortIcon field="code"></p-sortIcon>
+                </th>
+                <th pSortableColumn="description">{{'administration.table.label.description' | translate}}
+                    <p-sortIcon field="description"></p-sortIcon>
+                </th>
+                <th pSortableColumn="province.description">{{'administration.table.label.province' | translate}}
+                    <p-sortIcon field="province.description"></p-sortIcon>
+                </th>
+                <th pSortableColumn="billingType.description">{{'administration.table.label.billing_type' | translate}}
+                    <p-sortIcon field="billingType.description"></p-sortIcon>
+                </th>
+                <th pSortableColumn="establishmentCode">{{'administration.table.label.center' | translate}}
+                    <p-sortIcon field="establishmentCode"></p-sortIcon>
+                </th>
+                <th pSortableColumn="balance">{{'administration.table.label.balance' | translate}}
+                    <p-sortIcon field="balance"></p-sortIcon>
+                </th>
+                <th pSortableColumn="status">{{'administration.table.label.activePasive' | translate}}
+                    <p-sortIcon field="status"></p-sortIcon>
+                </th>
+                <th pSortableColumn="state">{{'administration.table.label.regularisationState' | translate}}
+                    <p-sortIcon field="state"></p-sortIcon>
+                </th>
+                <th pSortableColumn="quantity">{{'administration.table.label.quantity' | translate}}
+                    <p-sortIcon field="quantity"></p-sortIcon>
+                </th>
+                <th style="width: 105px;">
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input pInputText type="text" (input)="applyInputFilter($event.target, 'code', 'contains')"
+                        placeholder="Search by code" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="applyInputFilter($event.target, 'description', 'contains')"
+                        placeholder="Search by description" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text"
+                        (input)="applyInputFilter($event.target, 'province.description', 'contains')"
+                        placeholder="Search by province" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text"
+                        (input)="applyInputFilter($event.target, 'billingType.description', 'contains')"
+                        placeholder="Search by billing type" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text"
+                        (input)="applyInputFilter($event.target, 'establishmentCode', 'contains')"
+                        placeholder="Search by Establishment" class="w-full">
+                </th>
+                <th>
+                    <p-dropdown [options]="balanceOptions" (onChange)="applyComboFilter($event, 'balance', 'contains');"
+                        placeholder="Balance" class="w-full" [showClear]="true">
+                        <ng-template let-option pTemplate="selectedItem">
+                            <span>{{balanceInfo(option) | translate}}</span>
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <span>{{balanceInfo(option) | translate}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </th>
+                <th>
+                    <p-dropdown [options]="statusOptions" (onChange)="applyComboFilter($event, 'status', 'contains');"
+                        placeholder="Activo/Pasivo" class="w-full" [showClear]="true">
+                        <ng-template let-option pTemplate="selectedItem">
+                            <span>{{ option | translate}}</span>
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <span>{{ option | translate}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </th>
+                <th>
+                    <p-dropdown [options]="stateOptions" (onChange)="applyComboFilter($event, 'state', 'contains');"
+                        placeholder="Estado" class="w-full" [showClear]="true">
+                        <ng-template let-option pTemplate="selectedItem">
+                            <span>{{ stateInfo(option) | translate}}</span>
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <span>{{ stateInfo(option) | translate}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </th>
+                <th>
+                </th>
+                <th>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-regularisation>
+            <tr>
+                <td>
+                    <span>{{ regularisation.code }}</span>
+                </td>
+                <td>
+                    <span>{{ regularisation.description }}</span>
+                </td>
+                <td>
+                    <span>{{ regularisation.province.description }}</span>
+                </td>
+                <td>
+                    <span>{{ regularisation.billingType.description }}</span>
+                </td>
+                <td>
+                    <span>{{ regularisation.establishmentCode }}</span>
+                </td>
+                <td>
+                    <span>{{balanceInfo(regularisation.balance) | translate}}</span>
+                </td>
+                <td>
+                    <span *ngIf="regularisation.pasiveDate > today">Activo</span>
+                    <span *ngIf="regularisation.pasiveDate < today">Pasivo</span>
+                </td>
+                <td>
+                    <span *ngIf="regularisation.state == 1">Pendiente</span>
+                    <span *ngIf="regularisation.state == 2">Asociado</span>
+                </td>
+                <td>
+                    <span>{{ regularisation.quantity }}</span>
+                </td>
+                <td>
+                    <sacyl-admin-actions-button (menuAction)="menuAction(regularisation, $event)">
+                    </sacyl-admin-actions-button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">
+                    <sacyl-no-results></sacyl-no-results>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-sidebar class="max-w-max" [visible]="currentMode !== undefined" (onHide)="currentMode = undefined"
+        position="right">
+        <sacyl-regularisation-edit-or-create *ngIf="currentMode !== undefined" [regularisation]="regularisation"
+            [mode]="currentMode" (hide)="onHide()">
+        </sacyl-regularisation-edit-or-create>
+    </p-sidebar>
+</div>

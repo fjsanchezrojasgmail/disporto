@@ -64,7 +64,7 @@ import { PrescriptionDescriptionComponent } from '../shared/prescription-descrip
   ],
   templateUrl: './historical.component.html',
   styleUrls: ['./historical.component.css', '../dispensable-products/dispensable-products.component.css'],
-  providers: [HistoricalService]
+  providers: [HistoricalService,ComunicationDAOService]
 })
 export class HistoricalComponent implements OnInit {
 
@@ -138,7 +138,7 @@ export class HistoricalComponent implements OnInit {
 
   constructor(private profesionalService: ProfesionalService,
     private historicalService: HistoricalService,
-    @Inject('IComunicationDAOService') private comunicationDAOService: ComunicationDAOService
+    private comunicationDAOService: ComunicationDAOService
   ) {
     this.prescriptions$ = this.historicalService.prescriptions$;
     this.historicalService.loading$.subscribe(data => this.loading = data);

@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { ProfessionalType } from '../../../bean/models/administration';
-import { ProfessionalFilter } from 'src/app/bean/models/billing';
+import { ProfessionalFilter } from '../../../bean/models/billing';
 
 
 export interface ProfesionalTypeDao {

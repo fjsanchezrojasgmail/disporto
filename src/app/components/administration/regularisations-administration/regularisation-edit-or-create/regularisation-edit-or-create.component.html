@@ -1,0 +1,138 @@
+<form *ngIf="regularisationForm" [formGroup]="regularisationForm" (ngSubmit)="confirm()">
+    <div class="flex flex-column flex-grown p-2 m-4">
+        <span class="font-semibold uppercase p-2">{{ title | translate }}</span>
+        <div class="flex">
+            <div class="flex flex-column p-2">
+                <label for="province">
+                    {{ 'label.province' | translate }}
+                    <span *ngIf="hasError('province')" class="p-error align-self-start"
+                        [pTooltip]="'dropdown.missing_error' | translate"> *</span>
+                </label>
+                <p-dropdown id="province" [options]="provinces" optionLabel="description"
+                    [placeholder]="'dropdown.default_placeholder' | translate" formControlName="province"
+                    (ngModelChange)="updateEstablishmentList()">
+                </p-dropdown>
+            </div>
+            <div class="flex flex-column p-2">
+                <label for="billingType">
+                    {{ 'administration.table.label.billing_type' | translate }}
+                    <span *ngIf="hasError('billingType')" class="p-error align-self-start"
+                        [pTooltip]="'dropdown.missing_error' | translate"> *</span>
+                </label>
+                <p-dropdown id="billingType" [options]="billingTypes" optionLabel="description"
+                    [placeholder]="'dropdown.default_placeholder' | translate" formControlName="billingType"
+                    (ngModelChange)="updateEstablishmentList()">
+                </p-dropdown>
+            </div>
+            <div *ngIf="showEstablishmentSelector" class="flex flex-column p-2">
+                <label for="establishment">
+                    {{ 'administration.table.label.establishment' | translate }}
+                    <span *ngIf="hasError('establishment')" class="p-error align-self-start"
+                        [pTooltip]="'dropdown.missing_error' | translate"> *</span>
+                </label>
+                <p-dropdown id="establishment" [options]="establishments" optionLabel="centerName" optionValue="code"
+                    [filter]="true" filterBy="code" [placeholder]="'dropdown.default_placeholder' | translate"
+                    [filterPlaceholder]="'profesional.picklist.source.placeholder' | translate"
+                    formControlName="establishment">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="flex">
+            <div class="flex flex-column p-2">
+                <label for="code">
+                    {{ 'administration.table.label.code' | translate }}
+                    <span *ngIf="hasError('code')" class="p-error align-self-start"
+                        [pTooltip]="'dropdown.missing_error' | translate"> *</span>
+                </label>
+                <input id="code" pInputText type="text" formControlName="code" class="w-full">
+            </div>
+            <div class="flex flex-column p-2">
+                <label for="description">
+                    {{ 'administration.table.label.description' | translate }}
+                    <span *ngIf="hasError('description')" class="p-error align-self-start"
+                        [pTooltip]="'dropdown.missing_error' | translate"> *</span>
+                </label>
+                <input id="description" pInputText type="text" formControlName="description" class="w-full">
+            </div>
+        </div>
+        <div class="flex">
+            <div class="flex flex-column p-2">
+                <label for="quantity">
+                    {{ 'administration.table.label.quantity' | translate }}
+                    <span *ngIf="hasError('quantity')" class="p-error align-self-start"
+                        [pTooltip]="'dropdown.missing_error' | translate"> *</span>
+                </label>
+                <p-inputNumber id="quantity" formControlName="quantity" class="w-full" mode="decimal"
+                    [useGrouping]="false" [min]="0" [minFractionDigits]="0" [maxFractionDigits]="2">
+                </p-inputNumber>
+            </div>
+            <div class="flex flex-column p-2">
+                <label for="state">
+                    {{ 'label.state' | translate }}
+                    <span *ngIf="hasError('state')" class="p-error align-self-start"
+                        [pTooltip]="'dropdown.missing_error' | translate"> *</span>
+                </label>
+                <p-dropdown id="state" [options]="stateOptions" formControlName="state" class="w-full">
+                    <ng-template pTemplate="selectedItem" let-option>
+                        <div>{{ stateInfo(option) | translate }}</div>
+                    </ng-template>
+                    <ng-template pTemplate="item" let-option>
+                        <div>{{ stateInfo(option) | translate }}</div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <div class="flex flex-column p-2">
+                <label for="status">
+                    {{ 'regularisation.label.status' | translate }}
+                </label>
+                <p-dropdown id="state" [options]="statusOptions" formControlName="status" class="w-full"
+                    [dropdownIcon]="canModify ? 'pi pi-chevron-down' : 'none'">
+                    <ng-template pTemplate="selectedItem" let-option>
+                        <div>{{ option | translate }}</div>
+                    </ng-template>
+                    <ng-template pTemplate="item" let-option>
+                        <div>{{ option | translate }}</div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="flex">
+            <div class="flex flex-column p-2">
+                <label for="classification">
+                    {{ 'label.classification' | translate }}
+                    <span *ngIf="hasError('classification')" class="p-error align-self-start"
+                        [pTooltip]="'dropdown.missing_error' | translate"> *</span>
+                </label>
+                <p-dropdown id="classification" [options]="classificationOptions" formControlName="classification"
+                    optionValue="code" class="w-full">
+                    <ng-template pTemplate="selectedItem" let-option>
+                        <div>{{ option.description | translate }}</div>
+                    </ng-template>
+                    <ng-template pTemplate="item" let-option>
+                        <div>{{ option.description | translate }}</div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <div class="flex flex-column p-2">
+                <label for="balance">
+                    {{ 'administration.table.label.balance' | translate }}
+                    <span *ngIf="hasError('balance')" class="p-error align-self-start"
+                        [pTooltip]="'dropdown.missing_error' | translate"> *</span>
+                </label>
+                <p-dropdown id="balance" [options]="balanceOptions" optionValue="code" formControlName="balance">
+                    <ng-template pTemplate="selectedItem" let-option>
+                        <div>{{ option.description | translate }}</div>
+                    </ng-template>
+                    <ng-template pTemplate="item" let-option>
+                        <div>{{ option.description | translate }}</div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+        </div>
+        <button *ngIf="canConfirm" pButton type="submit" class="mt-3 align-self-center" [loading]="loading">
+            {{ 'button.confirm' | translate }}
+        </button>
+    </div>
+</form>
+<sacyl-confirm-modal [title]="'profesional.admin.confirm.title'" [context]="'regularisation.admin.confirm.context'"
+    (confirm)="completeConfirm()"></sacyl-confirm-modal>

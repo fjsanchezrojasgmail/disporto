@@ -1,3 +1,112 @@
-<p>
-  center-administration works!
-</p>
+<div class="flex flex-column h-full w-full">
+    <p-button class="m-3" [label]="'administration.button.label.create_establishment' | translate" icon="pi pi-plus"
+        (onClick)="create()">
+    </p-button>
+    <p-table #dt class="overflow-hidden" [value]="list" dataKey="id" [rows]="30" [scrollable]="true" [paginator]="true"
+        [loading]="loading" scrollHeight="flex">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="code">{{'administration.table.label.code' | translate}}
+                    <p-sortIcon field="code"></p-sortIcon>
+                </th>
+                <th pSortableColumn="establishment.centerName">{{'administration.table.label.establishment' |
+                    translate}}
+                    <p-sortIcon field="centerName"></p-sortIcon>
+                </th>
+                <th pSortableColumn="establishment.descriptionRegion">{{'administration.table.label.province' |
+                    translate}}
+                    <p-sortIcon field="descriptionRegion"></p-sortIcon>
+                </th>
+                <th pSortableColumn="status">{{'administration.table.label.activePasive' | translate}}
+                    <p-sortIcon field="status"></p-sortIcon>
+                </th>
+                <th pSortableColumn="establishment.billingDescription">{{'administration.table.label.billing_type' |
+                    translate}}
+                    <p-sortIcon field="billingDescription"></p-sortIcon>
+                </th>
+                <th pSortableColumn="establishment.typeDescription">{{'administration.table.label.type' | translate}}
+                    <p-sortIcon field="typeDescription"></p-sortIcon>
+                </th>
+                <th style="width: 105px;">
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input pInputText type="text" (input)="applyInputFilter($event.target, 'code', 'contains')"
+                        placeholder="Search by code" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="applyInputFilter($event.target, 'centerName', 'contains')"
+                        placeholder="Search by description" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text"
+                        (input)="applyInputFilter($event.target, 'descriptionRegion', 'contains')"
+                        placeholder="Search by province" class="w-full">
+                </th>
+                <th>
+                    <p-dropdown [options]="statusOptions" (onChange)="applyComboFilter($event, 'status', 'contains');"
+                        placeholder="Select Active/Pasive" class="w-full" [showClear]="true">
+                        <ng-template let-option pTemplate="selectedItem">
+                            <span>{{ option | translate}}</span>
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <span>{{ option | translate}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </th>
+                <th>
+                    <input pInputText type="text"
+                        (input)="applyInputFilter($event.target, 'billingDescription', 'contains')"
+                        placeholder="Search by billing type" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text"
+                        (input)="applyInputFilter($event.target, 'typeDescription', 'contains')"
+                        placeholder="Search by Status" class="w-full">
+                </th>
+                <th>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-establishment>
+            <tr>
+                <td>
+                    <span>{{ establishment.code }}</span>
+                </td>
+                <td>
+                    <span>{{ establishment.centerName }}</span>
+                </td>
+                <td>
+                    <span>{{ establishment.descriptionRegion }}</span>
+                </td>
+                <td>
+                    <span>{{ establishment.status | translate}}</span>
+                </td>
+                <td>
+                    <span>{{ establishment.billingDescription }}</span>
+                </td>
+                <td>
+                    <span>{{ establishment.typeDescription }}</span>
+                </td>
+                <td>
+                    <sacyl-admin-actions-button (menuAction)="menuAction(establishment, $event)">
+                    </sacyl-admin-actions-button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">
+                    <sacyl-no-results></sacyl-no-results>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-sidebar class="max-w-max" [visible]="currentMode !== undefined" (onHide)="currentMode = undefined"
+        position="right">
+        <sacyl-establishment-edit-or-create *ngIf="currentMode !== undefined" [establishment]="establishment"
+            [mode]="currentMode" (hide)="onHide()">
+        </sacyl-establishment-edit-or-create>
+    </p-sidebar>
+</div>

@@ -1,0 +1,11 @@
+
+<span class="p-buttonset">
+    <button pButton pRipple icon="pi pi-eye" (click)="detailsAction()"></button>
+    <button pButton pRipple icon="pi pi-angle-down" (click)="menu.toggle($event)"></button>
+</span>
+<p-menu 
+    #menu 
+    [baseZIndex]="1001" 
+    [model]="items" 
+    [popup]="true">
+</p-menu>

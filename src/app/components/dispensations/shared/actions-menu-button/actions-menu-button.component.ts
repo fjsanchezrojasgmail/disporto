@@ -87,6 +87,7 @@ export class ActionsMenuButtonComponent {
   }
 
   get canDetails() {
+    console.log("Estado de la prescripcion: ", this.state);
     switch (this.state) {
       case PrescriptionState.PRESC_PDTE_VALIDACION:
       case PrescriptionState.PRESC_PDTE_NUEVAVALIDACION:

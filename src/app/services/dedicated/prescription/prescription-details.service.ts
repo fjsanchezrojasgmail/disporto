@@ -9,6 +9,7 @@ import { PrescriptionAction, PrescriptionVersioned } from '../../../bean/models/
 import { GlobalFeedbackService } from '../../global-feedback.service';
 import { BundleDaoService } from '../../dao/bundle-dao.service';
 import { Product } from '../../../bean/models/product';
+import { PrescriptionState } from '../../../bean/constants';
 
 @Injectable({
   providedIn: 'any'
@@ -76,8 +77,8 @@ export class PrescriptionDetailsService {
     id: 'rx-0001',
     description: 'Prescripción de Paracetamol y Silla de ruedas',
     status: {
-      code: 'active',
-      display: 'Activa'
+      code: PrescriptionState.PRESC_PDTE_DISPENSAR,
+      display: 'Pendiente de dispensar'
     },
     type: {
       code: 'standard',

@@ -1,0 +1,8 @@
+:host ::ng-deep .p-sidebar-right {
+    top: 0;
+    right: 0;
+    width: 50vw;
+    /* width: auto;
+    max-width: 50vw; */
+    height: 100%;
+}
