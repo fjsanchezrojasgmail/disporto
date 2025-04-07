@@ -1,0 +1,60 @@
+.margin-button {
+    margin-left: 10px;
+}
+
+.column-5 {
+    width: 5%;
+}
+
+.column-7 {
+    width: 7%;
+}
+
+.column-10 {
+    width: 10%;
+}
+
+.column-15 {
+    width: 15%;
+}
+
+.column-20 {
+    width: 20%;
+}
+
+.column-30 {
+    width: 30%;
+}
+
+.column-40 {
+    width: 40%;
+}
+
+.blue-text {
+    color: #3498db;
+}
+
+.w-150 {
+    width: 150px;
+}
+
+.p-datatable-flex-scrollable .p-datatable-wrapper {
+    flex-basis: auto !important;
+    height: 0 !important;
+}
+
+.custom-back-button {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.custom-back-button i {
+    margin-right: 5px;
+}
+
+.custom-back-button span {
+    margin-right: 5px;
+}

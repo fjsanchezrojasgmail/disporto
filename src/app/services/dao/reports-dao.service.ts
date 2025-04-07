@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ReportsDao } from './interfaces/reports-dao.interface';
 import { Observable, map } from 'rxjs';
-import { ReportCriteria, OrtoReport } from 'src/app/bean/models/listings';
+import { ReportCriteria, OrtoReport } from '../../bean/models/listings';
 import { HttpService } from '../http.service';
 
 @Injectable({

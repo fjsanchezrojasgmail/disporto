@@ -1,3 +1,17 @@
-<p>
-  listings works!
-</p>
+<div class="h-full w-full">
+    <h2 *ngIf="!currentView" class="text-center p-2">{{ 'listed.reports.title' | translate }}</h2>
+    <div *ngIf="!currentView" class="grid-container">
+        <div *ngFor="let option of listOptions" class="grid-item" (click)="changeComponent(option.id!)">
+            <div class="card">
+                <div class="card-content">
+                    <span class="pi pi-file"></span>
+                    <span class="font-bold title">{{ option.label! | translate }}</span>
+                    <span class="description">{{ option.title! | translate }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="h-full w-full">
+        <ng-container #container></ng-container>
+    </div>
+</div>

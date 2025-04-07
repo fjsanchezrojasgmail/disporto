@@ -16,7 +16,7 @@ import { RegularisationsAdministrationComponent } from './administration/regular
 
 
 
-export type MenuComponents = DispensationsComponent | BillingComponent |
+export type MenuComponents = DispensationsComponent | BillingComponent | CenterAdministrationComponent | ProfesionalsAdministrationComponent |
 BillingHistoryComponent | ListedComponent | RegularisationsAdministrationComponent;
 
 export const Components: { [key in CodeMenusComponents]: Type<MenuComponents> } = {

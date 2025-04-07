@@ -1,0 +1,116 @@
+<h3 class="p-1">{{'table.title.report6' | translate }}
+  <span class="blue-text">({{ reportList.length }} resultados)</span>
+  <button pButton pRipple type="button" (click)="goBack()" class="custom-back-button">
+    <i class="pi pi-arrow-left"> </i>
+    <span style="margin-right: 0.5rem;">{{ 'table.button.back.listings' | translate }}</span>
+  </button>
+</h3>
+<form [formGroup]="establishmentForm">
+  <div class="flex flex-column h-full">
+    <div class="flex">
+      <div class="flex flex-column p-2">
+        <label>{{ 'filter.report.startDate' | translate }}:</label>
+        <p-calendar class="w-150" formControlName="startDate" dateFormat="dd/mm/yy" [firstDayOfWeek]="1"
+          [showButtonBar]="true" [showIcon]="true"></p-calendar>
+      </div>
+      <div class="flex flex-column p-2">
+        <label>{{ 'filter.report.endDate' | translate }}:</label>
+        <p-calendar class="w-150" formControlName="endDate" dateFormat="dd/mm/yy" [firstDayOfWeek]="1"
+          [showButtonBar]="true" [showIcon]="true"></p-calendar>
+      </div>
+      <div class="flex flex-column p-2">
+        <label>{{ 'filter.report.province' | translate }}:</label>
+        <p-dropdown [options]="provinces" optionLabel="description" formControlName="province"></p-dropdown>
+      </div>
+      <div class="flex flex-column p-2">
+        <label>{{ 'filter.report.state' | translate }}:</label>
+        <p-dropdown [options]="stateOptions" optionLabel="description" formControlName="state">
+          <ng-template pTemplate="item" let-option>
+            <div>{{option.description | translate }}</div>
+          </ng-template>
+          <ng-template pTemplate="selectedItem" let-option>
+            <div>{{ option.description | translate }}</div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+      <div class="flex flex-column p-2">
+        <label>{{ 'filter.report.cif' | translate }}:</label>
+        <input type="text" formControlName="dispensingCenter" class="p-inputtext"
+          [ngClass]="{'ng-invalid ng-dirty': establishmentForm.get('dispensingCenter')?.hasError('required')}">
+      </div>
+      <div class="flex flex-column p-2">
+        <label>{{ 'filter.report.dispensingCenter' | translate }}:</label>
+        <p-dropdown [options]="establishmentList" optionLabel="centerName"
+          (onChange)="updateDispensingCenter($event)"></p-dropdown>
+      </div>
+      <button pButton pRipple type="button" [disabled]="this.establishmentForm.invalid" [loading]="loading"
+        (click)="filterUpdate();" class="align-self-end mb-2">
+        <span style="margin-right: 0.5rem;">{{ 'billing.table.label.search' | translate }}</span>
+        <i class="pi pi-search"></i>
+      </button>
+      <button pButton pRipple type="button" (click)="exportToExcel()" class="margin-button align-self-end mb-2">
+        <span style="margin-right: 0.5rem;">{{ 'table.button.export_excel' | translate }}</span>
+        <i class="pi pi-file-excel"></i>
+      </button>
+    </div>
+  </div>
+</form>
+
+<div class="overflow-hidden">
+  <p-table [value]="reportList" dataKey="cpf" [sortField]="'cpf'" [sortField]="'cpf'" [loading]="loading"
+    [scrollable]="true" scrollHeight="75vh">
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="column-5" pSortableColumn="cpf">{{ 'table.cpf' | translate }}
+          <p-sortIcon field="cpf"></p-sortIcon>
+        </th>
+        <th class="column-10" pSortableColumn="nombre">{{ 'table.name' | translate }}
+          <p-sortIcon field="nombre"></p-sortIcon>
+        </th>
+        <th class="column-10" pSortableColumn="apellidos">{{ 'table.surname' | translate }}
+          <p-sortIcon field="apellidos"></p-sortIcon>
+        </th>
+        <th class="column-10" pSortableColumn="codigo">{{ 'table.code' | translate }}
+          <p-sortIcon field="codigo"></p-sortIcon>
+        </th>
+        <th class="column-10" pSortableColumn="descripcion">{{ 'table.description' | translate }}
+          <p-sortIcon field="descripcion"></p-sortIcon>
+        </th>
+        <th class="column-5" pSortableColumn="rg">{{ 'table.RG' | translate }}
+          <p-sortIcon field="rg"></p-sortIcon>
+        </th>
+        <th class="column-10" pSortableColumn="numeroProductos">{{ 'table.product_count' | translate }}
+          <p-sortIcon field="numeroProductos"></p-sortIcon>
+        </th>
+        <th class="column-10" pSortableColumn="importe">{{ 'table.amount' | translate }}
+          <p-sortIcon field="importe"></p-sortIcon>
+        </th>
+        <th class="column-10" pSortableColumn="aportacion">{{ 'table.contribution' | translate }}
+          <p-sortIcon field="aportacion"></p-sortIcon>
+        </th>
+        <th class="column-10" pSortableColumn="gastoFinal">{{ 'table.final_expense' | translate }}
+          <p-sortIcon field="gastoFinal"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-prescription>
+      <tr>
+        <td class="column-5">{{ prescription.cpf }}</td>
+        <td class="column-7">{{ prescription.nombre }}</td>
+        <td class="column-10">{{ prescription.apellidos }}</td>
+        <td class="column-7">{{ prescription.codigo }}</td>
+        <td class="column-15">{{ prescription.descripcion }}</td>
+        <td class="column-5">{{ prescription.rg }}</td>
+        <td class="column-10">{{ prescription.numeroProductos }}</td>
+        <td class="column-7">{{ prescription.importe }}</td>
+        <td class="column-10">{{ prescription.aportacion }}</td>
+        <td class="column-10">{{ prescription.gastoFinal }}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="10"><sacyl-no-results></sacyl-no-results></td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

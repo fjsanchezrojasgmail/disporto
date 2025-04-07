@@ -25,6 +25,7 @@
     "@ngx-translate/http-loader": "^7.0.0",
     "@primeng/themes": "^19.0.10",
     "@types/fhir": "0.0.35",
+    "exceljs": "^4.4.0",
     "jquery": "2.2.4",
     "pdfmake": "^0.2.18",
     "primeflex": "^4.0.0",
