@@ -88,7 +88,9 @@ export class BillingCentersService {
         }
         else if (data.length === 0 && this.profesionalService.establishment) { //PENDIENTE DE GENERAR EL CIERRE
           this.profesionalService.addBillingActions(BillingActions.GENERATE_CLOSING);
-          this.billingCenters.next(this.createEstablishmentBilling(this.profesionalService.establishment));
+          this.billingCenters.next(
+            this.createEstablishmentBilling(this.profesionalService.establishment)
+          );
         }
         this.loadingFetch.next(false);
       });

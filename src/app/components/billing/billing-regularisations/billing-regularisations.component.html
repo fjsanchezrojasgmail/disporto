@@ -1,0 +1,15 @@
+<p-dialog [header]="'billing.modal.regularisation' | translate" [(visible)]="display" [modal]="true" [draggable]="false"
+    [resizable]="false" class="dialog-styles" (onHide)="onHide()">
+    <div class="flex justify-content-around">
+        <sacyl-billing-pending-regularisations *ngIf="canAssociate" class="mr-2" [generalFilter]="generalFilter">
+        </sacyl-billing-pending-regularisations>
+        <sacyl-billing-related-regularisations>
+        </sacyl-billing-related-regularisations>
+    </div>
+    <ng-template pTemplate="footer">
+        <div class="flex">
+            <p-button *ngIf="canAssociate" (click)="associate()">{{ 'button.associate' | translate }}</p-button>
+            <p-button *ngIf="canConfirm" (click)="confirm()">{{ 'button.confirm' | translate }}</p-button>
+        </div>
+    </ng-template>
+</p-dialog>

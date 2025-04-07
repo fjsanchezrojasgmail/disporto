@@ -1,0 +1,29 @@
+.col-check {
+    width: 45px;
+}
+
+.col-date {
+    width: 145px;
+}
+
+.col-laterality {
+    width: 60px;
+}
+
+.col-units {
+    width: 90px;
+}
+
+
+.col-pvp {
+    align-items: center;
+    width: 125px;
+}
+
+.col-aportation {
+    width: 110px;
+}
+
+.col-expense {
+    width: 110px;
+}

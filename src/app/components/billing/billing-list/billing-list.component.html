@@ -1,0 +1,71 @@
+<div class="overflow-hidden h-full">
+    <p-table [value]="billingEstablishments" dataKey="id" [expandedRowKeys]="expandedRowKeys"
+        (onRowExpand)="showDispensations($event)" (onRowCollapse)="showDispensations($event)" [scrollable]="true"
+        scrollHeight="flex" [loading]="loading">
+        <ng-template pTemplate="header">
+            <tr>
+                <th *ngIf="selectableList">
+                    <p-checkbox [binary]="true" [(ngModel)]="check" (onChange)="generalCheck($event)">
+                    </p-checkbox>
+                </th>
+                <th>{{ 'billing.table.label.province' | translate }}</th>
+                <th>{{ 'billing.table.label.center' | translate }}</th>
+                <th>{{ 'billing.table.label.code' | translate }}</th>
+                <th></th>
+                <th></th>
+                <th>{{ 'billing.table.label.total' | translate }}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-establishment>
+            <tr>
+                <td *ngIf="selectableList">
+                    <p-checkbox [binary]="true" [(ngModel)]="establishment.check">
+                    </p-checkbox>
+                </td>
+                <td>
+                    <div class="flex">
+                        <button class="p-button-text p-button-rounded reduced-button" pButton pRipple
+                            [pRowToggler]="establishment"
+                            [icon]="(establishment.expanded)? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                            type="button">
+                        </button>
+                        <span class="align-self-center">{{ establishment.billing.descriptionRegion }}</span>
+                    </div>
+                </td>
+                <td>{{ establishment.billing.descriptionCenter }}</td>
+                <td>{{ establishment.billing.codeCenter }}</td>
+                <td>
+                    <sacyl-billing-establishment-state [stateCode]="establishment.billing.estadoFacturacion">
+                    </sacyl-billing-establishment-state>
+                </td>
+                <td>
+                    <span *ngIf="establishment.billing.codeFacturacionProvincial"
+                        [pTooltip]="establishment.billing.codeFacturacionProvincial">
+                        <i class="fa-solid fa-file-invoice-dollar">
+                        </i>
+                    </span>
+                </td>
+                <td>{{ establishment.billing.totalGasto || 0 }} €</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">
+                    <sacyl-no-results></sacyl-no-results>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-establishment>
+            <tr>
+                <td colspan="7" style="padding: 0rem;">
+                    <sacyl-billing-prescriptions-table [center]="establishment.billing.codeCenter"
+                        [selectable]="establishment.selectableDispensation"
+                        [billingCode]="establishment.billing.codeFactura" [check]="establishment.check"
+                        [state]="establishment.billing.estadoFacturacion" [generalFilter]="generalFilter"
+                        (updatedTotals)="updateTotal()">
+                    </sacyl-billing-prescriptions-table>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

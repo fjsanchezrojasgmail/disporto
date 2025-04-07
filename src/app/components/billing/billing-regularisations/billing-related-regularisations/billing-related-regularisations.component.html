@@ -1,0 +1,41 @@
+<p-table class="overflow-hidden" [value]="list" dataKey="id" [scrollable]="true" scrollHeight="flex"
+    [loading]="loading">
+    <ng-template pTemplate="header">
+        <tr>
+            <th colspan="4">{{'billing.modal.table.related' | translate}}</th>
+        </tr>
+        <tr class="background-light-blue">
+            <th>{{'administration.table.label.code' | translate}}
+            </th>
+            <th>{{'administration.table.label.description' | translate}}
+            </th>
+            <th>{{'administration.table.label.balance' | translate}}
+            </th>
+            <th>{{'administration.table.label.quantity' | translate}}
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-regularisation>
+        <tr class="background-ultra-light-blue">
+            <td>
+                <span>{{ regularisation.code }}</span>
+            </td>
+            <td>
+                <span>{{ regularisation.description }}</span>
+            </td>
+            <td>
+                <span>{{ balanceInfo(regularisation.balance) | translate }}</span>
+            </td>
+            <td>
+                <span>{{ regularisation.quantity }}</span>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="4">
+                <sacyl-no-results></sacyl-no-results>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

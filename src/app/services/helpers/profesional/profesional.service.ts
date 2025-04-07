@@ -87,7 +87,14 @@ export class ProfesionalService {
     return { 
       "code" : this.mockEstablishment[0].code,
       "centerName" : this.mockEstablishment[0].centerName,
-      "typeProduct" : this.mockEstablishment[0].typeProduct
+      "typeProduct" : this.mockEstablishment[0].typeProduct,
+      "typeStablishment" : this.mockEstablishment[0].typeStablishment,
+      "codeRegion" : this.mockEstablishment[0].codeRegion,
+      "descriptionRegion":  this.mockEstablishment[0].descriptionRegion,
+      "codeFact" : this.mockEstablishment[0].codeFact,
+      "cif": this.mockEstablishment[0].cif,
+      "phone": this.mockEstablishment[0].phone,
+      "address": this.mockEstablishment[0].address,
     };
   }
 

@@ -5,7 +5,7 @@ import { Prescription } from '../../bean/models/prescription';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
-import { EstablishmentBillingTypes } from 'src/app/bean/constants';
+import { EstablishmentBillingTypes } from '../../bean/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class PdfService {
 
   constructor() {
     this.pdfBuilder = pdfMake;
-    this.pdfBuilder.vfs = pdfFonts.pdfMake.vfs;
+    this.pdfBuilder.vfs = pdfFonts.vfs;
 
   }
 

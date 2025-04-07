@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Table, TableModule } from 'primeng/table';
 import { AdminActions, AdminStatus, Modes } from '../../../bean/constants';
@@ -20,6 +20,7 @@ import { AdminActionsButtonComponent } from '../shared/admin-actions-button/admi
 import { EstablishmentEditOrCreateComponent } from './establishment-edit-or-create/establishment-edit-or-create.component';
 import { NoResultsComponent } from '../../shared/no-results/no-results.component';
 import { SidebarModule } from 'primeng/sidebar';
+import { forkJoin } from 'rxjs';
 
 
 type EstablishmentRow = Establishment & {
@@ -75,14 +76,27 @@ export class CenterAdministrationComponent {
   constructor(
     private establishmentService: EstablishmentDaoService,
     private translate: TranslateService,
+    private ref: ChangeDetectorRef,
     private constantsService: ConstantsService) {
 
-    translate.get('button.edit').subscribe(data => this.editingLabel = data);
-    translate.get('button.consult').subscribe(data => this.consultingLabel = data);
+    /*translate.get('button.edit').subscribe(data => this.editingLabel = data);
+    translate.get('button.consult').subscribe(data => this.consultingLabel = data);*/
   }
 
   ngOnInit() {
     this.fetchEstablishments();
+
+    forkJoin({
+          edit: this.translate.get('button.edit'),
+          consult: this.translate.get('button.consult'),
+        }).subscribe(translations => {
+         
+          this.editingLabel = translations.edit,
+          this.consultingLabel = translations.consult
+          this.ref.detectChanges(); // solo si estás teniendo problemas de renderizado
+        });
+    
+
   }
 
   applyInputFilter($event: EventTarget | null, field: string, operation: string) {

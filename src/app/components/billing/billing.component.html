@@ -1,3 +1,55 @@
-<p>
-  billing works!
-</p>
+<div class="flex flex-column h-full w-full">
+    <div class="flex justify-content-between gray-back bottom-shadow p-2" style="z-index: 3;">
+        <div *ngIf="generalFilter" class="flex">
+            <div class="flex flex-column mx-2">
+                <label>{{ 'billing.filter.label.month' | translate}}</label>
+                <p-dropdown optionLabel="description" [options]="months" placeholder="---"
+                    [(ngModel)]="generalFilter.month" (ngModelChange)="applyFilter()">
+                    <ng-template pTemplate="item" let-option>
+                        <div>{{option.description | translate }}</div>
+                    </ng-template>
+                    <ng-template pTemplate="selectedItem" let-option>
+                        <div>{{ option.description | translate }}</div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <div class="flex flex-column mx-2">
+                <label>{{ 'billing.filter.label.year' | translate}}</label>
+                <p-calendar view="year" dateFormat="yy" [(ngModel)]="generalFilter.year"
+                    (ngModelChange)="applyFilter()">
+                </p-calendar>
+            </div>
+            <div class="flex flex-column mx-2">
+                <label>{{ 'billing.filter.label.asociation' | translate}}</label>
+                <p-dropdown optionLabel="description" [options]="billingTypes" [disabled]="disableBillingType"
+                    placeholder="---" [(ngModel)]="generalFilter.billingType" (ngModelChange)="applyFilter()">
+                </p-dropdown>
+            </div>
+            <div class="flex flex-column mx-2">
+                <label>{{ 'billing.filter.label.province' | translate}}</label>
+                <p-dropdown optionLabel="description" [options]="provinces" [disabled]="disableProvinces"
+                    placeholder="---" [(ngModel)]="generalFilter.province" (ngModelChange)="applyFilter()">
+                </p-dropdown>
+            </div>
+            <div *ngIf="generalFilter.billingType?.code === independent" class="flex flex-column mx-2">
+                <label>{{ 'billing.filter.label.code' | translate}}</label>
+                <input type="text" pInputText [disabled]="disableBillingType" [(ngModel)]="generalFilter.code"
+                    [placeholder]="'billing.filter.placeholder.code.min' | translate"
+                    [pTooltip]="'billing.filter.placeholder.code' | translate" (ngModelChange)="applyFilter()" />
+            </div>
+        </div>
+        <div class="flex">
+            <button *ngIf="pendingEstablishments.length > 0" pButton pRipple type="button" icon="pi pi-bell"
+                class="p-button-rounded p-button-warning p-button-text mr-2" (click)="showNotifications()"></button>
+            <sacyl-billing-actions [loading]="loading" (menuAction)="menuAction($event)">
+            </sacyl-billing-actions>
+        </div>
+    </div>
+    <sacyl-billing-list *ngIf="generalFilter" class="h-full overflow-hidden" [generalFilter]="generalFilter"
+        (pendingEstablishment)="updateNotifications($event)">
+    </sacyl-billing-list>
+    <sacyl-confirm-dni-modal (generate)="generate()"></sacyl-confirm-dni-modal>
+    <sacyl-notifications-dialog [establishments]="pendingEstablishments"></sacyl-notifications-dialog>
+    <sacyl-billing-regularisations *ngIf="generalFilter" [generalFilter]="generalFilter"
+        (confirmation)="confirmBilling()" (close)="regularisationModalClose($event)"></sacyl-billing-regularisations>
+</div>

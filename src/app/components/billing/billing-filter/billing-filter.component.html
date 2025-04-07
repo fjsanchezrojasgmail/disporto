@@ -1,0 +1,46 @@
+<div class="flex justify-content-between gray-back bottom-shadow p-2">
+    <div *ngIf="filter" class="flex align-items-end">
+        <button 
+            pButton 
+            pRipple 
+            type="button"
+            icon="pi pi-refresh"
+            class="p-button-rounded p-button-secondary p-button-outlined mr-2"
+            (click)="resetFilter()">
+        </button>
+        <div class="flex flex-column mx-2">
+            <label>{{ 'billing.table.label.center_type' | translate}}</label>
+            <p-dropdown
+                optionLabel="display"
+                [options]="types"
+                placeholder="---"
+                [(ngModel)]="filter.type">
+            </p-dropdown>
+        </div>
+        <div class="flex flex-column mx-2">
+            <label>{{ 'billing.table.label.center' | translate}}</label>
+            <input type="text" pInputText/>
+        </div>
+        <div class="flex flex-column mx-2">
+            <label>{{ 'billing.table.label.state' | translate}}</label>
+            <p-dropdown
+                optionLabel="display"
+                [options]="states"
+                placeholder="---"
+                [(ngModel)]="filter.state">
+            </p-dropdown>
+        </div>
+        <button 
+            pButton 
+            pRipple 
+            type="button"
+            icon="pi pi-search"
+            class="p-button-rounded p-button-secondary p-button-outlined ml-2 color-blue"
+            (click)="updateFilter()">
+            <span>{{ '' | translate }}</span>
+        </button>
+    </div>
+    <p-paginator *ngIf="totalRecords && totalRecords > 0" [rows]="10" [totalRecords]="totalRecords"
+        (onPageChange)="onPageChange($event)" [showJumpToPageDropdown]="true" [showPageLinks]="false">
+    </p-paginator>   
+</div>

@@ -1,15 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { BillingFilter } from '../../bean/models/billing';
+import { BillingListComponent } from '../billing/billing-list/billing-list.component';
 
 @Component({
-  selector: 'app-billing-history',
+  selector: 'sacyl-billing-history',
+  standalone: true,
+  imports: [BillingListComponent],
   templateUrl: './billing-history.component.html',
   styleUrls: ['./billing-history.component.css']
 })
-export class BillingHistoryComponent implements OnInit {
+export class BillingHistoryComponent {
+  defaultFilter: BillingFilter = {
+    state: null,
+    type: null
+  };
 
-  constructor() { }
+  filter?: BillingFilter;
 
-  ngOnInit() {
+  @ViewChild(BillingListComponent) list!: BillingListComponent;
+
+  constructor() {
+    this.filter = this.defaultFilter;
+  }
+
+  updateFilter() {
+    this.list.applyFilter();
   }
 
 }

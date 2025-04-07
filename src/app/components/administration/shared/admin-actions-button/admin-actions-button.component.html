@@ -1,7 +1,11 @@
 
 <span class="p-buttonset">
-    <button pButton pRipple icon="pi pi-eye" (click)="detailsAction()"></button>
-    <button pButton pRipple icon="pi pi-angle-down" (click)="menu.toggle($event)"></button>
+    <button pButton pRipple icon="pi pi-eye" severity="success" (click)="detailsAction()">
+      <span pButtonLabel>{{ detailsLabel }}</span>
+    </button>
+    <button pButton pRipple icon="pi pi-angle-down" severity="success" (click)="menu.toggle($event)">
+      <span pButtonLabel>{{ editLabel }}</span>
+    </button>
 </span>
 <p-menu 
     #menu 

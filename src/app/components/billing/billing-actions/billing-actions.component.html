@@ -1,0 +1,14 @@
+<div class="flex">
+    <button *ngIf="canConsultReg" pButton pRipple type="button" class="p-button-rounded p-button-text mr-2"
+        (click)="checkRegularisations()">
+        <i class="fa-solid fa-list-check"></i>
+    </button>
+    <span *ngIf="items.length > 0" class="p-buttonset">
+        <button pButton pRipple [label]="items[0].label | defaultText: ''" [loading]="loading || false"
+            (click)="runFirstCommand()"></button>
+        <button *ngIf="items.length > 1" pButton pRipple icon="pi pi-angle-down" (click)="menu.toggle($event)"></button>
+    </span>
+</div>
+
+<p-menu #menu [baseZIndex]="1001" [model]="items" [popup]="true">
+</p-menu>

@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { AdminStatus, RegularisationBalanceCodes, RegularisationClassificationCodes, RegularisationStates } from '../../bean/constants';
 import { Regularisation, RegularisationAdm, RegularisationAssociation, RegularisationCodes } from '../../bean/models/administration';
 import { BasicCode } from '../../bean/simple.types';
@@ -31,10 +31,11 @@ export class RegularisationDaoService implements RegularisationDao {
     }));
   }
   search(filter: Partial<RegularisationAdm>): Observable<Regularisation[]> {
-    return this.http.post<RegularisationAdm[], Partial<RegularisationAdm>>('/api/rest/regularizacion/adm/search', filter).pipe(map(value => {
+    /*return this.http.post<RegularisationAdm[], Partial<RegularisationAdm>>('/api/rest/regularizacion/adm/search', filter).pipe(map(value => {
       if (value) return value.map(r => this.mapAdmToRegularisation(r));
       return [];
-    }));
+    }));*/
+    return of(this.MOCK_REGULARISATIONS);
   }
 
   searchPending(filter: Partial<RegularisationAdm>): Observable<boolean> {
@@ -110,4 +111,74 @@ export class RegularisationDaoService implements RegularisationDao {
     };
     return newReg;
   }
+
+  private MOCK_REGULARISATIONS: Regularisation[] = [
+    {
+      id: '1',
+      code: 'REG-001',
+      description: 'Regularización por exceso de stock',
+      province: {
+        code: '08',
+        description: 'Valladolid',
+      },
+      billingType: {
+        code: 'BT1',
+        description: 'Facturación normal',
+      },
+      establishmentCode: 'EST-001',
+      quantity: 100,
+      balance: RegularisationBalanceCodes.I,
+      status: AdminStatus.ACTIVE,
+      registrationDate: new Date('2025-01-10'),
+      provincialBillingCode: 'PB-001',
+      establishmentBillingCode: 'EB-001',
+      classification: RegularisationClassificationCodes.P,
+      state: RegularisationStates.PENDING,
+    },
+    {
+      id: '2',
+      code: 'REG-002',
+      description: 'Regularización por devolución',
+      province: {
+        code: '03',
+        description: 'León',
+      },
+      billingType: {
+        code: 'BT2',
+        description: 'Facturación especial',
+      },
+      establishmentCode: 'EST-002',
+      quantity: 50,
+      balance: RegularisationBalanceCodes.D,
+      pasiveDate: new Date('2025-02-15'),
+      status: AdminStatus.PASIVE,
+      registrationDate: new Date('2025-02-01'),
+      provincialBillingCode: 'PB-002',
+      establishmentBillingCode: 'EB-002',
+      classification: RegularisationClassificationCodes.Q,
+      state: RegularisationStates.ASSOCIATED,
+    },
+    {
+      id: '3',
+      code: 'REG-003',
+      description: 'Regularización por error administrativo',
+      province: {
+        code: '05',
+        description: 'Salamanca',
+      },
+      billingType: {
+        code: 'BT3',
+        description: 'Facturación urgente',
+      },
+      establishmentCode: 'EST-003',
+      quantity: 75,
+      balance: RegularisationBalanceCodes.I,
+      status: AdminStatus.ACTIVE,
+      registrationDate: new Date('2025-03-01'),
+      provincialBillingCode: 'PB-003',
+      establishmentBillingCode: 'EB-003',
+      classification: RegularisationClassificationCodes.P,
+      state: RegularisationStates.PENDING,
+    }
+  ];
 }

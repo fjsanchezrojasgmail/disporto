@@ -1,0 +1,4 @@
+/* Quitamos el border de la ultima fila de la tabla interior */
+:host ::ng-deep .table-products .p-datatable-tbody > tr:last-child > td {
+    border-bottom: none;
+}

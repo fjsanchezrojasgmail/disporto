@@ -1,0 +1,47 @@
+<p-table class="overflow-hidden" [value]="list" dataKey="id" [scrollable]="true" scrollHeight="flex"
+    [loading]="loading">
+    <ng-template pTemplate="header">
+        <tr>
+            <th colspan="5">{{'billing.modal.table.pending' | translate}}</th>
+        </tr>
+        <tr>
+            <th>
+            </th>
+            <th>{{'administration.table.label.code' | translate}}
+            </th>
+            <th>{{'administration.table.label.description' | translate}}
+            </th>
+            <th>{{'administration.table.label.balance' | translate}}
+            </th>
+            <th>{{'administration.table.label.quantity' | translate}}
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-regularisation>
+        <tr>
+            <td>
+                <p-checkbox [binary]="true" [(ngModel)]="regularisation.check">
+                </p-checkbox>
+            </td>
+            <td>
+                <span>{{ regularisation.code }}</span>
+            </td>
+            <td>
+                <span>{{ regularisation.description }}</span>
+            </td>
+            <td>
+                <span>{{ balanceInfo(regularisation.balance) | translate }}</span>
+            </td>
+            <td>
+                <span>{{ regularisation.quantity }}</span>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="5">
+                <sacyl-no-results></sacyl-no-results>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

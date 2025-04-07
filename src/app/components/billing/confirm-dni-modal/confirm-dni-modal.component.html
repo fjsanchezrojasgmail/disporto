@@ -1,0 +1,10 @@
+<p-dialog [header]="'billing.modal.title' | translate" [(visible)]="display" [modal]="true" [draggable]="false"
+    [resizable]="false">
+    <div class="flex flex-column p-2">
+        <label for="dni" class="py-2">{{ 'billing.modal.dni' | translate }}:</label>
+        <input id="dni" pInputText type="text" [(ngModel)]="dni" class="w-full">
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button (click)="confirm()">{{ 'button.verify_generate' | translate }}</p-button>
+    </ng-template>
+</p-dialog>

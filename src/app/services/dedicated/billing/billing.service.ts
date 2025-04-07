@@ -21,10 +21,14 @@ import { RegularisationDaoService } from '../../dao/regularisation-dao.service';
 import { GlobalFeedbackService } from '../../global-feedback.service';
 import { PdfService } from '../../helpers/pdf.service';
 import { ProfesionalService } from '../../helpers/profesional/profesional.service';
-import { GeneralBilling, GeneralBillingTable, IndividualBilling, IndividualBillingItem, ProvincialBilling, ProvincialBillingItem, ProvincialBillingRegularizations } from 'src/app/bean/models/pdf-model';
+import { GeneralBilling, 
+  GeneralBillingTable, 
+  IndividualBilling, 
+  IndividualBillingItem, 
+  ProvincialBilling, ProvincialBillingItem, ProvincialBillingRegularizations } from '../../../bean/models/pdf-model';
 import { RequestGroupDaoService } from '../../dao/request-group-dao.service';
-import { criteriaRGBillingByCenter } from 'src/app/bean/fhir-r3/criterias/request-group-criteria';
-import { Product } from 'src/app/bean/models/product';
+import { criteriaRGBillingByCenter } from '../../../bean/fhir-r3/criterias/request-group-criteria';
+import { Product } from '../../../bean/models/product';
 
 @Injectable({
   providedIn: 'any'

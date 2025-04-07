@@ -1,0 +1,112 @@
+<p-table dataKey="id" [paginator]="true" [rows]="10" [scrollable]="true" scrollHeight="500px"
+    [expandedRowKeys]="expandedRowKeys" [value]="dispensations" [loading]="loading">
+    <ng-template pTemplate="header">
+        <tr>
+            <th *ngIf="selectable" class="col-check"></th>
+            <th class="col-date">{{ 'billing.table.label.date' | translate }}</th>
+            <th>{{ 'billing.table.label.prescription' | translate }}</th>
+            <th class="col-laterality"></th>
+            <th class="col-units">{{ 'billing.table.label.units' | translate }}</th>
+            <th class="col-pvp uppercase">{{ 'table.pvp' | translate }}</th>
+            <th class="col-pvp uppercase">{{ 'table.pvp_tax' | translate }}</th>
+            <th class="col-aportation uppercase">{{ 'table.aportation' | translate }}</th>
+            <th class="col-expense uppercase">{{ 'table.final_expense' | translate }}</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-prescription>
+        <tr>
+            <td *ngIf="selectable" class="col-check">
+                <p-checkbox [binary]="true" [(ngModel)]="prescription.check" (ngModelChange)="updatedTotals.emit()">
+                </p-checkbox>
+            </td>
+            <td class="col-date">{{ prescription.dispenseDate | date: 'dd/MM/yyyy' }}</td>
+            <td>
+                <sacyl-prescription-description [prescription]="prescription"></sacyl-prescription-description>
+            </td>
+            <td class="col-laterality">
+                <sacyl-laterality *ngIf="prescription.products?.length === 1"
+                    [laterality]="prescription.products[0].laterality"></sacyl-laterality>
+            </td>
+            <td class="col-units">
+                <span *ngIf="prescription.products.length === 1" class="w-full">{{
+                    prescription.products[0].units.value }}</span>
+            </td>
+            <td class="col-pvp ">
+                <span *ngIf="prescription.products.length === 1; else elseBlock" class="w-full">{{
+                    prescription.products[0].pvp.value * prescription.products[0].units.value }}</span>
+                <ng-template #elseBlock>
+                    <span #elseBlock class="w-full">{{ prescription.totalPvp }}</span>
+                </ng-template>
+            </td>
+            <td class="col-pvp ">
+                <span *ngIf="prescription.products.length === 1; else elseBlock2" class="w-full">{{
+                    prescription.products[0].pvp.total }}</span>
+                <ng-template #elseBlock2>
+                    <span #elseBlock2 class="w-full">{{ prescription.totalPvpTax }}</span>
+                </ng-template>
+            </td>
+            <td class="col-aportation">
+                <span *ngIf="prescription.products.length === 1; else elseBlock3" class="w-full">{{
+                    prescription.products[0].userConsideration.realAportation
+                    }}</span>
+                <ng-template #elseBlock3>
+                    <span #elseBlock3 class="w-full">{{ prescription.totalAportation }}</span>
+                </ng-template>
+            </td>
+            <td class="col-expense">
+                <span *ngIf="prescription.products.length === 1; else elseBlock4" class="w-full">{{
+                    calcFinalCharge(prescription.products[0]) }} €</span>
+                <ng-template #elseBlock4>
+                    <span #elseBlock4 class="w-full">{{ prescription.totalDiff }}</span>
+                </ng-template>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-prescription>
+        <tr>
+            <td colspan="9" style="padding: 0rem;">
+                <p-table class="table-products" [value]="prescription.products" dataKey="code" styleClass="p-0 mb-1">
+                    <ng-template pTemplate="body" let-product>
+        <tr>
+            <td *ngIf="selectable" class="col-check"><span class="w-full"></span></td>
+            <td class="col-date"><span class="w-full"></span></td>
+            <td>
+                <sacyl-product-description [product]="product"></sacyl-product-description>
+            </td>
+            <td class="col-laterality">
+                <sacyl-laterality [laterality]="product.laterality"></sacyl-laterality>
+            </td>
+            <td class="col-units">
+                <span class="w-full">{{ product.units.value }}</span>
+            </td>
+            <td class="col-pvp">
+                <span class="w-full">{{ product.pvp.value * product.units.value }}</span>
+            </td>
+            <td class="col-pvp">
+                <span class="w-full">{{ product.pvp.total }}</span>
+            </td>
+            <td class="col-aportation">
+                <span class="w-full">{{ product.userConsideration.realAportation * product.units.value }}</span>
+            </td>
+            <td class="col-expense">
+                <span class="w-full">{{ calcFinalCharge(product) }} €</span>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+</td>
+</tr>
+</ng-template>
+<ng-template pTemplate="emptymessage">
+    <tr>
+        <td *ngIf="selectable; else elseBlock5" colspan="9">
+            <sacyl-no-results></sacyl-no-results>
+        </td>
+        <ng-template #elseBlock5>
+            <td colspan="8">
+                <sacyl-no-results></sacyl-no-results>
+            </td>
+        </ng-template>
+    </tr>
+</ng-template>
+</p-table>
