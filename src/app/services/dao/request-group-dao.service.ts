@@ -9,6 +9,7 @@ import { BundleModel } from '../../bean/fhir-r3/domain/bundle';
 import { ConfigService } from '../config.service';
 import { RequestGroupIntent, RequestGroupPriority, RequestGroupStatus } from '../../bean/fhir-r3/fhir-constants';
 import { Prescription, PrescriptionRow } from '../../bean/models/prescription';
+import { PrescriptionState } from '../../bean/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -70,8 +71,8 @@ export class RequestGroupDaoService implements RequestGroupDao {
       },
       description: 'Producto tipo A',
       status: {
-        code: 'active',
-        display: 'Activa'
+        code: PrescriptionState.PRESC_PDTE_DISPENSAR,
+        display: 'Pendiente dispensar'
       },
       type: {
         code: 'TYPE-A',
@@ -264,8 +265,8 @@ export class RequestGroupDaoService implements RequestGroupDao {
     },
     description: 'Producto tipo A',
     status: {
-      code: 'active',
-      display: 'Activa'
+      code: PrescriptionState.PRESC_PDTE_DISPENSAR,
+      display: 'Pendiente dispensar'
     },
     type: {
       code: 'TYPE-A',

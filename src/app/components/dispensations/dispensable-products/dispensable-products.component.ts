@@ -62,34 +62,34 @@ import { Establishment } from '../../../bean/models/administration';
   selector: 'sacyl-products',
   standalone: true,
   imports: [
-      CommonModule,
-      TableModule,
-      PaginatorModule,
-      TranslateModule,
-      NoResultsComponent,
-      ComunicationModalComponent,
-      ProductObservationIconComponent,
-      ProductAportationComponent,
-      ProductDescriptionComponent,
-      PvpInputComponent,
-      UnitsInputComponent,
-      ActionsMenuButtonComponent,
-      PrescriptionStatusComponent,
-      PrescriptionObservationIconsComponent,
-      PrescriptionDescriptionComponent,
-      RevisionIconComponent,
-      DefaultTextPipe,
-      LateralityComponent,
-      ApprovalIconComponent,
-      BlockIconComponent,
-      BlockModalComponent,
-      ConfirmModalComponent,
-      WacomModalComponent,
-      SidebarModule,
-      ApplicationRowSelectorComponent,
-      BrandIconComponent,
-      BrandSelectorComponent,
-    ],
+    CommonModule,
+    TableModule,
+    PaginatorModule,
+    TranslateModule,
+    NoResultsComponent,
+    ComunicationModalComponent,
+    ProductObservationIconComponent,
+    ProductAportationComponent,
+    ProductDescriptionComponent,
+    PvpInputComponent,
+    UnitsInputComponent,
+    ActionsMenuButtonComponent,
+    PrescriptionStatusComponent,
+    PrescriptionObservationIconsComponent,
+    PrescriptionDescriptionComponent,
+    RevisionIconComponent,
+    DefaultTextPipe,
+    LateralityComponent,
+    ApprovalIconComponent,
+    BlockIconComponent,
+    BlockModalComponent,
+    ConfirmModalComponent,
+    WacomModalComponent,
+    SidebarModule,
+    ApplicationRowSelectorComponent,
+    BrandIconComponent,
+    BrandSelectorComponent,
+  ],
   templateUrl: './dispensable-products.component.html',
   styleUrls: ['./dispensable-products.component.css'],
   providers: []
@@ -209,8 +209,8 @@ export class DispensableProductsComponent implements OnInit {
     this.profesional$ = this.profesionalService.getProfesional();
     this.center$ = this.profesionalService.getEstablishment();
 
-  
-    
+
+
 
   }
 
@@ -275,39 +275,48 @@ export class DispensableProductsComponent implements OnInit {
     
   }*/
 
-    ngOnInit(): void {
-      combineLatest([
-        this.prescriptions$,
-        this.profesional$,
-        this.center$,
-      ])
+  ngOnInit(): void {
+    combineLatest([
+      this.prescriptions$,
+      this.profesional$,
+      this.center$,
+    ])
       .pipe(
         map(([prescriptions, profesional, center]) => {
           // ✅ Asignamos los valores como corresponda
           prescriptions.forEach(p => this.expandedRowKeys[p.id] = p.expanded);
-    
-          this.actual_prescriptor_dni = prescriptions[0]?.profesional?.dni || '';
-          this.actual_prescriptor_name = prescriptions[0]?.profesional?.name || '';
-    
-          this.profesional_user_id = profesional.code!;
-        this.actual_profesional_center = profesional.listEstablecimientos[0].centerName;
-        this.actual_profesional_center_code = profesional.listEstablecimientos[0].code;
-        this.actual_profesional_user_id = profesional.code!;
-        this.actual_profesional_user_name = profesional.code!;
 
-        this.actual_dispensing_center_code = center.code;
-        this.actual_dispensing_center_name = center.centerName;
+          if (prescriptions[0] !== undefined && prescriptions[0].profesional !== undefined) {
+            
+            this.actual_prescriptor_dni = prescriptions[0].profesional.dni;
+
+            this.actual_prescriptor_name = prescriptions[0].profesional!.name;
+
+          }
+
+
+          this.profesional_user_id = profesional.code!;
+          this.actual_profesional_center = profesional.listEstablecimientos[0].centerName;
+          this.actual_profesional_center_code = profesional.listEstablecimientos[0].code;
+          this.actual_profesional_user_id = profesional.code!;
+          this.actual_profesional_user_name = profesional.code!;
+
+          this.actual_dispensing_center_code = center.code;
+          this.actual_dispensing_center_name = center.centerName;
 
         })
       )
       .subscribe(() => {
         // ✅ Forzamos detección de cambios una vez
-        setTimeout(() => this.cdRef.detectChanges());
+        setTimeout(() => {
+          this.cdRef.detectChanges(),
+            console.log(this.actual_profesional_center);
+        });
       });
 
 
 
-      this.mockPrescriptions = this.dispensableProductService.getDispensableProductsRows();
+    this.mockPrescriptions = this.dispensableProductService.getDispensableProductsRows();
 
 
     this.urlDisportoreq = initialConfigProperties.urlDisportoreq;
@@ -324,7 +333,7 @@ export class DispensableProductsComponent implements OnInit {
     this.checkWacom();
 
 
-    }
+  }
 
 
   showProducts($event: TableRowExpandEvent & { data: PrescriptionRow }) {
@@ -354,15 +363,15 @@ export class DispensableProductsComponent implements OnInit {
     }
   }
 
-  checkWacom(){
+  checkWacom() {
 
-    this.constantsService.findConstants(this.wacomString).subscribe(data=>{
-      if(data){
+    this.constantsService.findConstants(this.wacomString).subscribe(data => {
+      if (data) {
 
-        if(data[0].value == 1){
-            console.log("WACOM ACTIVA");
-            this.wacomState = true;
-        }else {
+        if (data[0].value == 1) {
+          console.log("WACOM ACTIVA");
+          this.wacomState = true;
+        } else {
           console.log("WACOM NO ACTIVA");
         }
 
@@ -417,7 +426,7 @@ export class DispensableProductsComponent implements OnInit {
 
     //Solo imprimir al dispensar las no pagadas y la wacom no esta habilitada
 
-     if (notPayed.length > 0 && !this.wacomState) {
+    if (notPayed.length > 0 && !this.wacomState) {
       const dispensingCenter = this.profesionalService.secureEstablishment.centerName + ' - ' + this.profesionalService.secureEstablishment.code;
 
       //Se lanza pdf con todas las prescripciones

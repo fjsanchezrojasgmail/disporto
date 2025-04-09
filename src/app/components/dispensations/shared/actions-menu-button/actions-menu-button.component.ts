@@ -71,7 +71,7 @@ export class ActionsMenuButtonComponent {
   }
 
   ngOnInit() {
-    console.log("Prescripcion cargada: ", this.prescription);
+    console.log("Prescripcion cargada para menu actions: ", this.prescription);
     if (this.canDetails) this.items.push({ label: this.detailsLabel, command: () => { this.menuAction.emit(PrescriptionActions.DETAILS); } });
     if (this.canReserve) this.items.push({ label: this.reserveLabel, command: () => { this.menuAction.emit(PrescriptionActions.RESERVE); } });
     if (this.canBlock) this.items.push({ label: this.blockLabel, command: () => { this.menuAction.emit(PrescriptionActions.BLOCK); } });
