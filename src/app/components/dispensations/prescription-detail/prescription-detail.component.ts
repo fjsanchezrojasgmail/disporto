@@ -33,7 +33,9 @@ export class PrescriptionDetailComponent implements OnInit {
 
   ngOnInit() {
     this.detailsService.fetchBundle(this.prescription, this.patient).subscribe( data => {
+      console.log("Prescription detail fetchBundle: ", this.prescription.id + "-" + this.patient.cipa);
       if (data) {
+        
         this.prescriptionVersions = data;
         this.lastVersion = this.prescriptionVersions[data.length-1];
       }

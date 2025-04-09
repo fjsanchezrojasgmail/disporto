@@ -23,7 +23,7 @@ export class PrescriptionDetailsService {
   ) { }
 
   fetchBundle(prescription: PrescriptionVersioned, patient: SimplePatient): Observable<PrescriptionVersioned[] | null> {
-    return this.bundleService.getByIdentifier(prescription.id).pipe(
+    /*return this.bundleService.getByIdentifier(prescription.id).pipe(
       switchMap(data => {
         const versionId = Number(data?.entry?.at(0)?.resource?.meta?.versionId || '0');
         const prescriptionDetails = {
@@ -32,7 +32,8 @@ export class PrescriptionDetailsService {
         };
         return this.fetchHistory(patient, prescriptionDetails, data?.entry?.at(0)?.resource?.id);
       })
-    );
+    );*/
+    return of([this.mockPrescriptionVersioned]);
   }
 
   fetchHistory(patient: SimplePatient, prescription: PrescriptionVersioned, currentBundleId?: string): Observable<PrescriptionVersioned[] | null> {

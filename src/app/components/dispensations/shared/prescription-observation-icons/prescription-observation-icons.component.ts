@@ -8,6 +8,7 @@ import { TableModule } from 'primeng/table';
 import { ProductObservationIconComponent } from '../product-observation-icon/product-observation-icon.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Tooltip } from 'primeng/tooltip';
+import { faFile } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -43,4 +44,8 @@ export class PrescriptionObservationIconsComponent {
     tooltip += '</div>'
     return tooltip;
   }
+
+   get icon() {
+      return faFile;
+    }
 }

@@ -10,3 +10,7 @@
 .gray {
     background-color: gray;
 }
+
+.textCentered {
+  text-align: center;
+}

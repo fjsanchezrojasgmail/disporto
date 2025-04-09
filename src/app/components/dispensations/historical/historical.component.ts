@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, Inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, Inject, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MaxPageSize, PrescriptionActions } from '../../../bean/constants';
 import { SimplePatient } from '../../../bean/models/patient';
@@ -138,7 +138,8 @@ export class HistoricalComponent implements OnInit {
 
   constructor(private profesionalService: ProfesionalService,
     private historicalService: HistoricalService,
-    private comunicationDAOService: ComunicationDAOService
+    private comunicationDAOService: ComunicationDAOService,
+    private cdRef: ChangeDetectorRef
   ) {
     this.prescriptions$ = this.historicalService.prescriptions$;
     this.historicalService.loading$.subscribe(data => this.loading = data);
@@ -153,7 +154,7 @@ export class HistoricalComponent implements OnInit {
       });
     });
 
-
+    
     //obtencion de datos del observable profesional
     this.profesional$ = this.profesionalService.profesional$;
     this.profesional_user_id = profesionalService.profesional?.name || '';
@@ -173,6 +174,7 @@ export class HistoricalComponent implements OnInit {
 
     //cargamos mensajes de la BBDD
     this.chargeMessagesFromBBDD(this.patient);
+    this.cdRef.detectChanges(); // fuerza la actualización
 
   }
 

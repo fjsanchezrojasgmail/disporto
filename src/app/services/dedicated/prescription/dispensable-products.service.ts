@@ -53,6 +53,8 @@ export class DispensableProductsService {
     this.loading.next(true);
     // Se ponen paginacion a 50 por que no se quiere paginas y se quieren todos los resultados
     this.requestGroupDaoService.search(criteriaRGDispensableProducts(patient.id, '50')).subscribe((data) => {
+
+      
       if (data) {
         this.originalData = data;
         this.prescriptions.next(
@@ -62,14 +64,19 @@ export class DispensableProductsService {
                 ...p,
                 consider: this.considerDispensableRow(p),
                 products: p.products.map(p => this.considerProduct(p))
-              }
+              },
             ).sort(
               (p1, p2) => this.prescriptionOrder(p1) - this.prescriptionOrder(p2)
             )
         );
+
+        
+        
       }
       this.loading.next(false);
     });
+
+    //console.log("DispensableProducts: ", this.prescriptions);
   }
 
   savePrescriptionRows(prescriptions: PrescriptionRow[]) {
@@ -103,6 +110,10 @@ export class DispensableProductsService {
       disable = pres.products.every(p => !p.consider);
     }
     return disable;
+  }
+
+  getDispensableProductsRows(): PrescriptionRow[]{
+    return this.requestGroupDaoService.getPrescriptionRows();
   }
 
   considerProduct(product: Product) {

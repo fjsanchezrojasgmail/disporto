@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, map } from 'rxjs';
-import { BillingActions } from '../../../bean/constants';
+import { BehaviorSubject, map, Observable, of } from 'rxjs';
+import { BillingActions, ProductTypes } from '../../../bean/constants';
 import { Establishment } from '../../../bean/models/administration';
 import { ProfesionalActions, ProfesionalAdm } from '../../../bean/models/profesional';
 import { ProfesionalDaoService } from '../../dao/profesional-dao.service';
@@ -103,6 +103,14 @@ export class ProfesionalService {
     return this.mockProfesional[0];
   }
 
+  getProfesional(): Observable<ProfesionalAdm>{
+    return of(this.mockProfesional[0]);
+  }
+
+  getEstablishment(): Observable<Establishment>{
+    return of(this.mockEstablishment[0]);
+  }
+  
   get profesionalFullName() {
     return `${this.profesional?.name} ${this.profesional?.surname1} ${this.profesional?.surname2 || ''}`;
   }
@@ -125,7 +133,7 @@ export class ProfesionalService {
           "code": "EST001",
           "cif": "B12345678",
           "typeStablishment": "Farmacia",
-          "typeProduct": "Medicamento",
+          "typeProduct": ProductTypes.ALL,
           "centerName": "Farmacia Central",
           "codeRegion": "REG01",
           "descriptionRegion": "Castilla y León",

@@ -1,4 +1,6 @@
-<div class="flex flex-column h-full" *ngIf="prescriptions$ | async as prescriptions">
+<!--div class="flex flex-column h-full" *ngIf="prescriptions$ | async as prescriptions"-->
+
+<div class="flex flex-column h-full" *ngIf="mockPrescriptions as prescriptions">
     <div class="overflow-hidden">
         <p-table [value]="prescriptions" dataKey="id" (onRowExpand)="showProducts($event)" [loading]="loading"
             (onRowCollapse)="showProducts($event)" [expandedRowKeys]="expandedRowKeys" [scrollable]="true"
@@ -196,7 +198,6 @@
         [localLstResultComunicationView]='localLstResultComunicationView'
         [existComunicationInBBDD]="existComunicationInBBDD" [actual_patient]="actual_patient"
         [actual_profesional_user_id]="actual_profesional_user_id"
-        [actual_profesional_user_id]="actual_profesional_user_name"
         [actual_profesional_center]="actual_profesional_center"
         [actual_profesional_center_code]="actual_profesional_center_code"
         [actual_prescriptor_dni]="actual_prescriptor_dni" [actual_prescriptor_name]="actual_prescriptor_name"

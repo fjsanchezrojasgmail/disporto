@@ -36,7 +36,7 @@ export class PrescriptionInfoComponent implements AfterViewChecked {
   observationsHeader = '';
   usesHeader = '';
   versionsHeader = '';
-  transitionOptions = '0ms';
+  transitionOptions = '400ms cubic-bezier(0.86, 0, 0.07, 1)';
 
   constructor(private translate: TranslateService) {
     translate.get('details.header.general').subscribe( data => this.generalHeader = (data as string).toUpperCase());

@@ -359,7 +359,7 @@ export class ConstantsService {
   {
     "code": "MARCA_COMERCIAL",
     "description": "Habilitado o deshabilitado el circuito de la marca comercial. S: Habilitado y N: Deshabilitado",
-    "value": "N"
+    "value": "S"
   },
   {
     "code": "FECHA_MAX_VIGENCIA",

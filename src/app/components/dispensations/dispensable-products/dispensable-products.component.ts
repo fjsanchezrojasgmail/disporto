@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { combineLatest, Observable, map } from 'rxjs';
 import { BlockEvent, WacomStateType } from '../../../bean/simple.types';
 import { AtnaRegistrationConstants, PrescriptionActions } from '../../../bean/constants';
 import { SimplePatient } from '../../../bean/models/patient';
@@ -54,6 +54,7 @@ import { ApplicationRowSelectorComponent } from '../shared/application-row-selec
 import { BrandIconComponent } from '../shared/brand-icon/brand-icon.component';
 import { PrescriptionDescriptionComponent } from '../shared/prescription-description/prescription-description.component';
 import { BrandSelectorComponent } from '../shared/brand-selector/brand-selector.component';
+import { Establishment } from '../../../bean/models/administration';
 
 
 
@@ -102,11 +103,6 @@ export class DispensableProductsComponent implements OnInit {
 
   @Input() dispensed!: boolean;
 
-
-
-
-
-
   @Output() prescriptionDetails: EventEmitter<Prescription> = new EventEmitter();
 
   actual_patient!: SimplePatient;
@@ -148,6 +144,12 @@ export class DispensableProductsComponent implements OnInit {
   productBrandSelection?: PrescriptionRow;
 
   prescriptions$: Observable<PrescriptionRow[]>;
+
+  profesional$: Observable<ProfesionalAdm>;
+
+  center$: Observable<Establishment>;
+
+  mockPrescriptions?: PrescriptionRow[];
 
   expandedRowKeys: Record<string, boolean> = {};
 
@@ -198,43 +200,64 @@ export class DispensableProductsComponent implements OnInit {
     private notificationDAOService: NotificationDAOService,
     private wacomService: WacomService,
     private atnaRegistrationService: AtnaRegistrationService,
-    private constantsService: ConstantsService
+    private constantsService: ConstantsService,
+    private cdRef: ChangeDetectorRef,
   ) {
+
+
     this.prescriptions$ = this.dispensableProductService.prescriptions$;
-    this.dispensableProductService.loading$.subscribe(data => this.loading = data);
-    this.prescriptions$.subscribe(data => {
-      data.map(p => this.expandedRowKeys[p.id] = p.expanded);
-    });
+    this.profesional$ = this.profesionalService.getProfesional();
+    this.center$ = this.profesionalService.getEstablishment();
 
-    this.prescriptions$.subscribe(data => {
-      data.map(p => this.actual_prescriptor_dni = p.profesional?.dni || '');
-    });
-
-    this.prescriptions$.subscribe(data => {
-      data.map(p => this.actual_prescriptor_name = p.profesional?.name || '');
-    });
-
-    this.profesional_user_id = profesionalService.profesional?.code || '';
-
-    this.actual_profesional_center = profesionalService.profesional?.listEstablecimientos.at(0)?.centerName || '';
-
-    this.actual_profesional_center_code = profesionalService.profesional?.listEstablecimientos.at(0)?.code || '';
-
-    this.actual_profesional_user_id = profesionalService.profesional?.dni || '';
-
-    this.actual_profesional_user_name = profesionalService.profesional?.name + '';
-
-    this.actual_dispensing_center_code = profesionalService.secureEstablishment.code;
-
-    this.actual_dispensing_center_name = profesionalService.secureEstablishment.centerName;
-
-
+  
+    
 
   }
 
-  ngOnInit(): void {
+  /*ngOnInit(): void {
+
 
     this.dispensableProductService.fetchDispensableProducts(this.patient);
+
+    this.dispensableProductService.loading$.subscribe(data => this.loading = data);
+    this.prescriptions$.subscribe(data => {
+      if(data){
+        data.map(
+          p => this.expandedRowKeys[p.id] = p.expanded
+        )
+          this.actual_prescriptor_dni = data[0].profesional?.dni || '',
+          this.actual_prescriptor_name = data[0].profesional?.name || ''
+    }
+      
+      
+    });
+
+
+    this.profesionalService.getProfesional().subscribe((profesional) =>{
+
+      if(profesional){
+        this.profesional_user_id = profesional.code!;
+        this.actual_profesional_center = profesional.listEstablecimientos[0].centerName;
+        this.actual_profesional_center_code = profesional.listEstablecimientos[0].code;
+        this.actual_profesional_user_id = profesional.code!;
+        this.actual_profesional_user_name = profesional.code!;
+      }
+    
+    });
+
+    this.profesionalService.getEstablishment().subscribe((Establishment) => {
+      if(Establishment){
+        this.actual_dispensing_center_code = Establishment.code;
+        this.actual_dispensing_center_name = Establishment.centerName;
+
+      }
+    });
+
+    this.cdRef.detectChanges(); // fuerza la actualización
+
+
+    this.mockPrescriptions = this.dispensableProductService.getDispensableProductsRows();
+
 
     this.urlDisportoreq = initialConfigProperties.urlDisportoreq;
     this.urlAnexoreq = initialConfigProperties.urlAnexoreq;
@@ -248,7 +271,61 @@ export class DispensableProductsComponent implements OnInit {
 
     //cargamos estado de la wacom
     this.checkWacom();
-  }
+
+    
+  }*/
+
+    ngOnInit(): void {
+      combineLatest([
+        this.prescriptions$,
+        this.profesional$,
+        this.center$,
+      ])
+      .pipe(
+        map(([prescriptions, profesional, center]) => {
+          // ✅ Asignamos los valores como corresponda
+          prescriptions.forEach(p => this.expandedRowKeys[p.id] = p.expanded);
+    
+          this.actual_prescriptor_dni = prescriptions[0]?.profesional?.dni || '';
+          this.actual_prescriptor_name = prescriptions[0]?.profesional?.name || '';
+    
+          this.profesional_user_id = profesional.code!;
+        this.actual_profesional_center = profesional.listEstablecimientos[0].centerName;
+        this.actual_profesional_center_code = profesional.listEstablecimientos[0].code;
+        this.actual_profesional_user_id = profesional.code!;
+        this.actual_profesional_user_name = profesional.code!;
+
+        this.actual_dispensing_center_code = center.code;
+        this.actual_dispensing_center_name = center.centerName;
+
+        })
+      )
+      .subscribe(() => {
+        // ✅ Forzamos detección de cambios una vez
+        setTimeout(() => this.cdRef.detectChanges());
+      });
+
+
+
+      this.mockPrescriptions = this.dispensableProductService.getDispensableProductsRows();
+
+
+    this.urlDisportoreq = initialConfigProperties.urlDisportoreq;
+    this.urlAnexoreq = initialConfigProperties.urlAnexoreq;
+
+    //cargamos datos de paciente y profesional logado
+    this.actual_patient = this.patient;
+    this.patientCipa = this.patient.cipa;
+
+    //cargamos mensajes de la BBDD
+    this.chargeMessagesFromBBDD(this.patient);
+
+    //cargamos estado de la wacom
+    this.checkWacom();
+
+
+    }
+
 
   showProducts($event: TableRowExpandEvent & { data: PrescriptionRow }) {
     this.dispensableProductService.expandProducts($event.data.id);

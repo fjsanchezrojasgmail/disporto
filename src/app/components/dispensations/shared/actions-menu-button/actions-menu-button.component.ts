@@ -18,7 +18,7 @@ import { Tooltip } from 'primeng/tooltip';
 @Component({
   selector: 'sacyl-actions-menu-button',
   standalone: true,
-  imports: [CommonModule,ButtonModule,Tooltip,TranslateModule,Menu],
+  imports: [CommonModule,ButtonModule,TranslateModule,Menu],
   templateUrl: './actions-menu-button.component.html',
   styleUrls: ['./actions-menu-button.component.css']
 })
@@ -71,6 +71,7 @@ export class ActionsMenuButtonComponent {
   }
 
   ngOnInit() {
+    console.log("Prescripcion cargada: ", this.prescription);
     if (this.canDetails) this.items.push({ label: this.detailsLabel, command: () => { this.menuAction.emit(PrescriptionActions.DETAILS); } });
     if (this.canReserve) this.items.push({ label: this.reserveLabel, command: () => { this.menuAction.emit(PrescriptionActions.RESERVE); } });
     if (this.canBlock) this.items.push({ label: this.blockLabel, command: () => { this.menuAction.emit(PrescriptionActions.BLOCK); } });

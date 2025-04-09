@@ -4,9 +4,11 @@ import { versionBundleCriteria } from '../../bean/fhir-r3/criterias/fhir-criteri
 import { BundleModel } from '../../bean/fhir-r3/domain/bundle';
 import { Bundle, BundleEntry } from '../../bean/fhir-r3/domain/interfaces/bundle.interface';
 import { FhirResource } from '../../bean/fhir-r3/domain/interfaces/common.interface';
-import { FhirTypes } from '../../bean/fhir-r3/fhir-constants';
+import { DeviceStatus, FhirTypes } from '../../bean/fhir-r3/fhir-constants';
 import { HttpService } from '../http.service';
 import { BundleDao } from './interfaces/bundle-dao.interface';
+import { Prescription } from '../../bean/models/prescription';
+import { MedicationRequest } from 'fhir/r3';
 
 
 
