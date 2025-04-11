@@ -2,7 +2,7 @@ import { DeviceRequestStatus } from '../../fhir-constants';
 //import { DeviceRequest } from "fhir/r3";
 //const origin: DeviceRequest
 
-import { BackboneElement, DomainResource, Identifier, Reference } from "./common.interface";
+import { BackboneElement, CodeableConcept, DomainResource, Identifier, Reference } from "./common.interface";
 
 /**
  * Represents a request for a patient to employ a medical device. The device may be an implantable device, or an external assistive device, such as a walker.
@@ -17,7 +17,7 @@ import { BackboneElement, DomainResource, Identifier, Reference } from "./common
     //definition?: Reference[];
     //groupIdentifier?: Identifier;
     identifier?: Identifier[];
-    //intent: CodeableConcept;
+    intent: CodeableConcept;
     //note?: Annotation[];
     //occurrenceDateTime?: string;
     //occurrencePeriod?: Period;

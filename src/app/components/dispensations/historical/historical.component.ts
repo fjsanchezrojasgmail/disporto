@@ -145,6 +145,7 @@ export class HistoricalComponent implements OnInit {
     this.historicalService.loading$.subscribe(data => this.loading = data);
     this.prescriptions$.subscribe(data => {
       data.map(p => this.expandedRowKeys[p.id] = p.expanded);
+      console.log("Historical Service: ", data);
       this.prescriptions$.subscribe(data => {
         data.map(p => this.actual_prescriptor_dni = p.profesional?.dni || '');
       });
@@ -154,7 +155,7 @@ export class HistoricalComponent implements OnInit {
       });
     });
 
-    
+
     //obtencion de datos del observable profesional
     this.profesional$ = this.profesionalService.profesional$;
     this.profesional_user_id = profesionalService.profesional?.name || '';

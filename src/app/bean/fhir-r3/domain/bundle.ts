@@ -56,6 +56,7 @@ export class BundleModel implements Bundle {
                     result.push(model);
                 }
             );
+        console.log("MapToPrescriptionModel: ", result);
         return result;
     }
 

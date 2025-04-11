@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { criteriaRGHistoric, criteriaRGHistoricWithFilter } from '../../../bean/fhir-r3/criterias/request-group-criteria';
 import { SimplePatient } from '../../../bean/models/patient';
-import { mapPrescriptions, PrescriptionRow } from '../../../bean/models/prescription';
+import { mapPrescriptions, Prescription, PrescriptionRow } from '../../../bean/models/prescription';
 import { HistoricFilter } from '../../../bean/simple.types';
 import { RequestGroupDaoService } from '../../dao/request-group-dao.service';
+import { Bundle, DeviceRequest, FhirResource } from 'fhir/r3';
+import { FhirDeviceRequestUrl } from '../../../bean/fhir-r3/fhir-url-constants';
 
 
 @Injectable({
@@ -37,7 +39,18 @@ export class HistoricalService {
         this.loading.next(false);
       }
     });
+    /*this.requestGroupDaoService.fetchHistoric().subscribe((data) =>{
+      if(data) {
+        this.prescriptions.next(
+          this.mapToPrescriptionModel(data));
+          this.loading.next(false);
+
+      }
+    })*/
   }
+
+
+
 
   searchProducts(patient: SimplePatient, filter: HistoricFilter) {
     this.loading.next(true);

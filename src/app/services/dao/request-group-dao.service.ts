@@ -7,9 +7,12 @@ import { RequestGroupDao } from './interfaces/request-group-dao.interface';
 import { RequestGroup } from '../../bean/fhir-r3/domain/interfaces/request-group.interface';
 import { BundleModel } from '../../bean/fhir-r3/domain/bundle';
 import { ConfigService } from '../config.service';
-import { RequestGroupIntent, RequestGroupPriority, RequestGroupStatus } from '../../bean/fhir-r3/fhir-constants';
+import { DeviceStatus, FhirTypes, RequestGroupIntent, RequestGroupPriority, RequestGroupStatus } from '../../bean/fhir-r3/fhir-constants';
 import { Prescription, PrescriptionRow } from '../../bean/models/prescription';
-import { PrescriptionState } from '../../bean/constants';
+import { FhirResourceType, PRESCRIPTION_ACTION, PrescriptionState } from '../../bean/constants';
+import { FhirDeviceRequestUrl, FhirDeviceUrl, FhirRequestGroupActionUrl, FhirRequestGroupUrl } from '../../bean/fhir-r3/fhir-url-constants';
+import { Device, DeviceRequest, FhirResource } from 'fhir/r3';
+import { Identifier } from '../../bean/fhir-r3/domain/interfaces/common.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +25,11 @@ export class RequestGroupDaoService implements RequestGroupDao {
 
   search(criteria: HttpParams): Observable<BundleModel | null> {
     //return this.http.get<Bundle<RequestGroup>>(this.apiUrl, { params: criteria }).pipe(map(value => (value) ? new BundleModel(value) : null));
-    return of(this.mockBundle).pipe(map(value => new BundleModel(value)))
+    return of(this.mockBundleRequestGroup).pipe(map(value => new BundleModel(value)));
+  }
+
+  fetchHistoric() : Observable<Bundle<FhirResource>> {
+    return of(this.mockFhirResource);
   }
 
   page(url: string) {
@@ -37,7 +44,7 @@ export class RequestGroupDaoService implements RequestGroupDao {
     const totalImf = prescription.products?.reduce((sum, prod) => sum + (prod.imf?.imfWithTax ?? 0), 0) ?? 0;
     const totalPVP = prescription.products?.reduce((sum, prod) => sum + (prod.pvp?.total ?? 0), 0) ?? 0;
     const totalAportation = prescription.products?.reduce((sum, prod) => sum + (prod.userConsideration?.aportation ?? 0), 0) ?? 0;
-  
+
     return {
       ...prescription,
       totalImf: totalImf.toFixed(2),
@@ -82,8 +89,6 @@ export class RequestGroupDaoService implements RequestGroupDao {
       dispenseDate: new Date('2024-11-01'),
       hasValidation: true,
       observation: 'Paciente con alergias, revisar dosis.',
-
-  
       productType: {
         code: 'PT-01',
         display: 'Fármaco',
@@ -92,9 +97,8 @@ export class RequestGroupDaoService implements RequestGroupDao {
       productGroup: {
         code: 'PG-001',
         display: 'Grupo A',
-   
-      }
-    ,
+
+      },
       service: {
         code: 'SERV-001',
         display: 'Servicio de Oncología'
@@ -133,11 +137,11 @@ export class RequestGroupDaoService implements RequestGroupDao {
         }
       ],
       profesional: {
-        
+
         name: 'Gregory',
         collegiateNumber: 'PROF-123',
         dni: '12345678Z',
-       
+
       },
       payed: true,
       reimbursement: false,
@@ -286,7 +290,7 @@ export class RequestGroupDaoService implements RequestGroupDao {
     productGroup: {
       code: 'PG-001',
       display: 'Grupo A',
- 
+
     }
   ,
     service: {
@@ -327,11 +331,11 @@ export class RequestGroupDaoService implements RequestGroupDao {
       }
     ],
     profesional: {
-      
+
       name: 'Gregory',
       collegiateNumber: 'PROF-123',
       dni: '12345678Z',
-     
+
     },
     payed: true,
     reimbursement: false,
@@ -436,35 +440,254 @@ export class RequestGroupDaoService implements RequestGroupDao {
     ]
   };
 
-  private mockBundle: Bundle<RequestGroup> = {
+  private mockBundleRequestGroup: Bundle<RequestGroup> =  {
+    resourceType: 'Bundle',
+  type: 'searchset',
+  total: 1,
+  entry: [
+    {
+      fullUrl: 'http://example.org/fhir/RequestGroup/historic-requestgroup',
+      resource: {
+        resourceType: 'RequestGroup',
+        meta: {
+          versionId: '1',
+          lastUpdated: new Date('2025-03-30T09:00:00Z'),
+        },
+        id: 'historic-requestgroup',
+        status: RequestGroupStatus.COMPLETED,
+        intent: RequestGroupIntent.PLAN,
+        priority: RequestGroupPriority.ROUTINE,
+        authoredOn: '2025-03-30T09:00:00Z',
+        author: {
+          reference: 'Practitioner/123',
+          display: 'Dr. Jane Doe'
+        },
+        extension: [
+          {
+            url: FhirRequestGroupUrl.SERVICE_PROVIDER,
+            valueReference: {
+              reference: 'Organization/001',
+              display: 'Hospital Universitario de Castilla'
+            }
+          },
+          {
+            url: FhirRequestGroupUrl.PRESCRIPTION_STATUS,
+            valueCoding: {
+              code: RequestGroupStatus.COMPLETED,
+              display: 'Completada'
+            }
+          },
+          {
+            url:FhirRequestGroupActionUrl.DISPENSING_CENTER,
+            valueCoding: {
+              code: 'Pharmacy-001',
+              display: 'Farmacia Central'
+            }
+
+          }
+        ],
+        subject: {
+          reference: 'Patient/456',
+          display: 'John Smith'
+        },
+        context: {
+          reference: 'Encounter/789',
+          display: 'Consulta de seguimiento'
+        },
+        identifier: [
+          {
+            system: 'http://hospital.smarthealth.org/requestgroups',
+            value: 'RG-0001'
+          }
+        ],
+        groupIdentifier: {
+          system: 'http://hospital.smarthealth.org/groups',
+          value: 'Group-001'
+        },
+        note: [
+          {
+            authorReference: { reference: 'Practitioner/123' },
+            time: '2025-03-30T09:10:00Z',
+            text: 'Plan de tratamiento actualizado según la evolución del paciente.'
+          }
+        ],
+        reasonCodeableConcept: {
+          coding: [
+            {
+              system: 'http://snomed.info/sct',
+              code: '44054006',
+              display: 'Diabetes mellitus type 2'
+            }
+          ],
+          text: 'Type 2 diabetes management'
+        },
+        definition: [
+          {
+            reference: 'PlanDefinition/diabetes-management',
+            display: 'Diabetes Management Plan v2.1'
+          }
+        ],
+        basedOn: [
+          {
+            reference: 'CarePlan/cp001',
+            display: 'Plan de atención para diabetes'
+          }
+        ],
+        replaces: [
+          {
+            reference: 'RequestGroup/old-request-001',
+            display: 'Plan anterior desactualizado'
+          }
+        ],
+        action: [
+          {
+            label: PRESCRIPTION_ACTION,
+            description: 'Solicitar análisis de HbA1c para evaluar el control glucémico',
+            type: {
+              code: 'Analizador de glucosa',
+              display: 'glucose-analyzer'
+            },
+            resource: {
+              id: 'HbA1c',
+              reference: FhirResourceType.DEVICE_REQUEST,
+              extension: [
+                { url: FhirDeviceRequestUrl.QUANTITY, valueString: '2' },
+                { url: FhirDeviceRequestUrl.JUSTIFICATION, valueCodeableConcept: { text: 'Control periódico del paciente diabético' }},
+                { url: FhirDeviceRequestUrl.PRICE, valueString: '20.00' },
+                { url: FhirDeviceRequestUrl.TAX_PRICE, valueString: '4.00' },
+                { url: FhirDeviceRequestUrl.TAX, valueString: '21' },
+                { url: FhirDeviceRequestUrl.FULL_PRICE, valueString: '24.00' },
+                { url: FhirDeviceRequestUrl.REAL_APORTATION, valueString: '6.00' },
+                { url: FhirDeviceRequestUrl.DISPENSED_BRAND, valueCoding: { code: 'BR123', display: 'Marca HBA1c' }},
+                { url: FhirDeviceRequestUrl.IMPROVABLE, valueCodeableConcept: { coding: [{ code: 'yes' }], text: 'Puede mejorarse si no hay stock' }}
+              ]
+            },
+            timingDateTime: new Date('2025-04-01'),
+            code: [{
+              coding: [
+                {
+                  system: 'http://loinc.org',
+                  code: '4548-4',
+                  display: 'Hemoglobin A1c/Hemoglobin.total in Blood'
+                }
+              ]
+            }]
+          },
+
+          {
+
+            label: PRESCRIPTION_ACTION,
+            description: 'Derivación para asesoría nutricional',
+            resource: {
+              id: 'AseNutric-1',
+              reference: FhirResourceType.DEVICE_REQUEST,
+
+              extension: [
+                { url: FhirDeviceUrl.REMARKS, valueString: 'Evitar contacto con humedad' },
+                { url: FhirDeviceUrl.USER_CONTRIBUTION, valueString: '4.50' },
+                { url: FhirDeviceUrl.AMOUNT, valueString: '19.00' },
+                { url: FhirDeviceUrl.MODIFIABLE_AMOUNT, valueString: 'yes' },
+                { url: FhirDeviceUrl.REPLACEABLE, valueString: 'yes' },
+                { url: FhirDeviceUrl.IMF, valueCoding: { display: '21.00' }},
+                { url: FhirDeviceUrl.MAXIMUM_MODIFIABLE_IMF, valueString: '25.00' },
+                { url: FhirDeviceUrl.EYES, valueString: 'no' },
+                { url: FhirDeviceUrl.HEADSET, valueString: 'no' },
+                { url: FhirDeviceUrl.DEVICE_GROUP, valueCoding: { code: 'grp001', display: 'Analizadores' }},
+                { url: FhirDeviceUrl.COMERCIAL_BRAND, valueCoding: { code: 'BR123', display: 'Marca HBA1c' }},
+                { url: FhirDeviceUrl.PULLED_APART, valueCoding: { code: 'pull1', display: 'Desmontable' }}
+              ]
+            },
+            timingDateTime: new Date('2025-05-22'),
+            code: [
+              {
+                coding: [
+                  {
+                    system: 'http://snomed.info/sct',
+                    code: '410942007',
+                    display: 'Referral to dietitian'
+                  }
+                ]
+              }
+            ],
+
+          }
+        ]
+      }
+    },
+
+  ]};
+
+  private mockBundle: Bundle<FhirResource> = {
     resourceType: 'Bundle',
     type: 'searchset',
     total: 1,
     entry: [
       {
-        fullUrl: 'http://example.org/fhir/RequestGroup/example-requestgroup',
+        fullUrl: 'http://example.org/fhir/RequestGroup/historic-requestgroup',
         resource: {
           resourceType: 'RequestGroup',
           meta: {
-            versionId: '1', // 👈 Aquí agregas la versión
-            lastUpdated: new Date('2025-03-28T09:00:00Z') // (opcional pero recomendable)
+            versionId: '1',
+            lastUpdated: '2025-03-30T09:00:00Z'
           },
-          id: 'example-requestgroup',
-          status: RequestGroupStatus.ACTIVE,
+          id: 'historic-requestgroup',
+          status: RequestGroupStatus.COMPLETED,
           intent: RequestGroupIntent.PLAN,
           priority: RequestGroupPriority.ROUTINE,
-          authoredOn: '2025-03-28T09:00:00Z',
-          author: { reference: 'Practitioner/123', display: 'Dr. Jane Doe' },
-          subject: { reference: 'Patient/456', display: 'John Smith' },
-          context: { reference: 'Encounter/789' },
+          authoredOn: '2025-03-30T09:00:00Z',
+          author: {
+            reference: 'Practitioner/123',
+            display: 'Dr. Jane Doe'
+          },
+          extension: [
+            {
+              url: FhirRequestGroupUrl.SERVICE_PROVIDER,
+              valueReference: {
+                reference: 'Organization/001',
+                display: 'Hospital Universitario de Castilla'
+              }
+            },
+            {
+              url: FhirRequestGroupUrl.PRESCRIPTION_STATUS,
+              valueCoding: {
+                code: RequestGroupStatus.COMPLETED,
+                display: 'Completada'
+              }
+            },
+            {
+              url:FhirRequestGroupActionUrl.DISPENSING_CENTER,
+              valueCoding: {
+                code: 'Pharmacy-001',
+                display: 'Farmacia Central'
+              }
+
+            }
+          ],
+          subject: {
+            reference: 'Patient/456',
+            display: 'John Smith'
+          },
+          context: {
+            reference: 'Encounter/789',
+            display: 'Consulta de seguimiento'
+          },
           identifier: [
-            { system: 'http://hospital.smarthealth.org/requestgroups', value: 'RG-0001' }
+            {
+              system: 'http://hospital.smarthealth.org/requestgroups',
+              value: 'RG-0001'
+            }
           ],
           groupIdentifier: {
             system: 'http://hospital.smarthealth.org/groups',
             value: 'Group-001'
           },
-          note: [{ text: 'Group of requests for diabetic care plan' }],
+          note: [
+            {
+              authorReference: { reference: 'Practitioner/123' },
+              time: '2025-03-30T09:10:00Z',
+              text: 'Plan de tratamiento actualizado según la evolución del paciente.'
+            }
+          ],
           reasonCodeableConcept: {
             coding: [
               {
@@ -475,25 +698,213 @@ export class RequestGroupDaoService implements RequestGroupDao {
             ],
             text: 'Type 2 diabetes management'
           },
-          definition: [{ reference: 'PlanDefinition/diabetes-management' }],
-          basedOn: [{ reference: 'CarePlan/cp001' }],
-          replaces: [{ reference: 'RequestGroup/old-request-001' }],
+          definition: [
+            {
+              reference: 'PlanDefinition/diabetes-management',
+              display: 'Diabetes Management Plan v2.1'
+            }
+          ],
+          basedOn: [
+            {
+              reference: 'CarePlan/cp001',
+              display: 'Plan de atención para diabetes'
+            }
+          ],
+          replaces: [
+            {
+              reference: 'RequestGroup/old-request-001',
+              display: 'Plan anterior desactualizado'
+            }
+          ],
           action: [
             {
-
-              description: 'Check HbA1c level in blood',
-              resource: { reference: 'DiagnosticRequest/hba1c-test' }
+              label: PRESCRIPTION_ACTION,
+              description: 'Solicitar análisis de HbA1c para evaluar el control glucémico',
+              resource: {
+                reference: 'http://example.org/fhir/DeviceRequest/historic-device-request',
+              },
+              timingDateTime: '2025-04-01',
+              code: [{
+                coding: [
+                  {
+                    system: 'http://loinc.org',
+                    code: '4548-4',
+                    display: 'Hemoglobin A1c/Hemoglobin.total in Blood'
+                  }
+                ]
+              }]
             },
+
             {
 
-              description: 'Referral for nutrition counseling',
-              resource: { reference: 'ReferralRequest/dietician-referral' }
+              label: PRESCRIPTION_ACTION,
+              description: 'Derivación para asesoría nutricional',
+              resource: {
+                reference: 'http://example.org/fhir/Device/historic-device'
+              },
+              timingDateTime: '2025-05-22',
+              code: [
+                {
+                  coding: [
+                    {
+                      system: 'http://snomed.info/sct',
+                      code: '410942007',
+                      display: 'Referral to dietitian'
+                    }
+                  ]
+                }
+              ],
+
             }
           ]
         }
+      },
+      {
+        fullUrl: 'http://example.org/fhir/DeviceRequest/historic-device-request',
+        resource: {
+          resourceType: 'DeviceRequest',
+          meta: {
+            versionId: '1',
+            lastUpdated: '2025-03-30T09:00:00Z'
+          },
+        id: 'hba1c-test',
+        status: DeviceStatus.ACTIVE,
+        intent: {
+          coding: [{
+            code: 'Ord123',
+            display: 'Order 123'
+          }],
+          text: 'order'
+        },
+        subject: { reference: 'Patient/456' },
+        codeReference: {
+          reference: 'Device/device-hba1c'
+        },
+        extension: [
+          {
+            url: FhirDeviceRequestUrl.QUANTITY,
+            valueString: '2'
+          },
+          {
+            url: FhirDeviceRequestUrl.JUSTIFICATION,
+            valueCodeableConcept: {
+              text: 'Control periódico del paciente diabético'
+            }
+          },
+          {
+            url: FhirDeviceRequestUrl.PRICE,
+            valueString: '20.00'
+          },
+          {
+            url: FhirDeviceRequestUrl.TAX_PRICE,
+            valueString: '4.00'
+          },
+          {
+            url: FhirDeviceRequestUrl.TAX,
+            valueString: '21'
+          },
+          {
+            url: FhirDeviceRequestUrl.FULL_PRICE,
+            valueString: '24.00'
+          },
+          {
+            url: FhirDeviceRequestUrl.REAL_APORTATION,
+            valueString: '6.00'
+          },
+          {
+            url: FhirDeviceRequestUrl.DISPENSED_BRAND,
+            valueCoding: {
+              code: 'BR123',
+              display: 'Marca HBA1c'
+            }
+          },
+          {
+            url: FhirDeviceRequestUrl.IMPROVABLE,
+            valueCodeableConcept: {
+              coding: [{ code: 'yes' }],
+              text: 'Puede mejorarse si no hay stock'
+            }
+          }
+        ]
+        },
+      },
+      {
+        fullUrl: 'http://example.org/fhir/Device/historic-device',
+        resource:
+        {
+          resourceType: 'Device',
+        id: 'device-hba1c',
+        manufacturer: 'LabTech Inc.',
+        model: 'HBA1C-2025',
+        type: {
+          text: 'Analizador de glucosa',
+          coding: [{ code: 'glucose-analyzer' }]
+        },
+        extension: [
+          {
+            url: FhirDeviceUrl.REMARKS,
+            valueString: 'Evitar contacto con humedad'
+          },
+          {
+            url: FhirDeviceUrl.USER_CONTRIBUTION,
+            valueString: '4.50'
+          },
+          {
+            url: FhirDeviceUrl.AMOUNT,
+            valueString: '19.00'
+          },
+          {
+            url: FhirDeviceUrl.MODIFIABLE_AMOUNT,
+            valueString: 'yes'
+          },
+          {
+            url: FhirDeviceUrl.REPLACEABLE,
+            valueString: 'yes'
+          },
+          {
+            url: FhirDeviceUrl.IMF,
+            valueCoding: {
+              display: '21.00'
+            }
+          },
+          {
+            url: FhirDeviceUrl.MAXIMUM_MODIFIABLE_IMF,
+            valueString: '25.00'
+          },
+          {
+            url: FhirDeviceUrl.EYES,
+            valueString: 'no'
+          },
+          {
+            url: FhirDeviceUrl.HEADSET,
+            valueString: 'no'
+          },
+          {
+            url: FhirDeviceUrl.DEVICE_GROUP,
+            valueCoding: {
+              code: 'grp001',
+              display: 'Analizadores'
+            }
+          },
+          {
+            url: FhirDeviceUrl.COMERCIAL_BRAND,
+            valueCoding: {
+              code: 'BR123',
+              display: 'Marca HBA1c'
+            }
+          },
+          {
+            url: FhirDeviceUrl.PULLED_APART,
+            valueCoding: {
+              code: 'pull1',
+              display: 'Desmontable'
+            }
+          }
+        ]
       }
-    ]
-  };
+
+      }
+    ]};
 
   private mockRequestGroup : RequestGroup = {
 
@@ -569,4 +980,232 @@ export class RequestGroupDaoService implements RequestGroupDao {
       }
     ]
   }
+
+  private mockDeviceRequest: DeviceRequest = {
+    resourceType: 'DeviceRequest',
+    id: 'hba1c-test',
+    status: 'active',
+    intent: {
+      coding: [{
+        code: 'Ord123',
+        display: 'Order 123'
+      }],
+      text: 'order'
+    },
+    subject: { reference: 'Patient/456' },
+    codeReference: {
+      reference: 'Device/device-hba1c'
+    },
+    extension: [
+      {
+        url: FhirDeviceRequestUrl.QUANTITY,
+        valueString: '2'
+      },
+      {
+        url: FhirDeviceRequestUrl.JUSTIFICATION,
+        valueCodeableConcept: {
+          text: 'Control periódico del paciente diabético'
+        }
+      },
+      {
+        url: FhirDeviceRequestUrl.PRICE,
+        valueString: '20.00'
+      },
+      {
+        url: FhirDeviceRequestUrl.TAX_PRICE,
+        valueString: '4.00'
+      },
+      {
+        url: FhirDeviceRequestUrl.TAX,
+        valueString: '21'
+      },
+      {
+        url: FhirDeviceRequestUrl.FULL_PRICE,
+        valueString: '24.00'
+      },
+      {
+        url: FhirDeviceRequestUrl.REAL_APORTATION,
+        valueString: '6.00'
+      },
+      {
+        url: FhirDeviceRequestUrl.DISPENSED_BRAND,
+        valueCoding: {
+          code: 'BR123',
+          display: 'Marca HBA1c'
+        }
+      },
+      {
+        url: FhirDeviceRequestUrl.IMPROVABLE,
+        valueCodeableConcept: {
+          coding: [{ code: 'yes' }],
+          text: 'Puede mejorarse si no hay stock'
+        }
+      }
+    ]
+  }
+
+  private mockDevice: Device = {
+    resourceType: 'Device',
+    id: 'device-hba1c',
+    manufacturer: 'LabTech Inc.',
+    model: 'HBA1C-2025',
+    type: {
+      text: 'Analizador de glucosa',
+      coding: [{ code: 'glucose-analyzer' }]
+    },
+    extension: [
+      {
+        url: FhirDeviceUrl.REMARKS,
+        valueString: 'Evitar contacto con humedad'
+      },
+      {
+        url: FhirDeviceUrl.USER_CONTRIBUTION,
+        valueString: '4.50'
+      },
+      {
+        url: FhirDeviceUrl.AMOUNT,
+        valueString: '19.00'
+      },
+      {
+        url: FhirDeviceUrl.MODIFIABLE_AMOUNT,
+        valueString: 'yes'
+      },
+      {
+        url: FhirDeviceUrl.REPLACEABLE,
+        valueString: 'yes'
+      },
+      {
+        url: FhirDeviceUrl.IMF,
+        valueCoding: {
+          display: '21.00'
+        }
+      },
+      {
+        url: FhirDeviceUrl.MAXIMUM_MODIFIABLE_IMF,
+        valueString: '25.00'
+      },
+      {
+        url: FhirDeviceUrl.EYES,
+        valueString: 'no'
+      },
+      {
+        url: FhirDeviceUrl.HEADSET,
+        valueString: 'no'
+      },
+      {
+        url: FhirDeviceUrl.DEVICE_GROUP,
+        valueCoding: {
+          code: 'grp001',
+          display: 'Analizadores'
+        }
+      },
+      {
+        url: FhirDeviceUrl.COMERCIAL_BRAND,
+        valueCoding: {
+          code: 'BR123',
+          display: 'Marca HBA1c'
+        }
+      },
+      {
+        url: FhirDeviceUrl.PULLED_APART,
+        valueCoding: {
+          code: 'pull1',
+          display: 'Desmontable'
+        }
+      }
+    ]
+  }
+
+  private mockFhirResource: Bundle<FhirResource> = {
+    resourceType: 'Bundle',
+    type: 'transaction',
+    entry: [
+      {
+        fullUrl: 'urn:uuid:request-group-001',
+        resource: {
+          resourceType: 'RequestGroup',
+          id: 'request-group-001',
+          status: RequestGroupStatus.ACTIVE,
+          intent: RequestGroupIntent.PLAN,
+          subject: { reference: 'Patient/456' },
+          action: [
+            {
+              label: PRESCRIPTION_ACTION,
+              description: 'Solicitud de dispositivo HBA1c',
+              resource: {
+                reference: 'urn:uuid:device-request-hba1c'
+              }
+            },
+            {
+              label: PRESCRIPTION_ACTION,
+              description: 'Información del dispositivo HBA1c',
+              resource: {
+                reference: 'urn:uuid:device-hba1c'
+              }
+            }
+          ]
+        }
+      },
+      {
+        fullUrl: 'urn:uuid:device-request-hba1c',
+        resource: {
+          resourceType: 'DeviceRequest',
+          id: 'hba1c-test',
+          status: 'active',
+          intent: {
+            coding: [
+              {
+                code: 'Ord123',
+                display: 'Order 123'
+              }
+            ],
+            text: 'order'
+          },
+          subject: { reference: 'Patient/456' },
+          codeReference: {
+            reference: 'Device/device-hba1c'
+          },
+          extension: [
+            { url: FhirDeviceRequestUrl.QUANTITY, valueString: '2' },
+            { url: FhirDeviceRequestUrl.JUSTIFICATION, valueCodeableConcept: { text: 'Control periódico del paciente diabético' }},
+            { url: FhirDeviceRequestUrl.PRICE, valueString: '20.00' },
+            { url: FhirDeviceRequestUrl.TAX_PRICE, valueString: '4.00' },
+            { url: FhirDeviceRequestUrl.TAX, valueString: '21' },
+            { url: FhirDeviceRequestUrl.FULL_PRICE, valueString: '24.00' },
+            { url: FhirDeviceRequestUrl.REAL_APORTATION, valueString: '6.00' },
+            { url: FhirDeviceRequestUrl.DISPENSED_BRAND, valueCoding: { code: 'BR123', display: 'Marca HBA1c' }},
+            { url: FhirDeviceRequestUrl.IMPROVABLE, valueCodeableConcept: { coding: [{ code: 'yes' }], text: 'Puede mejorarse si no hay stock' }}
+          ]
+        }
+      },
+      {
+        fullUrl: 'urn:uuid:device-hba1c',
+        resource: {
+          resourceType: 'Device',
+          id: 'device-hba1c',
+          manufacturer: 'LabTech Inc.',
+          model: 'HBA1C-2025',
+          type: {
+            text: 'Analizador de glucosa',
+            coding: [{ code: 'glucose-analyzer' }]
+          },
+          extension: [
+            { url: FhirDeviceUrl.REMARKS, valueString: 'Evitar contacto con humedad' },
+            { url: FhirDeviceUrl.USER_CONTRIBUTION, valueString: '4.50' },
+            { url: FhirDeviceUrl.AMOUNT, valueString: '19.00' },
+            { url: FhirDeviceUrl.MODIFIABLE_AMOUNT, valueString: 'yes' },
+            { url: FhirDeviceUrl.REPLACEABLE, valueString: 'yes' },
+            { url: FhirDeviceUrl.IMF, valueCoding: { display: '21.00' }},
+            { url: FhirDeviceUrl.MAXIMUM_MODIFIABLE_IMF, valueString: '25.00' },
+            { url: FhirDeviceUrl.EYES, valueString: 'no' },
+            { url: FhirDeviceUrl.HEADSET, valueString: 'no' },
+            { url: FhirDeviceUrl.DEVICE_GROUP, valueCoding: { code: 'grp001', display: 'Analizadores' }},
+            { url: FhirDeviceUrl.COMERCIAL_BRAND, valueCoding: { code: 'BR123', display: 'Marca HBA1c' }},
+            { url: FhirDeviceUrl.PULLED_APART, valueCoding: { code: 'pull1', display: 'Desmontable' }}
+          ]
+        }
+      }
+    ]
+  };
+
 }
