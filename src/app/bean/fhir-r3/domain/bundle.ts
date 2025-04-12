@@ -70,6 +70,7 @@ export class BundleModel implements Bundle {
     private mapProducts(action?: RequestGroupAction[]): Product[] {
         const result: Product[] = [];
         if (action) {
+          console.log("MapProducts by action: ", action);
             action.map(a => a.resource?.reference).forEach(
                 ref => {
                     if (ref && ref.includes(FhirTypes.DEVICE_REQUEST)) {

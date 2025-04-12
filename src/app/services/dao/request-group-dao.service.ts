@@ -549,7 +549,7 @@ export class RequestGroupDaoService implements RequestGroupDao {
             },
             resource: {
               id: 'HbA1c',
-              reference: FhirResourceType.DEVICE_REQUEST,
+              reference: FhirTypes.DEVICE_REQUEST,
               extension: [
                 { url: FhirDeviceRequestUrl.QUANTITY, valueString: '2' },
                 { url: FhirDeviceRequestUrl.JUSTIFICATION, valueCodeableConcept: { text: 'Control periódico del paciente diabético' }},
@@ -571,7 +571,7 @@ export class RequestGroupDaoService implements RequestGroupDao {
                   display: 'Hemoglobin A1c/Hemoglobin.total in Blood'
                 }
               ]
-            }]
+            }],
           },
 
           {
@@ -580,7 +580,7 @@ export class RequestGroupDaoService implements RequestGroupDao {
             description: 'Derivación para asesoría nutricional',
             resource: {
               id: 'AseNutric-1',
-              reference: FhirResourceType.DEVICE_REQUEST,
+              reference: FhirTypes.DEVICE_REQUEST,
 
               extension: [
                 { url: FhirDeviceUrl.REMARKS, valueString: 'Evitar contacto con humedad' },
