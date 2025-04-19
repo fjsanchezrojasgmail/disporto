@@ -95,7 +95,7 @@ export interface ProductSubGroup {
 }
 
 export const mapFhirToProduct = (deviceRequest?: DeviceRequest, device?: Device): Product => {
-    const observastions = [
+    const observations = [
         device?.extension?.find(e => e.url === FhirDeviceUrl.REMARKS)?.valueString
     ];
     const quantity = deviceRequest?.extension?.find(e => e.url === FhirDeviceRequestUrl.QUANTITY)?.valueString;
@@ -128,7 +128,7 @@ export const mapFhirToProduct = (deviceRequest?: DeviceRequest, device?: Device)
         description: device?.manufacturer || '',
         justification: justification,
         observation: device?.extension?.find(e => e.url === FhirDeviceUrl.REMARKS)?.valueString,
-        observations: observastions.map(e => (e) ? e : '').filter(e => e !== '') || undefined,
+        observations: observations.map(e => (e) ? e : '').filter(e => e !== '') || undefined,
         userConsideration: {
             aportation: aportation ? Number(aportation) : undefined,
             realAportation: realAportation ? Number(realAportation) : undefined

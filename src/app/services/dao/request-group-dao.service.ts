@@ -441,7 +441,7 @@ export class RequestGroupDaoService implements RequestGroupDao {
   };
 
   private mockBundleRequestGroup: Bundle<RequestGroup> =  {
-    resourceType: 'Bundle',
+  resourceType: 'Bundle',
   type: 'searchset',
   total: 1,
   entry: [
@@ -540,18 +540,51 @@ export class RequestGroupDaoService implements RequestGroupDao {
           }
         ],
         action: [
+
           {
+
             label: PRESCRIPTION_ACTION,
             description: 'Solicitar análisis de HbA1c para evaluar el control glucémico',
             type: {
               code: 'Analizador de glucosa',
               display: 'glucose-analyzer'
             },
+            participant: [{
+              display: '',
+              identifier: {
+                assigner: {
+                  display: 'identifier',
+                  id: 'Id-Identifier',
+                  reference: 'IdentifierReference'
+                },
+                period: {
+                  end: '05-14-2025',
+                  start: '05-01-2025'
+                },
+                system: 'system',
+                type: {
+                  coding: [
+                    {
+                      system: 'http://loinc.org',
+                      code: '4548-4',
+                      display: 'Hemoglobin A1c/Hemoglobin.total in Blood'
+                    }
+                  ]
+                },
+                use: 'usual',
+                value: 'value'
+              },
+              reference: 'Practitioner/prof-123'
+            }],
             resource: {
               id: 'HbA1c',
               reference: FhirTypes.DEVICE_REQUEST,
               extension: [
+
+
                 { url: FhirDeviceRequestUrl.QUANTITY, valueString: '2' },
+                { url: FhirDeviceRequestUrl.QUANTITY_DISPENSED, valueString: '2' },
+                { url: FhirDeviceRequestUrl.BODYSITE, valueString: 'Pancreas' },
                 { url: FhirDeviceRequestUrl.JUSTIFICATION, valueCodeableConcept: { text: 'Control periódico del paciente diabético' }},
                 { url: FhirDeviceRequestUrl.PRICE, valueString: '20.00' },
                 { url: FhirDeviceRequestUrl.TAX_PRICE, valueString: '4.00' },
@@ -573,6 +606,20 @@ export class RequestGroupDaoService implements RequestGroupDao {
               ]
             }],
           },
+          /*
+              const aportation = device?.extension?.find(e => e.url === FhirDeviceUrl.USER_CONTRIBUTION)?.valueString?.replace(',', '.');
+              const amount = device?.extension?.find(e => e.url === FhirDeviceUrl.AMOUNT)?.valueString?.replace(',', '.');
+              const modifiableAmount = device?.extension?.find(e => e.url === FhirDeviceUrl.MODIFIABLE_AMOUNT)?.valueString;
+              const replaceable = device?.extension?.find(e => e.url === FhirDeviceUrl.REPLACEABLE)?.valueString === FhirValue.YES;
+              const imf = device?.extension?.find(e => e.url === FhirDeviceUrl.IMF)?.valueCoding?.display?.replace(',', '.');
+              const maxImf = device?.extension?.find(e => e.url === FhirDeviceUrl.MAXIMUM_MODIFIABLE_IMF)?.valueString?.replace(',', '.');
+              const eyes = device?.extension?.find(e => e.url === FhirDeviceUrl.EYES)?.valueString === FhirValue.YES;
+              const headset = device?.extension?.find(e => e.url === FhirDeviceUrl.HEADSET)?.valueString === FhirValue.YES;
+              const group = device?.extension?.find(e => e.url === FhirDeviceUrl.DEVICE_GROUP)?.valueCoding;
+              const brand = device?.extension?.find(e => e.url === FhirDeviceUrl.COMERCIAL_BRAND)?.valueCoding;
+              const pulledApart = device?.extension?.find(e => e.url === FhirDeviceUrl.PULLED_APART)?.valueCoding;
+
+          */
 
           {
 
